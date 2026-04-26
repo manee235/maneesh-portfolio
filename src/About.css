@@ -1,0 +1,189 @@
+/* ===== ABOUT SECTION ===== */
+
+.about-section {
+  width: 100%;
+  min-height: 100vh;
+  padding: 80px 5% 120px;
+  overflow-y: auto;
+  background: var(--bg-color);
+}
+
+/* Bento grid: 3 equal columns, 2 rows */
+.about-bento-grid {
+  max-width: 1400px;
+  margin: 60px auto 0; /* Added 60px top margin */
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: auto auto;
+  gap: 20px;
+  align-items: stretch;
+}
+
+/* Base card */
+.about-card {
+  background: rgba(248, 249, 250, 0.7); /* Semi-transparent */
+  backdrop-filter: blur(12px); /* Blur effect */
+  -webkit-backdrop-filter: blur(12px);
+  border-radius: 28px;
+  padding: 28px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.about-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
+}
+
+.dark-mode .about-card {
+  background: rgba(20, 20, 20, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+/* Hero card: no border, no shadow, no background */
+.about-hero-card {
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  padding: 28px 20px;
+  justify-content: space-between;
+}
+
+.about-hero-card:hover {
+  transform: none;
+  box-shadow: none;
+}
+
+.about-hero-card h1 {
+  font-size: clamp(2.5rem, 4vw, 3.8rem);
+  font-weight: 800;
+  line-height: 1.1;
+  color: var(--text-color);
+  margin-bottom: 12px;
+}
+
+.about-hero-card .hero-desc {
+  font-size: 0.95rem;
+  line-height: 1.65;
+  opacity: 0.65;
+  color: var(--text-color);
+  margin-bottom: 8px;
+}
+
+/* Unified card title */
+.card-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--text-color);
+  margin-top: 6px;
+  line-height: 1.3;
+}
+
+.card-sub-text {
+  font-size: 0.82rem;
+  line-height: 1.55;
+  opacity: 0.65;
+  color: var(--text-color);
+  margin-top: -4px;
+}
+
+/* Create-a-project button */
+.create-project-btn {
+  background: transparent;
+  border: 1.5px dashed rgba(59, 130, 246, 0.5);
+  color: #3b82f6;
+  border-radius: 12px;
+  padding: 11px 18px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  text-align: left;
+  width: 100%;
+}
+
+.create-project-btn:hover {
+  background: rgba(59, 130, 246, 0.06);
+  border-color: #3b82f6;
+}
+
+/* Shared card icon row */
+.card-logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.logo-circle {
+  width: 40px;
+  height: 40px;
+  background: white;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.logo-name {
+  font-weight: 700;
+  font-size: 1rem;
+  opacity: 0.85;
+}
+
+/* Progress bar */
+.card-skill-progress {
+  width: 100%;
+  margin-top: auto;
+}
+
+.progress-info {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  opacity: 0.8;
+}
+
+.progress-bar-bg {
+  width: 100%;
+  height: 6px;
+  background: rgba(0, 0, 0, 0.07);
+  border-radius: 100px;
+  overflow: hidden;
+}
+
+.dark-mode .progress-bar-bg {
+  background: rgba(255, 255, 255, 0.07);
+}
+
+.progress-bar-fill {
+  height: 100%;
+  background: #4461e6;
+  border-radius: 100px;
+}
+
+/* Responsive */
+@media (max-width: 1100px) {
+  .about-bento-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 680px) {
+  .about-bento-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .about-section {
+    padding: 60px 5% 80px;
+  }
+}
