@@ -51,7 +51,7 @@ const Skills = () => {
       title: 'Front-End Development',
       description: 'Building engaging and user-friendly web interfaces using modern frameworks.',
       className: 'card-large',
-      progress: 95,
+      progress: 80,
       icons: [
         { src: `${DEVICON}/html5/html5-original.svg`, alt: 'HTML5' },
         { src: `${DEVICON}/javascript/javascript-original.svg`, alt: 'JavaScript' },
@@ -64,7 +64,7 @@ const Skills = () => {
       title: 'Styling & Design',
       description: 'Crafting visually appealing and responsive designs with advanced tools.',
       className: 'card-medium',
-      progress: 92,
+      progress: 95,
       icons: [
         { src: `${DEVICON}/css3/css3-original.svg`, alt: 'CSS3' },
         { src: `${DEVICON}/tailwindcss/tailwindcss-original.svg`, alt: 'Tailwind' },
@@ -90,7 +90,7 @@ const Skills = () => {
       title: 'Database Management',
       description: 'Designing and managing databases to ensure secure and scalable data storage.',
       className: 'card-medium',
-      progress: 85,
+      progress: 75,
       icons: [
         { src: `${DEVICON}/mysql/mysql-original.svg`, alt: 'MySQL' },
         { src: `${DEVICON}/postgresql/postgresql-original.svg`, alt: 'PostgreSQL' },
@@ -103,7 +103,7 @@ const Skills = () => {
       title: 'Mobile App Development',
       description: 'Creating cross-platform mobile apps with Flutter and Dart.',
       className: 'card-large',
-      progress: 94,
+      progress: 80,
       icons: [
         { src: `${DEVICON}/flutter/flutter-original.svg`, alt: 'Flutter' },
         { src: `${DEVICON}/dart/dart-original.svg`, alt: 'Dart' },
@@ -124,7 +124,7 @@ const Skills = () => {
       title: 'Cloud & Deployment',
       description: 'Experienced in deploying and managing applications using cloud platforms.',
       className: 'card-small',
-      progress: 82,
+      progress: 80,
       icons: [
         { src: `${DEVICON}/docker/docker-original.svg`, alt: 'Docker' },
         { src: `${DEVICON}/azure/azure-original.svg`, alt: 'Azure' },

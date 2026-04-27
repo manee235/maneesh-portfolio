@@ -123,23 +123,31 @@ body {
   box-shadow: 0 -20px 50px rgba(0, 0, 0, 0.1);
 }
 
-.skills-section-wrapper {
+.features-section-wrapper {
   position: relative;
   z-index: 3;
   background: var(--bg-color);
   box-shadow: 0 -20px 50px rgba(0, 0, 0, 0.1);
 }
 
-.projects-section-wrapper {
+.skills-section-wrapper {
   position: relative;
   z-index: 4;
   background: var(--bg-color);
   box-shadow: 0 -20px 50px rgba(0, 0, 0, 0.1);
 }
 
-.contact-section-wrapper {
+.projects-section-wrapper {
   position: relative;
   z-index: 5;
+  background: var(--bg-color);
+  box-shadow: 0 -20px 50px rgba(0, 0, 0, 0.1);
+}
+
+.contact-section-wrapper {
+  position: relative;
+  z-index: 6;
+  background: var(--bg-color);
 }
 
 /* ===== VISIBILITY HELPERS ===== */
@@ -386,10 +394,11 @@ body {
     align-items: center;
   }
 
-  .nav-item {
+  .nav-item,
+  .dark-mode .nav-item {
     width: auto;
     height: auto;
-    background: none;
+    background: transparent;
     border: none;
     padding: 10px 0;
     justify-content: center;
@@ -397,8 +406,10 @@ body {
   }
 
   .nav-item:hover,
-  .nav-item.active {
-    background: none !important;
+  .nav-item.active,
+  .dark-mode .nav-item:hover,
+  .dark-mode .nav-item.active {
+    background: transparent;
   }
 
   .nav-item.active .nav-label,
@@ -431,35 +442,27 @@ body {
 /* ===== GHOST TITLES ===== */
 .section-bg-title {
   position: absolute;
-  top: 0;
+  top: 10px;
   left: 50%;
   transform: translateX(-50%);
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: clamp(5rem, 14vw, 13rem);
-  color: rgba(0, 0, 0, 0.03);
+  font-family: 'Inter', sans-serif;
+  font-size: clamp(5rem, 15vw, 13rem);
+  font-weight: 900;
+  color: #808080;
+  opacity: 0.05;
   white-space: nowrap;
   pointer-events: none;
   user-select: none;
   letter-spacing: -2px;
   line-height: 1;
   z-index: 0;
-  animation: titleReveal 1.2s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-}
-
-@keyframes titleReveal {
-  from {
-    opacity: 0;
-    transform: translateX(-50%) translateY(30px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateX(-50%) translateY(0);
-  }
+  /* Behind content, but above section background */
+  text-transform: uppercase;
 }
 
 .dark-mode .section-bg-title {
-  color: rgba(255, 255, 255, 0.04);
+  color: #ffffff;
+  opacity: 0.04;
 }
 
 /* Global Section Title (Premium H1s) */

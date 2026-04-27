@@ -5,13 +5,14 @@ import Projects from './Projects';
 import Skills from './Skills';
 
 import About from './About';
+import Features from './Features';
 import Contact from './Contact';
 import Footer from './Footer';
 import './Home.css';
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 const ROLES = ["Software Developer", "UI/UX Designer", "Vibe Coder", "Music Producer", "Undergraduate"];
-const SECTIONS = ['home', 'about', 'skills', 'projects', 'contact'];
+const SECTIONS = ['home', 'about', 'features', 'skills', 'projects', 'contact'];
 
 const NAV_ICONS = {
   home: (
@@ -24,6 +25,11 @@ const NAV_ICONS = {
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
       <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
       <circle cx="12" cy="7" r="4" />
+    </svg>
+  ),
+  features: (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
     </svg>
   ),
   skills: (
@@ -332,6 +338,10 @@ function App() {
 
           <div id="about" className="section-wrapper about-section-wrapper">
             <About />
+          </div>
+
+          <div id="features" className="section-wrapper features-section-wrapper">
+            <Features />
           </div>
 
           <div id="skills" className="section-wrapper skills-section-wrapper">

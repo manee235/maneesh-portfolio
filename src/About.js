@@ -2,186 +2,112 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import './About.css';
 
-
 const About = () => {
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
-      transition: { staggerChildren: 0.1 }
+      transition: { staggerChildren: 0.2 }
     }
   };
 
   const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0 }
+    hidden: { opacity: 0, x: -20 },
+    visible: { opacity: 1, x: 0 }
   };
+
+  const qualifications = [
+    { year: "2026", title: "CCNA", institute: "University of Moratuwa", progress: 40 },
+    { year: "2024-2026", title: "HNDIT", institute: "SLIATE", progress: 75 },
+    { year: "2023", title: "Certificate in Software Engineering", institute: "NIBM", progress: 100 },
+    { year: "2009-2022", title: "School Education", institute: "Sri Sumangala College Wariyapola", progress: 100 }
+  ];
+
+  const experience = [
+    { year: "2025-Present", title: "Freelancer", desc: "Specializing in Full-Stack Web Development and UI/UX Design." },
+    { year: "2021-Present", title: "Bedroom Music Producer", desc: "Skilled in producing electronic music and composing film-style background scores, with hands-on experience in sound design, mixing, and arrangement.- Listen on Spotify: ", link: "https://open.spotify.com/artist/3u0fN7vcIuh9sv0HjIpEvs?si=0_LB1zsgT8yvzV20EmquhA", linkText: "SYNTHV" }
+  ];
 
   return (
     <motion.div
       className="about-section"
       variants={containerVariants}
       initial="hidden"
-      animate="visible"
-      style={{ position: 'relative' }}
+      whileInView="visible"
+      viewport={{ once: true }}
     >
       <div className="section-bg-title">About Me</div>
-      {/* Bento grid: 3 columns */}
-      <div className="about-bento-grid">
 
-        {/* Row 1, Col 1: Hero card (borderless) */}
-        <motion.div className="about-card about-hero-card" variants={itemVariants}>
-          <h1>Crafting<br />digital<br />excellence</h1>
-          <p className="hero-desc">
-            Focused on delivering high-end digital solutions that combine
-            stunning aesthetics with robust, clean, and efficient performance.
+      <div className="about-intro-container">
+        <motion.div className="about-text-content" variants={itemVariants}>
+          <h2 className="about-greeting">I'm Maneesh Amindu</h2>
+          <p className="about-description">
+            An innovative HNDIT undergraduate at SLIATE Kurunegala and CCNA trainee at the University of Moratuwa.
+            Combines strong expertise in coding, networking, and UI/UX design with a creative edge in music production.
+            Passionate about building secure, user-friendly, and high-performance IT systems through smart design
+            and reliable network solutions.
           </p>
-          <div style={{ marginTop: 'auto', display: 'flex', flexDirection: 'column', gap: '12px' }}>
-
-            <button className="create-project-btn">
-              + Create a Project
+          <a href="/assets/maneesh_amindu_cv.pdf" download="maneesh_amindu_cv.pdf" style={{ textDecoration: 'none' }}>
+            <button className="about-cv-btn">
+              Download CV <span>↓</span>
             </button>
+          </a>
+        </motion.div>
+      </div>
+
+      <div className="about-content-container">
+        <motion.div className="about-column" variants={itemVariants}>
+          <h2 className="about-subtitle">Academic Qualifications</h2>
+          <div className="timeline-container">
+            {qualifications.map((item, index) => (
+              <div className="timeline-item" key={index}>
+                <div className="timeline-dot" />
+                <div className="timeline-content">
+                  <span className="timeline-year">{item.year}</span>
+                  <h3 className="timeline-title">{item.title}</h3>
+                  <p className="timeline-institute">{item.institute}</p>
+                  <div className="course-progress-container">
+                    <div className="course-progress-info">
+                      <span>Completion</span>
+                      <span>{item.progress}%</span>
+                    </div>
+                    <div className="course-progress-bar-bg">
+                      <motion.div
+                        className="course-progress-bar-fill"
+                        initial={{ width: 0 }}
+                        whileInView={{ width: `${item.progress}%` }}
+                        transition={{ duration: 1, delay: 0.3 }}
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))}
           </div>
         </motion.div>
 
-        {/* Row 1, Col 2: Modern Rich UI */}
-        <motion.div className="about-card" variants={itemVariants}>
-          <div className="card-logo">
-            <div className="logo-circle">
-              <svg viewBox="0 0 24 24" fill="#4461e6">
-                <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10-5 10 5" />
-              </svg>
-            </div>
-            <span className="logo-name">Design</span>
-          </div>
-          <h2 className="card-title">Modern Rich UI</h2>
-          <p className="card-sub-text">
-            Creating visually stunning interfaces using glassmorphism,
-            dynamic gradients, and smooth micro-animations.
-          </p>
-          <div className="card-skill-progress">
-            <div className="progress-info">
-              <span>Visual Aesthetics</span>
-              <span>98%</span>
-            </div>
-            <div className="progress-bar-bg">
-              <motion.div className="progress-bar-fill"
-                initial={{ width: 0 }} animate={{ width: "98%" }}
-                transition={{ duration: 1.5, delay: 0.5 }}
-              ></motion.div>
-            </div>
+        <motion.div className="about-column" variants={itemVariants}>
+          <h2 className="about-subtitle">Work Experience</h2>
+          <div className="timeline-container">
+            {experience.map((item, index) => (
+              <div className="timeline-item" key={index}>
+                <div className="timeline-dot" style={{ background: '#10b981' }} />
+                <div className="timeline-content">
+                  <span className="timeline-year">{item.year}</span>
+                  <h3 className="timeline-title">{item.title}</h3>
+                  <p className="timeline-desc">
+                    {item.desc}
+                    {item.link && (
+                      <a href={item.link} target="_blank" rel="noreferrer" style={{ color: '#3b82f6', textDecoration: 'none' }}>
+                        {item.linkText}
+                      </a>
+                    )}
+                  </p>
+                </div>
+              </div>
+            ))}
           </div>
         </motion.div>
-
-        {/* Row 1, Col 3: Clean & Scalable Code */}
-        <motion.div className="about-card" variants={itemVariants}>
-          <div className="card-logo">
-            <div className="logo-circle">
-              <svg viewBox="0 0 24 24" fill="#4461e6">
-                <polyline points="16 18 22 12 16 6" /><polyline points="8 6 2 12 8 18" />
-              </svg>
-            </div>
-            <span className="logo-name">Development</span>
-          </div>
-          <h2 className="card-title">Clean & Scalable Code</h2>
-          <p className="card-sub-text">Writing maintainable, high-performance code that scales with your business needs.</p>
-          <div className="card-skill-progress">
-            <div className="progress-info">
-              <span>Code Quality</span>
-              <span>95%</span>
-            </div>
-            <div className="progress-bar-bg">
-              <motion.div className="progress-bar-fill"
-                initial={{ width: 0 }} animate={{ width: "95%" }}
-                transition={{ duration: 1.5, delay: 0.7 }}
-              ></motion.div>
-            </div>
-          </div>
-        </motion.div>
-
-        {/* Row 2, Col 1: SEO & Analytics */}
-        <motion.div className="about-card" variants={itemVariants}>
-          <div className="card-logo">
-            <div className="logo-circle" style={{ background: '#f59e0b' }}>
-              <svg viewBox="0 0 24 24" fill="white">
-                <circle cx="11" cy="11" r="8"></circle>
-                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-              </svg>
-            </div>
-            <span className="logo-name">Visibility</span>
-          </div>
-          <h2 className="card-title">SEO & Analytics</h2>
-          <p className="card-sub-text">Enhancing search rankings and providing deep insights into user behavior and trends.</p>
-          <div className="card-skill-progress">
-            <div className="progress-info">
-              <span>Visibility</span>
-              <span>90%</span>
-            </div>
-            <div className="progress-bar-bg">
-              <motion.div className="progress-bar-fill"
-                style={{ background: '#f59e0b' }}
-                initial={{ width: 0 }} animate={{ width: "90%" }}
-                transition={{ duration: 1.5, delay: 0.9 }}
-              ></motion.div>
-            </div>
-          </div>
-        </motion.div>
-
-        {/* Row 2, Col 2: Cutting-Edge Tech */}
-        <motion.div className="about-card" variants={itemVariants}>
-          <div className="card-logo">
-            <div className="logo-circle" style={{ background: '#10b981' }}>
-              <svg viewBox="0 0 24 24" fill="white">
-                <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
-              </svg>
-            </div>
-            <span className="logo-name">Innovation</span>
-          </div>
-          <h2 className="card-title">Cutting-Edge Tech</h2>
-          <p className="card-sub-text">Leveraging the latest frameworks and tools to build future-proof applications.</p>
-          <div className="card-skill-progress">
-            <div className="progress-info">
-              <span>Modern Stack</span>
-              <span>92%</span>
-            </div>
-            <div className="progress-bar-bg">
-              <motion.div className="progress-bar-fill"
-                style={{ background: '#10b981' }}
-                initial={{ width: 0 }} animate={{ width: "92%" }}
-                transition={{ duration: 1.5, delay: 1.1 }}
-              ></motion.div>
-            </div>
-          </div>
-        </motion.div>
-
-        {/* Row 2, Col 3: Fast Performance */}
-        <motion.div className="about-card" variants={itemVariants}>
-          <div className="card-logo">
-            <div className="logo-circle" style={{ background: '#ef4444' }}>
-              <svg viewBox="0 0 24 24" fill="white">
-                <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline>
-                <polyline points="17 6 23 6 23 12"></polyline>
-              </svg>
-            </div>
-            <span className="logo-name">Velocity</span>
-          </div>
-          <h2 className="card-title">Fast Performance</h2>
-          <p className="card-sub-text">Optimizing every millisecond to ensure lightning-fast load times and smooth interactions.</p>
-          <div className="card-skill-progress">
-            <div className="progress-info">
-              <span>Speed Score</span>
-              <span>99%</span>
-            </div>
-            <div className="progress-bar-bg">
-              <motion.div className="progress-bar-fill"
-                style={{ background: '#ef4444' }}
-                initial={{ width: 0 }} animate={{ width: "99%" }}
-                transition={{ duration: 1.5, delay: 1.3 }}
-              ></motion.div>
-            </div>
-          </div>
-        </motion.div>
-
       </div>
     </motion.div>
   );

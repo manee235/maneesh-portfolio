@@ -112,6 +112,11 @@ const Projects = () => {
     (currentPage + 1) * projectsPerPage
   );
 
+  const scrollToContact = () => {
+    const el = document.getElementById('contact');
+    if (el) el.scrollIntoView({ behavior: 'smooth' });
+  }
+
   return (
     <section className="projects-container" id="projects" style={{ position: 'relative' }}>
       <div className="section-bg-title">PROJECTS</div>
@@ -139,7 +144,7 @@ const Projects = () => {
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6" /></svg>
             </button>
           </div>
-          <button className="create-btn" style={{ background: '#3b82f6' }}>
+          <button className="create-btn" style={{ background: '#3b82f6' }} onClick={scrollToContact}>
             + Create a project
           </button>
         </div>
