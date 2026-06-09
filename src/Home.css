@@ -31,20 +31,38 @@
 /* Avatar */
 .avatar-wrapper {
   position: absolute;
-  bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 10;
-  height: 100vh;
+  inset: 0;
+  z-index: 15;
   display: flex;
   align-items: flex-end;
   justify-content: center;
+  pointer-events: none;
+}
+
+.avatar-particles-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 10;
+  pointer-events: auto;
+}
+
+.lightrays-background {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 5;
+  pointer-events: none;
 }
 
 .avatar-img {
   height: 95%;
   object-fit: contain;
   filter: drop-shadow(0 20px 50px rgba(0, 0, 0, 0.15));
+  position: relative;
+  z-index: 15;
 }
 
 /* Content layout */
@@ -238,6 +256,19 @@
     display: flex;
     justify-content: center;
     align-items: center;
+  }
+
+  .lightrays-background {
+    /* Fixed to viewport so canvas always gets real pixel dimensions */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    height: 100dvh; /* dynamic viewport height on modern mobile browsers */
+    z-index: 2;     /* behind avatar (z-index 15) and content (z-index 10) */
+    pointer-events: none;
+    overflow: hidden;
   }
 
   .avatar-img {

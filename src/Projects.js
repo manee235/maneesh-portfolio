@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
+import MagicBento from './MagicBento';
 import './Projects.css';
 
 const Projects = () => {
   const [currentPage, setCurrentPage] = useState(0);
+  const [searchQuery, setSearchQuery] = useState("");
   const DEVICON = 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons';
 
   const projects = [
@@ -61,14 +63,14 @@ const Projects = () => {
     },
     {
       id: 5,
-      name: "Vehicle Renting Management",
-      description: "An enterprise-level solution for managing vehicle fleets, booking schedules, and customer rental agreements.",
-      image: "/assets/projects/ridepro.png",
+      name: "Interactive Digital Thorana",
+      description: "A culturally inspired digital installation project that combines interactive design with traditional Sri Lankan motifs for competition, created using React CSS.",
+      image: "/assets/projects/thorana.png",
       tech: [
-        { src: `${DEVICON}/csharp/csharp-original.svg`, alt: 'C#' },
-        { src: `${DEVICON}/mysql/mysql-original.svg`, alt: 'MySQL' }
+        { src: `${DEVICON}/react/react-original.svg`, alt: 'React' },
+        { src: `${DEVICON}/css3/css3-original.svg`, alt: 'CSS3' }
       ],
-      demoLink: "#",
+      demoLink: "https://thoranait.vercel.app/",
       codeLink: "#"
     },
     {
@@ -93,11 +95,34 @@ const Projects = () => {
       ],
       demoLink: "https://www.figma.com/proto/YVW9TOqbTPdf8ewDjXbgSt/UI-UX-project-lily-foods?node-id=152-2574&t=uu1kUTww7kev2GSK-1",
       codeLink: "#"
+    },
+    {
+      id: 8,
+      name: "Vehicle Renting Management",
+      description: "An enterprise-level solution for managing vehicle fleets, booking schedules, and customer rental agreements.",
+      image: "/assets/projects/ridepro.png",
+      tech: [
+        { src: `${DEVICON}/csharp/csharp-original.svg`, alt: 'C#' },
+        { src: `${DEVICON}/mysql/mysql-original.svg`, alt: 'MySQL' }
+      ],
+      demoLink: "#",
+      codeLink: "#"
     }
   ];
 
   const projectsPerPage = 6;
-  const totalPages = Math.ceil(projects.length / projectsPerPage);
+
+  const filteredProjects = projects.filter(project =>
+    project.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    project.description.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  const totalPages = Math.max(1, Math.ceil(filteredProjects.length / projectsPerPage));
+
+  const handleSearchChange = (e) => {
+    setSearchQuery(e.target.value);
+    setCurrentPage(0);
+  };
 
   const nextSlide = () => {
     setCurrentPage((prev) => (prev + 1) % totalPages);
@@ -107,7 +132,7 @@ const Projects = () => {
     setCurrentPage((prev) => (prev - 1 + totalPages) % totalPages);
   };
 
-  const currentProjects = projects.slice(
+  const currentProjects = filteredProjects.slice(
     currentPage * projectsPerPage,
     (currentPage + 1) * projectsPerPage
   );
@@ -115,7 +140,7 @@ const Projects = () => {
   const scrollToContact = () => {
     const el = document.getElementById('contact');
     if (el) el.scrollIntoView({ behavior: 'smooth' });
-  }
+  };
 
   return (
     <section className="projects-container" id="projects" style={{ position: 'relative' }}>
@@ -129,7 +154,12 @@ const Projects = () => {
         <div className="toolbar-left">
           <div className="search-bar">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8" /><line x1="21" y1="21" x2="16.65" y2="16.65" /></svg>
-            <input type="text" placeholder="Search projects..." />
+            <input 
+              type="text" 
+              placeholder="Search projects..." 
+              value={searchQuery}
+              onChange={handleSearchChange}
+            />
           </div>
         </div>
         <div className="toolbar-right">
@@ -151,52 +181,26 @@ const Projects = () => {
       </div>
 
       <div className="projects-grid-wrapper">
-        <motion.div
-          key={currentPage}
-          className="projects-grid"
-          initial={{ opacity: 0, x: 50 }}
-          animate={{ opacity: 1, x: 0 }}
-          exit={{ opacity: 0, x: -50 }}
-          transition={{ duration: 0.5, ease: "easeInOut" }}
-        >
-          {currentProjects.map((project) => (
-            <motion.div
-              key={project.id}
-              className="project-card"
-              layout
-            >
-              <div className="project-image-wrapper">
-                <img src={project.image} alt={project.name} className="project-image" />
-                {project.isHighlight && (
-                  <div className="designer-badge">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" /></svg>
-                    Designer Highlight
-                  </div>
-                )}
-                <div className="project-overlay">
-                  <button className="overlay-btn" onClick={() => window.open(project.demoLink, '_blank')}>Live Demo</button>
-                  <button className="overlay-btn secondary" onClick={() => window.open(project.codeLink, '_blank')}>View Code</button>
-                </div>
-              </div>
-
-              <div className="project-content">
-                <div className="project-header-row">
-                  <h3 className="project-name">{project.name}</h3>
-                </div>
-
-                <p className="project-description">{project.description}</p>
-
-                <div className="project-tech-stack">
-                  {project.tech.map((tech, idx) => (
-                    <div key={idx} className="tech-icon-pill" title={tech.alt}>
-                      <img src={tech.src} alt={tech.alt} />
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </motion.div>
-          ))}
-        </motion.div>
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={currentPage + searchQuery}
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -15 }}
+            transition={{ duration: 0.4 }}
+          >
+            <MagicBento 
+              items={currentProjects} 
+              glowColor="68, 97, 230"
+              enableTilt={true}
+              enableStars={true}
+              enableSpotlight={true}
+              enableBorderGlow={true}
+              enableMagnetism={true}
+              clickEffect={true}
+            />
+          </motion.div>
+        </AnimatePresence>
       </div>
     </section>
   );

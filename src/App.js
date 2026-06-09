@@ -8,6 +8,7 @@ import About from './About';
 import Features from './Features';
 import Contact from './Contact';
 import Footer from './Footer';
+import Particles from './Particles';
 import './Home.css';
 
 // ─── Constants ────────────────────────────────────────────────────────────────
@@ -53,72 +54,70 @@ const NAV_ICONS = {
 };
 
 // ─── Navbar ───────────────────────────────────────────────────────────────────
-// Uses animate style props directly — avoids any CSS class / specificity issues
 function Navbar({ activeSection, isDarkMode, setIsDarkMode }) {
-  const [isOpen, setIsOpen] = useState(false);
-
   const scrollToSection = (id) => {
-    const el = document.getElementById(id);
-    if (el) {
-      el.scrollIntoView({ behavior: 'smooth' });
-      setIsOpen(false);
+    if (id === 'home') {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
     }
+    const el = document.getElementById(id);
+    if (el) el.scrollIntoView({ behavior: 'smooth' });
   };
+
+  const navSections = ['home', 'about', 'features', 'skills', 'projects', 'contact'];
 
   return (
     <>
-      <div className="mobile-nav-header mobile-only">
-        <div className="nav-brand">only<span>.</span>Maneesh</div>
-        <div className="mobile-header-actions">
-          <div className="mobile-theme-toggle" onClick={() => setIsDarkMode(d => !d)}>
-            {isDarkMode ? (
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <circle cx="12" cy="12" r="5" /><line x1="12" y1="1" x2="12" y2="3" />
-                <line x1="12" y1="21" x2="12" y2="23" /><line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
-                <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" /><line x1="1" y1="12" x2="3" y2="12" />
-                <line x1="21" y1="12" x2="23" y2="12" /><line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
-                <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
-              </svg>
-            ) : (
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
-              </svg>
-            )}
+      <div className={`navbar-horizontal scrolled`}>
+        {/* Desktop Navbar */}
+        <div className="navbar-desktop">
+          <div className="navbar-left">
+            {navSections.map((id) => (
+              <button
+                key={id}
+                className={`nav-link ${activeSection === id ? 'active' : ''}`}
+                onClick={() => scrollToSection(id)}
+                title={id.toUpperCase()}
+              >
+                {NAV_ICONS[id]}
+              </button>
+            ))}
           </div>
-          <button className={`hamburger ${isOpen ? 'open' : ''}`} onClick={() => setIsOpen(!isOpen)}>
-            <span />
-            <span />
-            <span />
-          </button>
-        </div>
-      </div>
 
-      <motion.div
-        className={`nav-pill ${isOpen ? 'mobile-open' : ''}`}
-        transition={{ type: 'spring', stiffness: 280, damping: 28 }}
-      >
-        <div className="nav-items-container">
-          {Object.entries(NAV_ICONS).map(([id, icon]) => (
-            <div
-              key={id}
-              className={`nav-item ${activeSection === id ? 'active' : ''}`}
-              onClick={() => scrollToSection(id)}
-            >
-              <div className="nav-icon desktop-only">{icon}</div>
-              <span className="nav-label mobile-only">{id === 'about' ? 'About us' : id}</span>
+          <div className="navbar-logo" onClick={() => scrollToSection('home')} style={{ cursor: 'pointer' }}>
+            <img
+              src={isDarkMode ? "assets/logo dark.svg" : "assets/logo.svg"}
+              alt="Maneesh"
+              className="logo-img"
+            />
+          </div>
+
+          <div className="navbar-right">
+            <div className="contact-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                <circle cx="12" cy="10" r="3" />
+              </svg>
+              <span>Kurunegala, Sri Lanka</span>
             </div>
-          ))}
+            <div className="contact-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
+              </svg>
+              <a href="tel:+94759051430">+94 75 905 1430</a>
+            </div>
 
-          <div className="nav-separator desktop-only" />
-
-          <div className="nav-item theme-item desktop-only" onClick={() => setIsDarkMode(d => !d)}>
-            <div className="nav-icon">
+            <button className="theme-toggle" onClick={() => setIsDarkMode(d => !d)}>
               {isDarkMode ? (
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <circle cx="12" cy="12" r="5" /><line x1="12" y1="1" x2="12" y2="3" />
-                  <line x1="12" y1="21" x2="12" y2="23" /><line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
-                  <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" /><line x1="1" y1="12" x2="3" y2="12" />
-                  <line x1="21" y1="12" x2="23" y2="12" /><line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
+                  <circle cx="12" cy="12" r="5" />
+                  <line x1="12" y1="1" x2="12" y2="3" />
+                  <line x1="12" y1="21" x2="12" y2="23" />
+                  <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
+                  <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
+                  <line x1="1" y1="12" x2="3" y2="12" />
+                  <line x1="21" y1="12" x2="23" y2="12" />
+                  <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
                   <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
                 </svg>
               ) : (
@@ -126,16 +125,70 @@ function Navbar({ activeSection, isDarkMode, setIsDarkMode }) {
                   <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
                 </svg>
               )}
+            </button>
+          </div>
+        </div>
+
+        {/* Mobile Navbar — header only, no drawer */}
+        <div className="navbar-mobile">
+          <div className="mobile-nav-header">
+            <img
+              src={isDarkMode ? "assets/logo dark.svg" : "assets/logo.svg"}
+              alt="Maneesh"
+              className="logo-img-mobile"
+              onClick={() => scrollToSection('home')}
+              style={{ cursor: 'pointer' }}
+            />
+            <div className="mobile-actions">
+              <button className="mobile-theme-toggle" onClick={() => setIsDarkMode(d => !d)}>
+                {isDarkMode ? (
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <circle cx="12" cy="12" r="5" />
+                    <line x1="12" y1="1" x2="12" y2="3" />
+                    <line x1="12" y1="21" x2="12" y2="23" />
+                    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
+                    <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
+                    <line x1="1" y1="12" x2="3" y2="12" />
+                    <line x1="21" y1="12" x2="23" y2="12" />
+                    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
+                    <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
+                  </svg>
+                ) : (
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+                  </svg>
+                )}
+              </button>
+              <button
+                className="mobile-hire-btn"
+                onClick={() => scrollToSection('contact')}
+              >
+                Hire Me
+              </button>
             </div>
           </div>
         </div>
-      </motion.div>
+      </div>
+
+      {/* Floating bottom pill nav - rendered outside navbar-horizontal */}
+      <div className="mobile-bottom-nav">
+        {navSections.map((id) => (
+          <button
+            key={id}
+            className={`mobile-bottom-nav-item ${activeSection === id ? 'active' : ''}`}
+            onClick={() => scrollToSection(id)}
+            title={id.toUpperCase()}
+          >
+            {NAV_ICONS[id]}
+          </button>
+        ))}
+      </div>
     </>
   );
 }
 
 // ─── HomeContent ──────────────────────────────────────────────────────────────
-function HomeContent({ roleIndex }) {
+function HomeContent({ roleIndex, isDarkMode }) {
   const scrollToContact = () => {
     const el = document.getElementById('contact');
     if (el) el.scrollIntoView({ behavior: 'smooth' });
@@ -144,6 +197,18 @@ function HomeContent({ roleIndex }) {
   return (
     <div id="home" className="section-wrapper home-section">
       <div className="avatar-wrapper">
+        <div className="avatar-particles-bg">
+          <Particles
+            particleColors={isDarkMode ? ["#ffffff"] : ["#000000"]}
+            particleCount={200}
+            particleSpread={10}
+            speed={0.1}
+            particleBaseSize={100}
+            moveParticlesOnHover={true}
+            alphaParticles={false}
+            disableRotation={false}
+          />
+        </div>
         <motion.img
           src="assets/avatar.png"
           alt="Maneesh"
@@ -244,23 +309,15 @@ function Preloader({ finishLoading }) {
       transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
     >
       <div className="loader-content">
-        <motion.div
-          className="loader-brand"
-          initial={{ y: 20, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
-        >
-          only<span>.</span>Maneesh
-        </motion.div>
-        <motion.div
-          className="loader-slogan"
-          initial={{ y: 20, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ duration: 0.8, delay: 1, ease: "easeOut" }}
-          onAnimationComplete={() => setTimeout(finishLoading, 1500)}
-        >
-          WHERE CLEAN CODE MEETS FEARLESS DESIGN.
-        </motion.div>
+        <motion.img
+          src="assets/logo.svg"
+          alt="only.Maneesh"
+          className="preloader-logo"
+          initial={{ scale: 0.8, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
+          onAnimationComplete={() => setTimeout(finishLoading, 1200)}
+        />
       </div>
     </motion.div>
   );
@@ -322,50 +379,54 @@ function App() {
   }, [x, y]);
 
   return (
-    <AnimatePresence mode="wait">
-      {isLoading ? (
-        <Preloader key="loader" finishLoading={() => setIsLoading(false)} />
-      ) : (
-        <motion.div
-          key="content"
-          className="portfolio-container"
-          onMouseMove={handleMouseMove}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 1 }}
-        >
-          <HomeContent roleIndex={roleIndex} />
+    <>
+      <AnimatePresence mode="wait">
+        {isLoading ? (
+          <Preloader key="loader" finishLoading={() => setIsLoading(false)} />
+        ) : (
+          <motion.div
+            key="content"
+            className="portfolio-container"
+            onMouseMove={handleMouseMove}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 1 }}
+          >
+            <HomeContent roleIndex={roleIndex} isDarkMode={isDarkMode} />
 
-          <div id="about" className="section-wrapper about-section-wrapper">
-            <About />
-          </div>
+            <div id="about" className="section-wrapper about-section-wrapper">
+              <About />
+            </div>
 
-          <div id="features" className="section-wrapper features-section-wrapper">
-            <Features />
-          </div>
+            <div id="features" className="section-wrapper features-section-wrapper">
+              <Features isDarkMode={isDarkMode} />
+            </div>
 
-          <div id="skills" className="section-wrapper skills-section-wrapper">
-            <Skills />
-          </div>
+            <div id="skills" className="section-wrapper skills-section-wrapper">
+              <Skills />
+            </div>
 
-          <div id="projects" className="section-wrapper projects-section-wrapper">
-            <Projects />
-          </div>
+            <div id="projects" className="section-wrapper projects-section-wrapper">
+              <Projects />
+            </div>
 
-          <div id="contact" className="section-wrapper contact-section-wrapper">
-            <Contact />
-          </div>
+            <div id="contact" className="section-wrapper contact-section-wrapper">
+              <Contact />
+            </div>
 
-          <Footer />
+            <Footer />
+          </motion.div>
+        )}
+      </AnimatePresence>
 
-          <Navbar
-            activeSection={activeSection}
-            isDarkMode={isDarkMode}
-            setIsDarkMode={setIsDarkMode}
-          />
-        </motion.div>
+      {!isLoading && (
+        <Navbar
+          activeSection={activeSection}
+          isDarkMode={isDarkMode}
+          setIsDarkMode={setIsDarkMode}
+        />
       )}
-    </AnimatePresence>
+    </>
   );
 }
 

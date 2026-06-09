@@ -29,16 +29,21 @@
   max-width: 400px;
 }
 
-.footer-logo {
-  font-size: 2.2rem;
-  font-weight: 800;
+.footer-logo-wrapper {
+  width: 160px;
+  height: 72px;
+  overflow: hidden;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   margin-bottom: 16px;
-  letter-spacing: -1px;
-  font-family: 'Inter', sans-serif;
 }
 
-.footer-logo .dot {
-  color: #3b82f6; /* Blue dot as requested */
+.footer-logo {
+  min-width: 100%;
+  min-height: 100%;
+  object-fit: cover;
+  display: block;
 }
 
 .footer-tagline {
