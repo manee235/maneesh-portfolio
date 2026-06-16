@@ -1,5 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import BorderGlow from './BorderGlow';
 import './Skills.css';
 
 // Helper: renders a devicon SVG from CDN
@@ -9,39 +10,52 @@ const Icon = ({ src, alt }) => (
 
 const DEVICON = 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons';
 
-const SkillCard = ({ title, description, icons, className, progress }) => (
+const SkillCard = ({ title, description, icons, className, progress, index }) => (
   <motion.div
-    className={`skill-card ${className}`}
-    initial={{ opacity: 0, y: 20 }}
+    className={`skill-card-motion-wrapper ${className}`}
+    initial={{ opacity: 0, y: 25 }}
     whileInView={{ opacity: 1, y: 0 }}
-    viewport={{ once: true }}
-    transition={{ duration: 0.5 }}
+    viewport={{ once: true, margin: "-50px" }}
+    transition={{ duration: 0.6, delay: index * 0.08 }}
+    style={{ display: 'flex', height: '100%' }}
   >
-    <div className="skill-icons">
-      {icons.map(({ src, alt }, index) => (
-        <div key={index} className="skill-icon-item">
-          <Icon src={src} alt={alt} />
-        </div>
-      ))}
-    </div>
-    <h3 className="skill-title">{title}</h3>
-    <p className="skill-desc">{description}</p>
+    <BorderGlow
+      glowColor="220 90 60"
+      backgroundColor="#161616"
+      borderRadius={28}
+      glowRadius={40}
+      glowIntensity={0.8}
+      coneSpread={30}
+      colors={['#4f6bff', '#22c55e', '#3b82f6']}
+      fillOpacity={0.12}
+      className="skill-card"
+    >
+      <div className="skill-icons">
+        {icons.map(({ src, alt }, idx) => (
+          <div key={idx} className="skill-icon-item">
+            <Icon src={src} alt={alt} />
+          </div>
+        ))}
+      </div>
+      <h3 className="skill-title">{title}</h3>
+      <p className="skill-desc">{description}</p>
 
-    <div className="skill-progress-container">
-      <div className="skill-progress-header">
-        <span className="skill-progress-label">Proficiency</span>
-        <span className="skill-progress-percentage">{progress}%</span>
+      <div className="skill-progress-container">
+        <div className="skill-progress-header">
+          <span className="skill-progress-label">Proficiency</span>
+          <span className="skill-progress-percentage">{progress}%</span>
+        </div>
+        <div className="skill-progress-bar">
+          <motion.div
+            className="skill-progress-fill"
+            initial={{ width: 0 }}
+            whileInView={{ width: `${progress}%` }}
+            viewport={{ once: true }}
+            transition={{ duration: 1, delay: 0.3 }}
+          />
+        </div>
       </div>
-      <div className="skill-progress-bar">
-        <motion.div
-          className="skill-progress-fill"
-          initial={{ width: 0 }}
-          whileInView={{ width: `${progress}%` }}
-          viewport={{ once: true }}
-          transition={{ duration: 1, delay: 0.3 }}
-        />
-      </div>
-    </div>
+    </BorderGlow>
   </motion.div>
 );
 
@@ -136,12 +150,12 @@ const Skills = () => {
   ];
 
   return (
-    <div className="skills-page" style={{ position: 'relative' }}>
-      <div className="section-bg-title">Skills</div>
+    <div id="tech-stack" className="skills-page" style={{ position: 'relative' }}>
       <motion.h1
         className="skills-main-title"
-        initial={{ opacity: 0, scale: 0.9 }}
-        animate={{ opacity: 1, scale: 1 }}
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-100px" }}
         transition={{ duration: 0.8 }}
       >
         Skills that fuel my passion
@@ -149,7 +163,7 @@ const Skills = () => {
 
       <div className="skills-grid">
         {categories.map((cat, index) => (
-          <SkillCard key={index} {...cat} />
+          <SkillCard key={index} {...cat} index={index} />
         ))}
       </div>
     </div>

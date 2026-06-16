@@ -1,9 +1,9 @@
 .footer {
   width: 100%;
-  background: #ffffff;
+  background: #0d0d0d;
   padding: 80px 5% 40px;
-  border-top: 1px solid rgba(0, 0, 0, 0.05);
-  color: #111;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  color: #fff;
   position: relative;
   z-index: 10;
   transition: background 0.3s ease, color 0.3s ease;
@@ -92,7 +92,7 @@
   max-width: 1300px;
   margin: 0 auto;
   padding-top: 40px;
-  border-top: 1px solid rgba(0, 0, 0, 0.05);
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
   display: flex;
   justify-content: space-between;
   align-items: center;

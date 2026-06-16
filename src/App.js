@@ -1,431 +1,587 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import { motion, useMotionValue, useSpring, useTransform, AnimatePresence } from 'framer-motion';
-import SplitText from './SplitText';
-import Projects from './Projects';
-import Skills from './Skills';
-
+import React, { useState, useEffect, useRef } from 'react';
+import Lenis from 'lenis';
+import PageLoader from './PageLoader';
 import About from './About';
-import Features from './Features';
-import Contact from './Contact';
-import Footer from './Footer';
+import Skills from './Skills';
+import Projects from './Projects';
+import NavMenu from './NavMenu';
+import RequestModal from './RequestModal';
 import Particles from './Particles';
-import './Home.css';
 
-// ─── Constants ────────────────────────────────────────────────────────────────
-const ROLES = ["Software Developer", "UI/UX Designer", "Vibe Coder", "Music Producer", "Undergraduate"];
-const SECTIONS = ['home', 'about', 'features', 'skills', 'projects', 'contact'];
+// ─── Social Icon Components ───────────────────────────────────────────────────
+const IconFacebook = () => (
+  <svg viewBox="0 0 24 24" fill="currentColor" style={{ width: '1em', height: '1em' }}>
+    <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
+  </svg>
+);
+const IconSpotify = () => (
+  <svg viewBox="0 0 24 24" fill="currentColor" style={{ width: '1em', height: '1em' }}>
+    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 14.36a.624.624 0 0 1-.86.21c-2.35-1.44-5.3-1.76-8.78-.97a.625.625 0 0 1-.28-1.22c3.81-.87 7.08-.5 9.72 1.12.3.18.39.57.2.86zm1.24-2.76a.78.78 0 0 1-1.07.26c-2.69-1.65-6.79-2.13-9.97-1.17a.78.78 0 0 1-.44-1.49c3.63-1.1 8.14-.57 11.22 1.33.37.23.49.71.26 1.07zm.11-2.88C14.25 8.95 9.26 8.77 6.41 9.6a.937.937 0 1 1-.54-1.8c3.27-.99 8.71-.8 12.14 1.34.44.26.58.83.32 1.27a.937.937 0 0 1-1.34.31z" />
+  </svg>
+);
+const IconGithub = () => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ width: '1em', height: '1em' }}>
+    <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22" />
+  </svg>
+);
+const IconInstagram = () => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ width: '1em', height: '1em' }}>
+    <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
+    <circle cx="12" cy="12" r="4" />
+    <circle cx="17.5" cy="6.5" r="0.5" fill="currentColor" />
+  </svg>
+);
+const IconDownload = () => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ width: '1em', height: '1em' }}>
+    <line x1="12" y1="5" x2="12" y2="19" /><polyline points="19 12 12 19 5 12" />
+    <line x1="5" y1="21" x2="19" y2="21" />
+  </svg>
+);
 
-const NAV_ICONS = {
-  home: (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
-      <polyline points="9 22 9 12 15 12 15 22" />
-    </svg>
-  ),
-  about: (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
-      <circle cx="12" cy="7" r="4" />
-    </svg>
-  ),
-  features: (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
-    </svg>
-  ),
-  skills: (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <polyline points="4 17 10 11 4 5" />
-      <line x1="12" y1="19" x2="20" y2="19" />
-    </svg>
-  ),
-  projects: (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
-      <polyline points="3.27 6.96 12 12.01 20.73 6.96" />
-      <line x1="12" y1="22.08" x2="12" y2="12" />
-    </svg>
-  ),
-  contact: (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
-    </svg>
-  ),
+// ─── Brand Logo (SVG wordmark) ─────────────────────────────────────────────
+const BrandLogo = ({ height = 18, style = {} }) => (
+  <img
+    src="/assets/logo new.svg"
+    alt="onlymaneesh"
+    style={{ height: height, width: 'auto', display: 'block', ...style }}
+  />
+);
+
+// ─── Timings & Reveals Hook ───────────────────────────────────────────────────
+function useRevealState(ready, delay) {
+  const [revealed, setRevealed] = useState(false);
+  useEffect(() => {
+    if (!ready) return;
+    const timer = setTimeout(() => setRevealed(true), delay);
+    return () => clearTimeout(timer);
+  }, [ready, delay]);
+  return revealed;
+}
+
+// ─── Intersection Hook ────────────────────────────────────────────────────────
+function useOnScreen(ref) {
+  const [isIntersecting, setIntersecting] = useState(false);
+  useEffect(() => {
+    if (!ref.current) return;
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) {
+        setIntersecting(true);
+        observer.unobserve(entry.target);
+      }
+    }, { threshold: 0.1 });
+    observer.observe(ref.current);
+    return () => observer.disconnect();
+  }, [ref]);
+  return isIntersecting;
+}
+
+// ─── Stat Count-up Component ──────────────────────────────────────────────────
+const StatNumber = ({ target, suffix = '' }) => {
+  const ref = useRef(null);
+  const inView = useOnScreen(ref);
+  const [count, setCount] = useState(0);
+
+  useEffect(() => {
+    if (!inView) return;
+    const duration = 1200;
+    const startTime = performance.now();
+    const num = parseInt(target, 10);
+    let animFrame;
+    const tick = (now) => {
+      const elapsed = now - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      setCount(Math.round(progress * num));
+      if (progress < 1) animFrame = requestAnimationFrame(tick);
+    };
+    animFrame = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(animFrame);
+  }, [inView, target]);
+
+  return <span ref={ref}>{count}{suffix}</span>;
 };
 
-// ─── Navbar ───────────────────────────────────────────────────────────────────
-function Navbar({ activeSection, isDarkMode, setIsDarkMode }) {
-  const scrollToSection = (id) => {
-    if (id === 'home') {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-      return;
+// ─── Main App ─────────────────────────────────────────────────────────────────
+function App() {
+  const [ready, setReady] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [contactOpen, setContactOpen] = useState(false);
+  const [localTime, setLocalTime] = useState('8:41am');
+  const [localDate, setLocalDate] = useState('15 June, 2026');
+  const lenisRef = useRef(null);
+
+  // ── 1. Lenis smooth scroll ──────────────────────────────────────────────────
+  // ── 0. Global Dark Mode Class ───────────────────────────────────────────────
+  useEffect(() => {
+    document.body.classList.add('dark-mode');
+    document.documentElement.classList.add('dark-mode');
+  }, []);
+
+  // ── 1. Lenis smooth scroll & parallax variables ─────────────────────────────
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    const lenis = new Lenis({
+      smoothWheel: true,
+      duration: 1.2,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+    });
+    lenisRef.current = lenis;
+
+    // Track scroll for parallax translations
+    lenis.on('scroll', ({ scroll, progress }) => {
+      document.documentElement.style.setProperty('--scroll-y', `${scroll}px`);
+      document.documentElement.style.setProperty('--scroll-progress', progress);
+    });
+
+    function raf(t) { lenis.raf(t); requestAnimationFrame(raf); }
+    requestAnimationFrame(raf);
+    return () => lenis.destroy();
+  }, []);
+
+  // ── 2. Scroll lock ──────────────────────────────────────────────────────────
+  useEffect(() => {
+    const lenis = lenisRef.current;
+    if (!ready || menuOpen || contactOpen) {
+      if (lenis) lenis.stop();
+      document.documentElement.style.overflow = 'hidden';
+    } else {
+      if (lenis) lenis.start();
+      document.documentElement.style.removeProperty('overflow');
     }
-    const el = document.getElementById(id);
-    if (el) el.scrollIntoView({ behavior: 'smooth' });
+  }, [ready, menuOpen, contactOpen]);
+
+  // ── 3. Adaptive grid ───────────────────────────────────────────────────────
+  useEffect(() => {
+    function apply() {
+      const FONT_BASE = 16, baseWidth = 1920, coef = 0.6666;
+      const w = window.innerWidth;
+      const widthReduction = ((baseWidth - w) / baseWidth) * 100;
+      const size = FONT_BASE - (FONT_BASE * (widthReduction * coef)) / 100;
+      if (size > FONT_BASE) document.documentElement.style.fontSize = size + 'px';
+      else document.documentElement.style.removeProperty('font-size');
+    }
+    apply();
+    window.addEventListener('resize', apply);
+    return () => window.removeEventListener('resize', apply);
+  }, []);
+
+  // ── 4. Live clock ──────────────────────────────────────────────────────────
+  useEffect(() => {
+    const update = () => {
+      const now = new Date();
+      let h = now.getHours();
+      const m = String(now.getMinutes()).padStart(2, '0');
+      const ampm = h >= 12 ? 'pm' : 'am';
+      h = h % 12 || 12;
+      setLocalTime(`${h}:${m}${ampm}`);
+      const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+      setLocalDate(`${now.getDate()} ${months[now.getMonth()]}, ${now.getFullYear()}`);
+    };
+    update();
+    const iv = setInterval(update, 1000);
+    return () => clearInterval(iv);
+  }, []);
+
+  // ── 5. Scroll helper ───────────────────────────────────────────────────────
+  const scrollTo = (id) => {
+    if (lenisRef.current) lenisRef.current.scrollTo(id, { duration: 1.2 });
   };
 
-  const navSections = ['home', 'about', 'features', 'skills', 'projects', 'contact'];
+  // ── 6. Entrance reveal states (staged sequence) ─────────────────────────────
+  const showHeroAvatar = useRevealState(ready, 150); // Step 1: Avatar fades
+  const showHeroContent = useRevealState(ready, 1000); // Step 2: Name, navbar, and CTAs reveal simultaneously
 
+  // Section intersection observers
+  const bandRef = useRef(null); const bandInView = useOnScreen(bandRef);
+  const servicesRef = useRef(null); const servicesInView = useOnScreen(servicesRef);
+  const statsRef = useRef(null); const statsInView = useOnScreen(statsRef);
+  const footerRef = useRef(null); const footerInView = useOnScreen(footerRef);
+
+  // ─────────────────────────────────────────────────────────────────────────
   return (
     <>
-      <div className={`navbar-horizontal scrolled`}>
-        {/* Desktop Navbar */}
-        <div className="navbar-desktop">
-          <div className="navbar-left">
-            {navSections.map((id) => (
-              <button
-                key={id}
-                className={`nav-link ${activeSection === id ? 'active' : ''}`}
-                onClick={() => scrollToSection(id)}
-                title={id.toUpperCase()}
-              >
-                {NAV_ICONS[id]}
-              </button>
-            ))}
+      {!ready && <PageLoader onComplete={() => setReady(true)} />}
+
+      <a href="#main-content" className="skip-link">Skip to content</a>
+
+      {/* ── HEADER ── */}
+      <header className={`hero-header ${showHeroContent ? 'reveal' : ''}`}>
+        <div className="hero-header-left">
+          <button onClick={() => scrollTo('#home')} style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 0, display: 'flex', alignItems: 'center' }} aria-label="Go to top">
+            <BrandLogo height={16} />
+          </button>
+        </div>
+
+        <div className="hero-header-right">
+          <button className="hero-nav-link" onClick={() => scrollTo('#home')}>Home</button>
+          <button className="hero-nav-link" onClick={() => scrollTo('#about')}>About</button>
+          <button className="hero-nav-link" onClick={() => scrollTo('#tech-stack')}>Tech Stack</button>
+          <button className="hero-nav-link" onClick={() => scrollTo('#works')}>Projects</button>
+          <button className="hero-nav-link" onClick={() => setContactOpen(true)}>Contact</button>
+
+          <button className="hero-close-button" onClick={() => setMenuOpen(true)} aria-label="Open Menu">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ width: '1rem', height: '1rem' }}>
+              <line x1="3" y1="12" x2="21" y2="12" />
+              <line x1="3" y1="6" x2="21" y2="6" />
+              <line x1="3" y1="18" x2="21" y2="18" />
+            </svg>
+          </button>
+        </div>
+      </header>
+
+      {/* ── MAIN ── */}
+      <main id="main-content">
+
+        {/* 1. HERO */}
+        <section id="home" className="hero-section">
+
+          {/* Giant background text: MANEESH AMINDU with entrance reveal wrapper */}
+          <div className={`hero-center-name-bg ${showHeroContent ? 'reveal' : ''}`}>
+            <div className="hero-name-wrapper">
+              <div className="hero-name-marcus">Maneesh</div>
+            </div>
+            <div className="hero-name-wrapper">
+              <div className="hero-name-vane">Amindu</div>
+            </div>
           </div>
 
-          <div className="navbar-logo" onClick={() => scrollToSection('home')} style={{ cursor: 'pointer' }}>
+          {/* Overlapping Portrait */}
+          <div className={`hero-portrait-container ${showHeroAvatar ? 'reveal' : ''}`}>
             <img
-              src={isDarkMode ? "assets/logo dark.svg" : "assets/logo.svg"}
-              alt="Maneesh"
-              className="logo-img"
+              src="/assets/avatar.png"
+              alt="Maneesh Amindu"
+              className="hero-portrait-img"
             />
+            <div className="hero-portrait-fade" />
           </div>
 
-          <div className="navbar-right">
-            <div className="contact-item">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
-                <circle cx="12" cy="10" r="3" />
-              </svg>
-              <span>Kurunegala, Sri Lanka</span>
+          {/* ── Floating Blur Cards – horizontal stat row ──────── */}
+          <div className="hero-blur-cards">
+            <div className={`hero-stat-row ${showHeroContent ? 'reveal' : ''}`}>
+              <div className="hero-blur-card card-stat">
+                <span className="hero-blur-card-accent-dot blue" />
+                <span className="hero-blur-card-value">20+</span>
+                <span className="hero-blur-card-label">Projects Built</span>
+              </div>
+              <div className="hero-blur-card card-stat">
+                <span className="hero-blur-card-accent-dot blue" />
+                <span className="hero-blur-card-value">2+</span>
+                <span className="hero-blur-card-label">Years Coding</span>
+              </div>
             </div>
-            <div className="contact-item">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
-              </svg>
-              <a href="tel:+94759051430">+94 75 905 1430</a>
+          </div>
+
+          {/* Small animated subtitle in the upper-center area */}
+          <div className={`hero-sub-tagline ${showHeroContent ? 'reveal' : ''}`}>
+            <span>Creative</span>
+            <span className="hero-sub-sep">·</span>
+            <span>UI / UX Designer</span>
+            <span className="hero-sub-sep">·</span>
+            <span>Developer</span>
+          </div>
+
+          {/* Body contents grid: left CTAs + right available badge */}
+          <div className="hero-body-container">
+
+
+
+            {/* Right CTA: single available badge with animated ping */}
+            <div className={`hero-right-cta ${showHeroContent ? 'reveal' : ''}`}>
+              <div className="available-badge">
+                <span className="green-ping-dot">
+                  <span className="ping-effect"></span>
+                  <span className="solid-dot"></span>
+                </span>
+                <span>Available · Internship / Freelance</span>
+              </div>
+
+
+
+              {/* right CTA: Download CV + Hire Now dual buttons */}
+              <div className={`hero-left-cta ${showHeroContent ? 'reveal' : ''}`}>
+                <div className="hero-cta-buttons">
+                  <a href="/assets/cv.pdf" download className="download-cv-btn">
+                    <IconDownload />
+                    <span>Download CV</span>
+                  </a>
+
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          {/* Scroll indicators at bottom left */}
+          <div className="hero-bottom-container">
+
+            <span>Scroll Down</span>
+          </div>
+        </section>
+
+        {/* 2. ABOUT */}
+        <About />
+
+        {/* Tech Stack (Skills) Section */}
+        <Skills />
+
+        {/* 3. CREATE BAND */}
+        <section className="create-band" ref={bandRef}>
+          <div className="shell">
+            <ul className="create-band-list">
+              {[
+                { label: 'Code', cls: 'light' },
+                { label: 'Design', cls: 'accent' },
+                { label: '→', cls: 'dark', isSvg: true },
+                { label: 'Ship', cls: 'ghost' },
+              ].map((item, i) => (
+                <li
+                  key={item.label}
+                  className={`create-band-item-wrapper ${bandInView ? 'reveal' : ''}`}
+                  style={{ transitionDelay: `${i * 120}ms` }}
+                >
+                  <div className={`create-band-tile ${item.cls}`}>
+                    {item.isSvg
+                      ? <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ width: '1em', height: '1em' }}><line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" /></svg>
+                      : item.label
+                    }
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </section>
+
+        {/* 4. PORTFOLIO */}
+        <Projects />
+
+        {/* 5. SERVICES */}
+        <section id="services" className="services-section" ref={servicesRef}>
+          <div className="shell">
+            <div className="eyebrow dark services-eyebrow">
+              <span className="eyebrow-dot" />
+              <span>Expertise</span>
+            </div>
+            <div className="services-h2-reveal">
+              <h2 className={`services-h2 services-h2-reveal-inner ${servicesInView ? 'reveal' : ''}`}>
+                What we do best
+              </h2>
             </div>
 
-            <button className="theme-toggle" onClick={() => setIsDarkMode(d => !d)}>
-              {isDarkMode ? (
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <circle cx="12" cy="12" r="5" />
-                  <line x1="12" y1="1" x2="12" y2="3" />
-                  <line x1="12" y1="21" x2="12" y2="23" />
-                  <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
-                  <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
-                  <line x1="1" y1="12" x2="3" y2="12" />
-                  <line x1="21" y1="12" x2="23" y2="12" />
-                  <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
-                  <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
-                </svg>
-              ) : (
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
-                </svg>
-              )}
+            <ul className="services-list">
+              {[
+                { idx: '01', name: 'Software Development', desc: 'Scalable web & mobile products built to last.' },
+                { idx: '02', name: 'Product Design', desc: 'Interfaces that feel effortless and look sharp.' },
+                { idx: '03', name: 'Music Production', desc: 'Sound design, electronic scores, and audio arrangement.' },
+                { idx: '04', name: 'Graphic Design', desc: 'Visually striking assets, brand identities, and layouts.' },
+              ].map((service, index) => (
+                <li
+                  key={service.idx}
+                  className={`services-row-wrapper ${servicesInView ? 'reveal' : ''}`}
+                  style={{ transitionDelay: `${index * 80}ms` }}
+                >
+                  <a
+                    href="#services"
+                    className="services-row-link"
+                    onClick={(e) => { e.preventDefault(); setContactOpen(true); }}
+                  >
+                    <span className="services-row-index">{service.idx}</span>
+                    <h3 className="services-row-h3">{service.name}</h3>
+                    <p className="services-row-desc">{service.desc}</p>
+                    <div className="services-row-badge">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ width: '1em', height: '1em' }}>
+                        <line x1="7" y1="17" x2="17" y2="7" /><polyline points="7 7 17 7 17 17" />
+                      </svg>
+                    </div>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </section>
+
+        {/* 6. STATS */}
+        <section className="stats-section" ref={statsRef}>
+          <div className="shell">
+            <div className={`stats-panel-wrapper ${statsInView ? 'reveal' : ''}`}>
+              <div className="stats-panel">
+                <Particles
+                  particleColors={['#ffffff', '#4f6bff']}
+                  particleCount={30}
+                  particleSpread={10}
+                  speed={0.1}
+                  particleBaseSize={70}
+                  className="stats-panel-particles"
+                />
+                <div className="stats-eyebrow">
+                  <div className="eyebrow light">
+                    <span className="eyebrow-dot" />
+                    <span>By the numbers</span>
+                  </div>
+                </div>
+                <div className="stats-h2-reveal">
+                  <h2 className={`stats-h2 stats-h2-reveal-inner ${statsInView ? 'reveal' : ''}`}>
+                    Proof in the work, not the words.
+                  </h2>
+                </div>
+                <ul className="stats-grid">
+                  {[
+                    { target: '20', suffix: '+', label: 'Projects & designs' },
+                    { target: '98', suffix: '%', label: 'Client satisfaction' },
+                    { target: '2', suffix: '+', label: 'Years of craft' },
+                    { target: '12', suffix: '+', label: 'Happy clients' },
+                  ].map((stat, idx) => (
+                    <li
+                      key={idx}
+                      className={`stats-item-wrapper ${statsInView ? 'reveal' : ''}`}
+                      style={{ transitionDelay: `${idx * 90}ms` }}
+                    >
+                      <div className="stats-num"><StatNumber target={stat.target} suffix={stat.suffix} /></div>
+                      <div className="stats-label">{stat.label}</div>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          </div>
+        </section>
+
+      </main>
+
+      {/* ── FOOTER ── */}
+      <footer className="footer" ref={footerRef}>
+        <Particles
+          particleColors={['#ffffff', '#4f6bff']}
+          particleCount={40}
+          particleSpread={12}
+          speed={0.08}
+          particleBaseSize={80}
+          className="footer-particles"
+        />
+        <div className="shell footer-inner">
+          {/* CTA Row */}
+          <div className="footer-cta-row">
+            <div className="footer-cta-h2-reveal">
+              <h2 className={`footer-cta-h2 footer-cta-h2-reveal-inner ${footerInView ? 'reveal' : ''}`}>
+                Have a project in mind? Let's get to work.
+              </h2>
+            </div>
+            <button className="pill-btn light with-arrow" onClick={() => setContactOpen(true)}>
+              <span className="pill-btn-inner">
+                <span>Start a project</span>
+                <span className="pill-btn-arrow-badge up-right">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ width: '1em', height: '1em' }}>
+                    <line x1="7" y1="17" x2="17" y2="7" /><polyline points="7 7 17 7 17 17" />
+                  </svg>
+                </span>
+              </span>
             </button>
           </div>
-        </div>
 
-        {/* Mobile Navbar — header only, no drawer */}
-        <div className="navbar-mobile">
-          <div className="mobile-nav-header">
-            <img
-              src={isDarkMode ? "assets/logo dark.svg" : "assets/logo.svg"}
-              alt="Maneesh"
-              className="logo-img-mobile"
-              onClick={() => scrollToSection('home')}
-              style={{ cursor: 'pointer' }}
-            />
-            <div className="mobile-actions">
-              <button className="mobile-theme-toggle" onClick={() => setIsDarkMode(d => !d)}>
-                {isDarkMode ? (
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <circle cx="12" cy="12" r="5" />
-                    <line x1="12" y1="1" x2="12" y2="3" />
-                    <line x1="12" y1="21" x2="12" y2="23" />
-                    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
-                    <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
-                    <line x1="1" y1="12" x2="3" y2="12" />
-                    <line x1="21" y1="12" x2="23" y2="12" />
-                    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
-                    <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
-                  </svg>
-                ) : (
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
-                  </svg>
-                )}
-              </button>
-              <button
-                className="mobile-hire-btn"
-                onClick={() => scrollToSection('contact')}
-              >
-                Hire Me
-              </button>
+          {/* Link columns */}
+          <div className="footer-cols">
+            <div className="footer-brand-col">
+              <div className="footer-logo">
+                <BrandLogo height={20} />
+              </div>
+              <p className="footer-tagline">
+                A creative developer, designer, and music producer building digital experiences with quiet precision.
+              </p>
+              {/* Social icons in footer */}
+              <div style={{ display: 'flex', gap: '0.75rem', marginTop: '0.5rem' }}>
+                {[
+                  { href: 'https://facebook.com', icon: <IconFacebook />, label: 'Facebook' },
+                  { href: 'https://open.spotify.com/artist/3u0fN7vcIuh9sv0HjIpEvs', icon: <IconSpotify />, label: 'Spotify' },
+                  { href: 'https://github.com/manee235', icon: <IconGithub />, label: 'GitHub' },
+                  { href: 'https://instagram.com/only.maneesh', icon: <IconInstagram />, label: 'Instagram' },
+                ].map((s) => (
+                  <a
+                    key={s.label}
+                    href={s.href}
+                    target="_blank"
+                    rel="noreferrer"
+                    title={s.label}
+                    style={{
+                      width: '2rem', height: '2rem',
+                      display: 'grid', placeItems: 'center',
+                      borderRadius: '9999px',
+                      background: 'rgba(255,255,255,0.08)',
+                      color: 'rgba(255,255,255,0.6)',
+                      fontSize: '0.875rem',
+                      transition: 'background 0.2s, color 0.2s',
+                    }}
+                    onMouseEnter={(e) => { e.currentTarget.style.background = 'var(--accent)'; e.currentTarget.style.color = '#fff'; }}
+                    onMouseLeave={(e) => { e.currentTarget.style.background = 'rgba(255,255,255,0.08)'; e.currentTarget.style.color = 'rgba(255,255,255,0.6)'; }}
+                  >
+                    {s.icon}
+                  </a>
+                ))}
+              </div>
+            </div>
+
+            <div className="footer-col">
+              <span className="footer-col-title">Navigate</span>
+              <div className="footer-col-links">
+                {[['About', '#about'], ['Work', '#works'], ['Services', '#services'], ['Contact', 'contact']].map(([label, id]) => (
+                  <a
+                    key={label}
+                    href={id.startsWith('#') ? id : '#'}
+                    className="animated-link"
+                    onClick={(e) => { e.preventDefault(); id === 'contact' ? setContactOpen(true) : scrollTo(id); }}
+                  >
+                    <span className="animated-link-span">{label}</span>
+                  </a>
+                ))}
+              </div>
+            </div>
+
+            <div className="footer-col">
+              <span className="footer-col-title">Services</span>
+              <div className="footer-col-links">
+                {['Software Development', 'Product Design', 'Music Production', 'Graphic Design'].map((s) => (
+                  <a key={s} href="#services" className="animated-link" onClick={(e) => { e.preventDefault(); scrollTo('#services'); }}>
+                    <span className="animated-link-span">{s}</span>
+                  </a>
+                ))}
+              </div>
+            </div>
+
+            <div className="footer-col">
+              <span className="footer-col-title">Social</span>
+              <div className="footer-col-links">
+                <a href="https://facebook.com" target="_blank" rel="noreferrer" className="animated-link"><span className="animated-link-span">Facebook</span></a>
+                <a href="https://open.spotify.com/artist/3u0fN7vcIuh9sv0HjIpEvs?si=0_LB1zsgT8yvzV20EmquhA" target="_blank" rel="noreferrer" className="animated-link"><span className="animated-link-span">Spotify (SYNTHV)</span></a>
+                <a href="https://github.com/manee235" target="_blank" rel="noreferrer" className="animated-link"><span className="animated-link-span">GitHub</span></a>
+                <a href="https://instagram.com/only.maneesh" target="_blank" rel="noreferrer" className="animated-link"><span className="animated-link-span">Instagram</span></a>
+              </div>
+            </div>
+          </div>
+
+          {/* Legal bar */}
+          <div className="footer-legal-bar">
+            <div>© {new Date().getFullYear()} onlymaneesh. All rights reserved.</div>
+            <div style={{ color: 'rgba(255,255,255,0.4)', fontSize: '0.75rem' }}>
+              Designed &amp; Developed by <span style={{ color: 'var(--accent-from)', fontWeight: 600 }}>Maneesh Amindu</span>
+            </div>
+            <div className="footer-legal-links">
+              <a href="#home" className="animated-link legal"><span className="animated-link-span">Privacy</span></a>
+              <a href="#home" className="animated-link legal"><span className="animated-link-span">Terms</span></a>
             </div>
           </div>
         </div>
-      </div>
+        <div className="footer-watermark">MANEESH</div>
+      </footer>
 
-      {/* Floating bottom pill nav - rendered outside navbar-horizontal */}
-      <div className="mobile-bottom-nav">
-        {navSections.map((id) => (
-          <button
-            key={id}
-            className={`mobile-bottom-nav-item ${activeSection === id ? 'active' : ''}`}
-            onClick={() => scrollToSection(id)}
-            title={id.toUpperCase()}
-          >
-            {NAV_ICONS[id]}
-          </button>
-        ))}
-      </div>
-    </>
-  );
-}
-
-// ─── HomeContent ──────────────────────────────────────────────────────────────
-function HomeContent({ roleIndex, isDarkMode }) {
-  const scrollToContact = () => {
-    const el = document.getElementById('contact');
-    if (el) el.scrollIntoView({ behavior: 'smooth' });
-  };
-
-  return (
-    <div id="home" className="section-wrapper home-section">
-      <div className="avatar-wrapper">
-        <div className="avatar-particles-bg">
-          <Particles
-            particleColors={isDarkMode ? ["#ffffff"] : ["#000000"]}
-            particleCount={200}
-            particleSpread={10}
-            speed={0.1}
-            particleBaseSize={100}
-            moveParticlesOnHover={true}
-            alphaParticles={false}
-            disableRotation={false}
-          />
-        </div>
-        <motion.img
-          src="assets/avatar.png"
-          alt="Maneesh"
-          className="avatar-img"
-          initial={{ y: '100%', opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1], delay: 0.2 }}
-        />
-      </div>
-
-      <div className="content-left">
-        <motion.div
-          className="main-name"
-          initial={{ opacity: 0, x: -50 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.8, delay: 0.5 }}
-        >
-          I'M <span>MANEESH</span>
-        </motion.div>
-
-        <motion.div
-          className="sub-slogan"
-          initial={{ opacity: 0, x: -50 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.8, delay: 0.6 }}
-        >
-          WHERE CLEAN CODE MEETS FEARLESS DESIGN.
-        </motion.div>
-
-        <motion.div
-          className="cta-group desktop-only"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.7 }}
-        >
-          <button className="cta-btn-primary" onClick={scrollToContact}>Hire Now <span>↗</span></button>
-          <a href="/assets/maneesh_amindu_cv.pdf" download="maneesh_amindu_cv.pdf" style={{ textDecoration: 'none' }}>
-            <button className="cta-btn-secondary">Download CV</button>
-          </a>
-        </motion.div>
-      </div>
-
-      <div className="content-right">
-        <div className="role-highlight">
-          <AnimatePresence mode="wait">
-            <SplitText
-              key={ROLES[roleIndex]}
-              text={ROLES[roleIndex]}
-              className="role-text-animated"
-              delay={0}
-            />
-          </AnimatePresence>
-        </div>
-
-        <motion.p
-          className="main-desc"
-          initial={{ opacity: 0, x: 50 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.8, delay: 0.9 }}
-        >
-          Full-Stack Developer & UI/UX enthusiast focused on creating scalable,
-          high-performance digital solutions with clean code, modern technologies,
-          and intuitive user-centered design.
-        </motion.p>
-
-        <motion.div
-          className="cta-group mobile-only"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.7 }}
-        >
-          <button className="cta-btn-primary" onClick={scrollToContact}>Hire Now <span>↗</span></button>
-          <a href="/assets/maneesh_amindu_cv.pdf" download="maneesh_amindu_cv.pdf" style={{ textDecoration: 'none' }}>
-            <button className="cta-btn-secondary">Download CV</button>
-          </a>
-        </motion.div>
-
-        <motion.div
-          className="more-link desktop-only"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 1.0 }}
-        >
-          More about me <span>↗</span>
-        </motion.div>
-      </div>
-    </div>
-  );
-}
-
-// ─── Preloader ─────────────────────────────────────────────────────────────
-function Preloader({ finishLoading }) {
-  return (
-    <motion.div
-      className="preloader"
-      initial={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
-    >
-      <div className="loader-content">
-        <motion.img
-          src="assets/logo.svg"
-          alt="only.Maneesh"
-          className="preloader-logo"
-          initial={{ scale: 0.8, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
-          onAnimationComplete={() => setTimeout(finishLoading, 1200)}
-        />
-      </div>
-    </motion.div>
-  );
-}
-
-// ─── App ──────────────────────────────────────────────────────────────────────
-function App() {
-  const [isDarkMode, setIsDarkMode] = useState(false);
-  const [roleIndex, setRoleIndex] = useState(0);
-  const [activeSection, setActiveSection] = useState('home');
-  const [isLoading, setIsLoading] = useState(true);
-
-  const x = useMotionValue(0);
-  const y = useMotionValue(0);
-  const mouseXSpring = useSpring(x, { stiffness: 300, damping: 30 });
-  const mouseYSpring = useSpring(y, { stiffness: 300, damping: 30 });
-  useTransform(mouseXSpring, [-0.5, 0.5], ['-20px', '20px']);
-  useTransform(mouseYSpring, [-0.5, 0.5], ['-10px', '10px']);
-
-  // Scroll detection
-  useEffect(() => {
-    const handleScroll = () => {
-      const scrollY = window.scrollY;
-      const homeHeight = window.innerHeight;
-
-      if (scrollY < homeHeight * 0.6) {
-        setActiveSection('home');
-        return;
-      }
-
-      const current = SECTIONS.slice(1).find(id => {
-        const el = document.getElementById(id);
-        if (!el) return false;
-        const { top } = el.getBoundingClientRect();
-        return top >= -300 && top <= 300;
-      });
-      if (current) setActiveSection(current);
-    };
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  // Role rotation
-  useEffect(() => {
-    const id = setInterval(() => setRoleIndex(p => (p + 1) % ROLES.length), 3000);
-    return () => clearInterval(id);
-  }, []);
-
-  // Dark mode
-  useEffect(() => {
-    document.body.classList.toggle('dark-mode', isDarkMode);
-  }, [isDarkMode]);
-
-  const handleMouseMove = useCallback((e) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    x.set((e.clientX - rect.left) / rect.width - 0.5);
-    y.set((e.clientY - rect.top) / rect.height - 0.5);
-  }, [x, y]);
-
-  return (
-    <>
-      <AnimatePresence mode="wait">
-        {isLoading ? (
-          <Preloader key="loader" finishLoading={() => setIsLoading(false)} />
-        ) : (
-          <motion.div
-            key="content"
-            className="portfolio-container"
-            onMouseMove={handleMouseMove}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 1 }}
-          >
-            <HomeContent roleIndex={roleIndex} isDarkMode={isDarkMode} />
-
-            <div id="about" className="section-wrapper about-section-wrapper">
-              <About />
-            </div>
-
-            <div id="features" className="section-wrapper features-section-wrapper">
-              <Features isDarkMode={isDarkMode} />
-            </div>
-
-            <div id="skills" className="section-wrapper skills-section-wrapper">
-              <Skills />
-            </div>
-
-            <div id="projects" className="section-wrapper projects-section-wrapper">
-              <Projects />
-            </div>
-
-            <div id="contact" className="section-wrapper contact-section-wrapper">
-              <Contact />
-            </div>
-
-            <Footer />
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      {!isLoading && (
-        <Navbar
-          activeSection={activeSection}
-          isDarkMode={isDarkMode}
-          setIsDarkMode={setIsDarkMode}
-        />
-      )}
+      {/* ── OVERLAYS ── */}
+      <NavMenu
+        isOpen={menuOpen}
+        onClose={() => setMenuOpen(false)}
+        onNavigate={scrollTo}
+        onOpenContact={() => setContactOpen(true)}
+        localTime={localTime}
+      />
+      <RequestModal
+        isOpen={contactOpen}
+        onClose={() => setContactOpen(false)}
+      />
     </>
   );
 }
