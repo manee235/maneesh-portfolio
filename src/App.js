@@ -106,7 +106,6 @@ function App() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [contactOpen, setContactOpen] = useState(false);
   const [localTime, setLocalTime] = useState('8:41am');
-  const [localDate, setLocalDate] = useState('15 June, 2026');
   const lenisRef = useRef(null);
 
   // ── 1. Lenis smooth scroll ──────────────────────────────────────────────────
@@ -173,8 +172,6 @@ function App() {
       const ampm = h >= 12 ? 'pm' : 'am';
       h = h % 12 || 12;
       setLocalTime(`${h}:${m}${ampm}`);
-      const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-      setLocalDate(`${now.getDate()} ${months[now.getMonth()]}, ${now.getFullYear()}`);
     };
     update();
     const iv = setInterval(update, 1000);
