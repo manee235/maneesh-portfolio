@@ -31,13 +31,6 @@ const IconInstagram = () => (
     <circle cx="17.5" cy="6.5" r="0.5" fill="currentColor" />
   </svg>
 );
-const IconDownload = () => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ width: '1em', height: '1em' }}>
-    <line x1="12" y1="5" x2="12" y2="19" /><polyline points="19 12 12 19 5 12" />
-    <line x1="5" y1="21" x2="19" y2="21" />
-  </svg>
-);
-
 // ─── Brand Logo (SVG wordmark) ─────────────────────────────────────────────
 const BrandLogo = ({ height = 18, style = {} }) => (
   <img
