@@ -183,9 +183,8 @@ function App() {
     if (lenisRef.current) lenisRef.current.scrollTo(id, { duration: 1.2 });
   };
 
-  // ── 6. Entrance reveal states (staged sequence) ─────────────────────────────
-  const showHeroAvatar = useRevealState(ready, 150); // Step 1: Avatar fades
-  const showHeroContent = useRevealState(ready, 1000); // Step 2: Name, navbar, and CTAs reveal simultaneously
+  // ── 6. Entrance reveal states ─────────────────────────────────────────────────
+  const showHeroContent = useRevealState(ready, 400); // Navbar reveals after hero is ready
 
   // Section intersection observers
   const bandRef = useRef(null); const bandInView = useOnScreen(bandRef);
@@ -196,8 +195,6 @@ function App() {
   // ─────────────────────────────────────────────────────────────────────────
   return (
     <>
-      {!ready && <PageLoader onComplete={() => setReady(true)} />}
-
       <a href="#main-content" className="skip-link">Skip to content</a>
 
       {/* ── HEADER ── */}
@@ -225,95 +222,10 @@ function App() {
         </div>
       </header>
 
-      {/* ── MAIN ── */}
+      {/* ── HERO SECTION (Video → Freeze → Content) ── */}
+      <PageLoader onComplete={() => setReady(true)} />
+
       <main id="main-content">
-
-        {/* 1. HERO */}
-        <section id="home" className="hero-section">
-
-          {/* Giant background text: MANEESH AMINDU with entrance reveal wrapper */}
-          <div className={`hero-center-name-bg ${showHeroContent ? 'reveal' : ''}`}>
-            <div className="hero-name-wrapper">
-              <div className="hero-name-marcus">Maneesh</div>
-            </div>
-            <div className="hero-name-wrapper">
-              <div className="hero-name-vane">Amindu</div>
-            </div>
-          </div>
-
-          {/* Overlapping Portrait */}
-          <div className={`hero-portrait-container ${showHeroAvatar ? 'reveal' : ''}`}>
-            <img
-              src="/assets/avatar.png"
-              alt="Maneesh Amindu"
-              className="hero-portrait-img"
-            />
-            <div className="hero-portrait-fade" />
-          </div>
-
-          {/* ── Floating Blur Cards – horizontal stat row ──────── */}
-          <div className="hero-blur-cards">
-            <div className={`hero-stat-row ${showHeroContent ? 'reveal' : ''}`}>
-              <div className="hero-blur-card card-stat">
-                <span className="hero-blur-card-accent-dot blue" />
-                <span className="hero-blur-card-value">20+</span>
-                <span className="hero-blur-card-label">Projects Built</span>
-              </div>
-              <div className="hero-blur-card card-stat">
-                <span className="hero-blur-card-accent-dot blue" />
-                <span className="hero-blur-card-value">2+</span>
-                <span className="hero-blur-card-label">Years Coding</span>
-              </div>
-            </div>
-          </div>
-
-          {/* Small animated subtitle in the upper-center area */}
-          <div className={`hero-sub-tagline ${showHeroContent ? 'reveal' : ''}`}>
-            <span>Creative</span>
-            <span className="hero-sub-sep">·</span>
-            <span>UI / UX Designer</span>
-            <span className="hero-sub-sep">·</span>
-            <span>Developer</span>
-          </div>
-
-          {/* Body contents grid: left CTAs + right available badge */}
-          <div className="hero-body-container">
-
-
-
-            {/* Right CTA: single available badge with animated ping */}
-            <div className={`hero-right-cta ${showHeroContent ? 'reveal' : ''}`}>
-              <div className="available-badge">
-                <span className="green-ping-dot">
-                  <span className="ping-effect"></span>
-                  <span className="solid-dot"></span>
-                </span>
-                <span>Available · Internship / Freelance</span>
-              </div>
-
-
-
-              {/* right CTA: Download CV + Hire Now dual buttons */}
-              <div className={`hero-left-cta ${showHeroContent ? 'reveal' : ''}`}>
-                <div className="hero-cta-buttons">
-                  <a href="/assets/cv.pdf" download className="download-cv-btn">
-                    <IconDownload />
-                    <span>Download CV</span>
-                  </a>
-
-                </div>
-              </div>
-
-            </div>
-          </div>
-
-          {/* Scroll indicators at bottom left */}
-          <div className="hero-bottom-container">
-
-            <span>Scroll Down</span>
-          </div>
-        </section>
-
         {/* 2. ABOUT */}
         <About />
 
