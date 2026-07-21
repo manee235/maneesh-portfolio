@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 
-// Social icons
+/* ── Small social icon components ── */
 const IconFacebook = () => (
   <svg viewBox="0 0 24 24" fill="currentColor" style={{ width: '1em', height: '1em' }}>
     <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
@@ -24,157 +24,173 @@ const IconInstagram = () => (
   </svg>
 );
 
-const About = () => {
-  const [inView, setInView] = useState(false);
-  const sectionRef = useRef(null);
-
+/* ── Scroll-reveal hook for individual cards ── */
+const useInViewRef = (threshold = 0.2) => {
+  const ref = useRef(null);
+  const [visible, setVisible] = useState(false);
   useEffect(() => {
-    const observer = new IntersectionObserver(([entry]) => {
-      if (entry.isIntersecting) { setInView(true); }
-    }, { threshold: 0.1 });
-    if (sectionRef.current) observer.observe(sectionRef.current);
-    return () => observer.disconnect();
+    const obs = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) setVisible(true); },
+      { threshold }
+    );
+    if (ref.current) obs.observe(ref.current);
+    return () => obs.disconnect();
+  }, [threshold]);
+  return [ref, visible];
+};
+
+/* ── Single timeline card with its own observer ── */
+const TimelineCard = ({ item, side }) => {
+  const [ref, visible] = useInViewRef(0.15);
+  return (
+    <div
+      ref={ref}
+      className={`atl-card atl-card--${side} ${visible ? 'atl-card--visible' : ''}`}
+    >
+      <div className="atl-card-year">{item.year}</div>
+      <div className="atl-card-title">{item.link
+        ? <a href={item.link} target="_blank" rel="noreferrer" className="atl-card-link">{item.title}</a>
+        : item.title}
+      </div>
+      <div className="atl-card-sub">{item.institute}</div>
+    </div>
+  );
+};
+
+/* ── Main component ── */
+const About = () => {
+  const bioRef = useRef(null);
+  const [bioVisible, setBioVisible] = useState(false);
+  const lineRef = useRef(null);
+  const timelineWrapRef = useRef(null);
+
+  /* Reveal bio */
+  useEffect(() => {
+    const obs = new IntersectionObserver(
+      ([e]) => { if (e.isIntersecting) setBioVisible(true); },
+      { threshold: 0.2 }
+    );
+    if (bioRef.current) obs.observe(bioRef.current);
+    return () => obs.disconnect();
   }, []);
 
-  const statement = "I’m Maneesh Amindu, a tech enthusiast focused on software engineering and UI/UX design. I enjoy building clean, scalable digital products and crafting modern user experiences.";
-  const words = statement.split(' ');
+  /* Animate center line on scroll */
+  useEffect(() => {
+    const onScroll = () => {
+      if (!timelineWrapRef.current || !lineRef.current) return;
+      const rect = timelineWrapRef.current.getBoundingClientRect();
+      const vh = window.innerHeight;
+      const progress = Math.max(0, Math.min(1, (vh - rect.top) / (rect.height + vh * 0.3)));
+      lineRef.current.style.height = `${progress * 100}%`;
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
 
   const qualifications = [
-    { year: "2026", title: "CCNA Trainee", institute: "University of Moratuwa" },
-    { year: "2024–2026", title: "HNDIT Undergraduate", institute: "SLIATE Kurunegala" },
-    { year: "2023", title: "Cert. Software Engineering", institute: "NIBM" },
-    { year: "2009–2022", title: "School Education", institute: "Sri Sumangala College" },
+    { year: '2026',      title: 'CCNA Trainee',              institute: 'University of Moratuwa' },
+    { year: '2024–2026', title: 'HNDIT Undergraduate',       institute: 'SLIATE Kurunegala' },
+    { year: '2023',      title: 'Cert. Software Engineering', institute: 'NIBM' },
+    { year: '2009–2022', title: 'School Education',          institute: 'Sri Sumangala College' },
   ];
 
   const experience = [
-    { year: "2025–Present", title: "Freelance Developer", institute: "Web Development & UI/UX" },
-    { year: "2021–Present", title: "Music Producer (SYNTHV)", institute: "Electronic Score & Arrangement", link: "https://open.spotify.com/artist/3u0fN7vcIuh9sv0HjIpEvs?si=0_LB1zsgT8yvzV20EmquhA" },
+    { year: '2025–Present', title: 'Freelance Developer',    institute: 'Web Development & UI/UX' },
+    { year: '2021–Present', title: 'Music Producer (SYNTHV)', institute: 'Electronic Score & Arrangement',
+      link: 'https://open.spotify.com/artist/3u0fN7vcIuh9sv0HjIpEvs?si=0_LB1zsgT8yvzV20EmquhA' },
   ];
 
   const socials = [
-    { label: 'Facebook', href: 'https://facebook.com', icon: <IconFacebook />, accent: true },
-    { label: 'Spotify', href: 'https://open.spotify.com/artist/3u0fN7vcIuh9sv0HjIpEvs?si=0_LB1zsgT8yvzV20EmquhA', icon: <IconSpotify />, accent: false },
-    { label: 'GitHub', href: 'https://github.com/manee235', icon: <IconGithub />, accent: false },
-    { label: 'Instagram', href: 'https://instagram.com/only.maneesh', icon: <IconInstagram />, accent: false },
+    { label: 'Facebook',  href: 'https://facebook.com/maneesh.amindu', color: '#1877F2', icon: <IconFacebook /> },
+    { label: 'Spotify',   href: 'https://open.spotify.com/artist/3u0fN7vcIuh9sv0HjIpEvs?si=0_LB1zsgT8yvzV20EmquhA', color: '#1DB954', icon: <IconSpotify /> },
+    { label: 'GitHub',    href: 'https://github.com/manee235', color: '#ffffff', icon: <IconGithub /> },
+    { label: 'Instagram', href: 'https://instagram.com/only.maneesh', color: '#E1306C', icon: <IconInstagram /> },
   ];
 
+  /* Build interleaved timeline rows: [qualif[0], exp[0], qualif[1], exp[1], ...] */
+  const maxLen = Math.max(qualifications.length, experience.length);
+  const rows = [];
+  for (let i = 0; i < maxLen; i++) {
+    if (qualifications[i]) rows.push({ item: qualifications[i], side: 'right' });
+    if (experience[i])     rows.push({ item: experience[i],     side: 'left'  });
+  }
+
   return (
-    <section id="about" className="about-section" ref={sectionRef}>
-      <div className="shell">
-        <div className="about-grid">
+    <section id="about" className="atl-section">
 
-          {/* Left Column — Globe */}
-          <div className="about-left-col">
-
-
-            <h2 className="about-h2-statement">
-              {words.map((word, idx) => (
-                <span key={idx} className="reveal-word">
-                  <span
-                    className={`reveal-word-inner ${inView ? 'reveal' : ''} ${idx >= 7 ? 'about-statement-muted' : ''}`}
-                    style={{ transitionDelay: `${idx * 35}ms` }}
-                  >
-                    {word}&nbsp;
-                  </span>
-                </span>
-              ))}
-            </h2>
-
-
-
-            <div className="about-globe-icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" style={{ width: '1em', height: '1em' }}>
-                <circle cx="12" cy="12" r="9.25" />
-                <path d="M12 2.75c2.6 2.3 4 5.8 4 9.25s-1.4 6.95-4 9.25c-2.6-2.3-4-5.8-4-9.25s1.4-6.95 4-9.25zM2.75 12h18.5" />
-              </svg>
-            </div>
-
-            <div className={`about-left-reveal-block ${inView ? 'reveal' : ''}`}>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" style={{ width: '1.5rem', height: '1.5rem' }}>
-                <circle cx="12" cy="12" r="9.25" />
-                <path d="M12 2.75c2.6 2.3 4 5.8 4 9.25s-1.4 6.95-4 9.25c-2.6-2.3-4-5.8-4-9.25s1.4-6.95 4-9.25zM2.75 12h18.5" />
-              </svg>
-              <div className="about-left-reveal-text">
-                Kurunegala, Sri Lanka — building digital experiences worldwide.
-              </div>
-            </div>
-          </div>
-
-          {/* Right Column — Statement & Timelines */}
-          <div className="about-right-col">
-
-
-            <div className="about-cv-details">
-              {/* Academics */}
-              <div className="about-timeline-col">
-                <h3>Academics</h3>
-                <div className="about-timeline-list">
-                  {qualifications.map((item, i) => (
-                    <div className="about-timeline-item" key={i}>
-                      <div className="about-timeline-meta"><span>{item.year}</span></div>
-                      <div className="about-timeline-title">{item.title}</div>
-                      <div className="about-timeline-subtitle">{item.institute}</div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* Experience */}
-              <div className="about-timeline-col">
-                <h3>Experience</h3>
-                <div className="about-timeline-list">
-                  {experience.map((item, i) => (
-                    <div className="about-timeline-item" key={i}>
-                      <div className="about-timeline-meta"><span>{item.year}</span></div>
-                      <div className="about-timeline-title">
-                        {item.link
-                          ? <a href={item.link} target="_blank" rel="noreferrer" style={{ color: 'var(--accent)', textDecoration: 'underline' }}>{item.title}</a>
-                          : item.title
-                        }
-                      </div>
-                      <div className="about-timeline-subtitle">{item.institute}</div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-
-            {/* Social Footer Row */}
-            <div className={`about-footer-row ${inView ? 'reveal' : ''}`}>
-              <div className="about-socials-group">
-                <span className="about-socials-label">Find me online</span>
-                <div className="about-socials-list">
-                  {socials.map((s) => (
-                    <a
-                      key={s.label}
-                      href={s.href}
-                      target="_blank"
-                      rel="noreferrer"
-                      className={`about-social-chip ${s.accent ? 'accent' : 'normal'}`}
-                      title={s.label}
-                    >
-                      <span className="about-social-chip-inner">{s.icon}</span>
-                    </a>
-                  ))}
-                </div>
-              </div>
-
-              <a href="/assets/maneesh_amindu_cv.pdf" download className="pill-btn outline with-arrow">
-                <span className="pill-btn-inner">
-                  <span>Download CV</span>
-                  <span className="pill-btn-arrow-badge right">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ width: '1em', height: '1em' }}>
-                      <line x1="12" y1="5" x2="12" y2="19" /><polyline points="19 12 12 19 5 12" />
-                    </svg>
-                  </span>
-                </span>
-              </a>
-            </div>
-          </div>
-
-        </div>
+      {/* ── Bio block ── */}
+      <div ref={bioRef} className={`atl-bio ${bioVisible ? 'atl-bio--visible' : ''}`} data-parallax="0.08">
+        <p className="atl-bio-text">
+          <span className="atl-bio-name">I'm Maneesh Amindu,</span>{' '}
+          a tech enthusiast focused on software engineering and UI/UX design.
+          I enjoy building clean, scalable digital products
+          and crafting modern user experiences.
+        </p>
+        <p className="atl-bio-location">Kurunegala, Sri Lanka — building digital experiences worldwide.</p>
       </div>
+
+
+
+      {/* ── Timeline ── */}
+      <div className="atl-timeline-wrap" ref={timelineWrapRef}>
+
+        {/* Center vertical line track */}
+        <div className="atl-line-track" />
+        {/* Animated fill */}
+        <div className="atl-line-fill" ref={lineRef} />
+
+        {/* Cards */}
+        {rows.map((row, i) => (
+          <div key={i} className={`atl-row atl-row--${row.side}`}>
+            {/* Dot on the center line */}
+            <DotObserver index={i} />
+            <TimelineCard item={row.item} side={row.side} />
+          </div>
+        ))}
+      </div>
+
+      {/* ── Social footer ── */}
+      <div className="atl-social-row">
+        <span className="atl-social-label">Find me online</span>
+        <div className="atl-social-chips">
+          {socials.map(s => (
+            <a
+              key={s.label}
+              href={s.href}
+              target="_blank"
+              rel="noreferrer"
+              title={s.label}
+              className="atl-social-chip"
+              style={{ background: s.color === '#ffffff' ? '#1a1a1a' : s.color }}
+            >
+              {s.icon}
+            </a>
+          ))}
+        </div>
+        <a href="/assets/maneesh_amindu_cv.pdf" download className="atl-cv-btn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ width: '14px', height: '14px' }}>
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+            <polyline points="7 10 12 15 17 10" />
+            <line x1="12" y1="15" x2="12" y2="3" />
+          </svg>
+          Download CV
+        </a>
+      </div>
+
     </section>
+  );
+};
+
+/* Animated dot — observes itself */
+const DotObserver = ({ index }) => {
+  const [ref, visible] = useInViewRef(0.5);
+  return (
+    <div
+      ref={ref}
+      className={`atl-dot ${visible ? 'atl-dot--active' : ''}`}
+      style={{ transitionDelay: `${index * 60}ms` }}
+    />
   );
 };
 

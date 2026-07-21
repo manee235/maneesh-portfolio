@@ -87,13 +87,13 @@ const Projects = () => {
               style={{ transitionDelay: `${index * 90}ms` }}
             >
               <BorderGlow
-                glowColor="220 80 60"
+                glowColor="0 0 100"
                 backgroundColor="#0a0a0a"
                 borderRadius={32}
                 glowRadius={60}
                 glowIntensity={1.0}
-                fillOpacity={0.4}
-                colors={['#4f6bff', '#2563eb', '#1d4ed8']}
+                fillOpacity={0.08}
+                colors={['#ffffff', '#ffffff', '#ffffff']}
               >
                 <a href={project.link} target="_blank" rel="noreferrer" className="portfolio-card-link">
                   <article className="portfolio-card-article">

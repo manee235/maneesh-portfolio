@@ -1,12 +1,23 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Lenis from 'lenis';
-import PageLoader from './PageLoader';
 import About from './About';
 import Skills from './Skills';
 import Projects from './Projects';
 import NavMenu from './NavMenu';
 import RequestModal from './RequestModal';
 import Particles from './Particles';
+import Testimonials from './Testimonials';
+import FlowingMenu from './FlowingMenu';
+
+const IconCode = <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M8.293 6.293 2.586 12l5.707 5.707 1.414-1.414L5.414 12l4.293-4.293zm7.414 11.414L21.414 12l-5.707-5.707-1.414 1.414L18.586 12l-4.293 4.293z"></path></svg>;
+const IconDesign = <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2C6.486 2 2 6.486 2 12s4.486 10 10 10c1.225 0 2.507-.358 2.507-1.793 0-.54-.2-1.018-.543-1.391A1.666 1.666 0 0 1 13.5 17.5h1.798c3.155 0 6.702-2.316 6.702-7.5C22 5.589 17.514 2 12 2zm0 18c0 .323-.105.415-.125.438-.02.022-.115.127-.438.127C6.673 20 4 17.327 4 12S6.673 4 12 4s8 3.589 8 6c0 4.093-2.651 5.5-4.702 5.5h-1.798a3.67 3.67 0 0 0-2.457 1.042c-.524.571-.979 1.493-.979 2.571a3.023 3.023 0 0 0 .164 1.026c-.052-.089-.148-.139-.228-.139z"></path><circle cx="8.5" cy="10.5" r="1.5"></circle><circle cx="10.5" cy="6.5" r="1.5"></circle><circle cx="14.5" cy="7.5" r="1.5"></circle><circle cx="16.5" cy="11.5" r="1.5"></circle></svg>;
+const IconDeploy = <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M2.203 11.233c-.22.112-.34.341-.31.58.03.24.195.438.423.51l5.441 1.705 3.393 7.828c.092.213.298.344.524.344h.018c.23-.005.43-.146.516-.364l7.632-19.464c.096-.245.031-.527-.165-.724-.195-.196-.477-.26-.723-.165L2.203 11.233zm16.143-6.26-9.67 9.67-3.955-1.24 13.625-8.43zm-8.43 13.625-1.24-3.955 9.67-9.67-8.43 13.625z"></path></svg>;
+
+const flowingMenuItems = [
+  { link: '#', text: 'Code', icon: IconCode },
+  { link: '#', text: 'Design', icon: IconDesign },
+  { link: '#', text: 'Deploy', icon: IconDeploy }
+];
 
 // ─── Social Icon Components ───────────────────────────────────────────────────
 const IconFacebook = () => (
@@ -31,84 +42,63 @@ const IconInstagram = () => (
     <circle cx="17.5" cy="6.5" r="0.5" fill="currentColor" />
   </svg>
 );
-// ─── Brand Logo (SVG wordmark) ─────────────────────────────────────────────
-const BrandLogo = ({ height = 18, style = {} }) => (
-  <img
-    src="/assets/logo new.svg"
-    alt="onlymaneesh"
-    style={{ height: height, width: 'auto', display: 'block', ...style }}
-  />
+
+// ─── Inline SVG Logo Wordmark ──────────────────────────────────────────────────
+const InlineLogo = () => (
+  <svg viewBox="0 0 355 110" style={{ width: '100%', height: 'auto', display: 'block' }}>
+    <text
+      x="0"
+      y="80"
+      fill="white"
+      fontFamily="'Inter Tight', sans-serif"
+      fontWeight="700"
+      fontSize="58"
+      letterSpacing="-0.05em"
+    >
+      onlymaneesh
+    </text>
+    <circle cx="330" cy="50" r="10" stroke="white" strokeWidth="2" fill="none" />
+    <text
+      x="330"
+      y="53.5"
+      fill="white"
+      fontFamily="'Inter Tight', sans-serif"
+      fontWeight="700"
+      fontSize="9"
+      textAnchor="middle"
+    >
+      R
+    </text>
+  </svg>
 );
 
-// ─── Timings & Reveals Hook ───────────────────────────────────────────────────
-function useRevealState(ready, delay) {
-  const [revealed, setRevealed] = useState(false);
-  useEffect(() => {
-    if (!ready) return;
-    const timer = setTimeout(() => setRevealed(true), delay);
-    return () => clearTimeout(timer);
-  }, [ready, delay]);
-  return revealed;
-}
-
-// ─── Intersection Hook ────────────────────────────────────────────────────────
-function useOnScreen(ref) {
-  const [isIntersecting, setIntersecting] = useState(false);
-  useEffect(() => {
-    if (!ref.current) return;
-    const observer = new IntersectionObserver(([entry]) => {
-      if (entry.isIntersecting) {
-        setIntersecting(true);
-        observer.unobserve(entry.target);
-      }
-    }, { threshold: 0.1 });
-    observer.observe(ref.current);
-    return () => observer.disconnect();
-  }, [ref]);
-  return isIntersecting;
-}
-
-// ─── Stat Count-up Component ──────────────────────────────────────────────────
-const StatNumber = ({ target, suffix = '' }) => {
-  const ref = useRef(null);
-  const inView = useOnScreen(ref);
-  const [count, setCount] = useState(0);
-
-  useEffect(() => {
-    if (!inView) return;
-    const duration = 1200;
-    const startTime = performance.now();
-    const num = parseInt(target, 10);
-    let animFrame;
-    const tick = (now) => {
-      const elapsed = now - startTime;
-      const progress = Math.min(elapsed / duration, 1);
-      setCount(Math.round(progress * num));
-      if (progress < 1) animFrame = requestAnimationFrame(tick);
-    };
-    animFrame = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(animFrame);
-  }, [inView, target]);
-
-  return <span ref={ref}>{count}{suffix}</span>;
-};
-
-// ─── Main App ─────────────────────────────────────────────────────────────────
+// ─── Main App Component ────────────────────────────────────────────────────────
 function App() {
-  const [ready, setReady] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [contactOpen, setContactOpen] = useState(false);
   const [localTime, setLocalTime] = useState('8:41am');
-  const lenisRef = useRef(null);
+  const [width, setWidth] = useState(window.innerWidth);
+  const [scrollPast, setScrollPast] = useState(false);
 
-  // ── 1. Lenis smooth scroll ──────────────────────────────────────────────────
-  // ── 0. Global Dark Mode Class ───────────────────────────────────────────────
+  const lenisRef = useRef(null);
+  const cursorRef = useRef(null);
+
+  // Update viewport dimensions on resize
+  useEffect(() => {
+    const handleResize = () => {
+      setWidth(window.innerWidth);
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  // ── 0. Dark Mode Class ───────────────────────────────────────────────────────
   useEffect(() => {
     document.body.classList.add('dark-mode');
     document.documentElement.classList.add('dark-mode');
   }, []);
 
-  // ── 1. Lenis smooth scroll & parallax variables ─────────────────────────────
+  // ── 1. Lenis smooth scroll ──────────────────────────────────────────────────
   useEffect(() => {
     window.scrollTo(0, 0);
     const lenis = new Lenis({
@@ -118,45 +108,44 @@ function App() {
     });
     lenisRef.current = lenis;
 
-    // Track scroll for parallax translations
-    lenis.on('scroll', ({ scroll, progress }) => {
+    lenis.on('scroll', ({ scroll }) => {
       document.documentElement.style.setProperty('--scroll-y', `${scroll}px`);
-      document.documentElement.style.setProperty('--scroll-progress', progress);
     });
 
-    function raf(t) { lenis.raf(t); requestAnimationFrame(raf); }
+    // Drive data-parallax elements
+    function updateParallax() {
+      const els = document.querySelectorAll('[data-parallax]');
+      els.forEach(el => {
+        const speed = parseFloat(el.dataset.parallax) || 0.15;
+        const rect = el.getBoundingClientRect();
+        const center = rect.top + rect.height / 2 - window.innerHeight / 2;
+        const offset = center * speed;
+        el.style.transform = `translateY(${offset}px)`;
+      });
+    }
+
+    function raf(t) {
+      lenis.raf(t);
+      updateParallax();
+      requestAnimationFrame(raf);
+    }
     requestAnimationFrame(raf);
     return () => lenis.destroy();
   }, []);
 
-  // ── 2. Scroll lock ──────────────────────────────────────────────────────────
+  // ── 2. Scroll lock for overlays ─────────────────────────────────────────────
   useEffect(() => {
     const lenis = lenisRef.current;
-    if (!ready || menuOpen || contactOpen) {
+    if (menuOpen || contactOpen) {
       if (lenis) lenis.stop();
       document.documentElement.style.overflow = 'hidden';
     } else {
       if (lenis) lenis.start();
       document.documentElement.style.removeProperty('overflow');
     }
-  }, [ready, menuOpen, contactOpen]);
+  }, [menuOpen, contactOpen]);
 
-  // ── 3. Adaptive grid ───────────────────────────────────────────────────────
-  useEffect(() => {
-    function apply() {
-      const FONT_BASE = 16, baseWidth = 1920, coef = 0.6666;
-      const w = window.innerWidth;
-      const widthReduction = ((baseWidth - w) / baseWidth) * 100;
-      const size = FONT_BASE - (FONT_BASE * (widthReduction * coef)) / 100;
-      if (size > FONT_BASE) document.documentElement.style.fontSize = size + 'px';
-      else document.documentElement.style.removeProperty('font-size');
-    }
-    apply();
-    window.addEventListener('resize', apply);
-    return () => window.removeEventListener('resize', apply);
-  }, []);
-
-  // ── 4. Live clock ──────────────────────────────────────────────────────────
+  // ── 3. Live clock ──────────────────────────────────────────────────────────
   useEffect(() => {
     const update = () => {
       const now = new Date();
@@ -171,99 +160,108 @@ function App() {
     return () => clearInterval(iv);
   }, []);
 
-  // ── 5. Scroll helper ───────────────────────────────────────────────────────
+  // ── 4. Scroll helper ───────────────────────────────────────────────────────
   const scrollTo = (id) => {
     if (lenisRef.current) lenisRef.current.scrollTo(id, { duration: 1.2 });
   };
 
-  // ── 6. Entrance reveal states ─────────────────────────────────────────────────
-  const showHeroContent = useRevealState(ready, 400); // Navbar reveals after hero is ready
+  // ── 6. Detect scroll past hero for sticky nav ──────────────────────────────
+  useEffect(() => {
+    const onScroll = () => setScrollPast(window.scrollY > window.innerHeight * 0.7);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
 
-  // Section intersection observers
-  const bandRef = useRef(null); const bandInView = useOnScreen(bandRef);
-  const servicesRef = useRef(null); const servicesInView = useOnScreen(servicesRef);
-  const statsRef = useRef(null); const statsInView = useOnScreen(statsRef);
-  const footerRef = useRef(null); const footerInView = useOnScreen(footerRef);
+  // ── 5. Mousemove custom cursor ──────────────────────────────────────────────
+  useEffect(() => {
+    const isDesktop = width >= 1024;
+    const handleMouseMove = (e) => {
+      if (cursorRef.current && isDesktop) {
+        cursorRef.current.style.left = `${e.clientX}px`;
+        cursorRef.current.style.top = `${e.clientY}px`;
+      }
+    };
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => window.removeEventListener('mousemove', handleMouseMove);
+  }, [width]);
 
-  // ─────────────────────────────────────────────────────────────────────────
   return (
     <>
       <a href="#main-content" className="skip-link">Skip to content</a>
 
-      {/* ── HEADER ── */}
-      <header className={`hero-header ${showHeroContent ? 'reveal' : ''}`}>
-        <div className="hero-header-left">
-          <button onClick={() => scrollTo('#home')} style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 0, display: 'flex', alignItems: 'center' }} aria-label="Go to top">
-            <BrandLogo height={16} />
-          </button>
+
+      {/* ── HERO SECTION ── */}
+      <section id="home" className="hero-typography-section">
+
+        {/* Layer 1: Giant background name text (behind avatar) */}
+        <div className="hero-bg-name" data-parallax="0.2">
+          <div className="hero-bg-name-top">
+            <span className="hero-eyebrow-tag">CREATIVE</span>
+            <span className="hero-eyebrow-tag">UI/UX DESIGNER</span>
+            <span className="hero-eyebrow-tag">SOFTWARE DEVELOPER</span>
+          </div>
+          <div className="hero-bg-word">MANEESH</div>
+          <div className="hero-bg-word">AMINDU</div>
         </div>
 
-        <div className="hero-header-right">
-          <button className="hero-nav-link" onClick={() => scrollTo('#home')}>Home</button>
-          <button className="hero-nav-link" onClick={() => scrollTo('#about')}>About</button>
-          <button className="hero-nav-link" onClick={() => scrollTo('#tech-stack')}>Tech Stack</button>
-          <button className="hero-nav-link" onClick={() => scrollTo('#works')}>Projects</button>
-          <button className="hero-nav-link" onClick={() => setContactOpen(true)}>Contact</button>
+        {/* Layer 2: Avatar portrait & Hiring Badge */}
+        <div className="hero-portrait-wrap" >
+          <img
+            src="/assets/avatar.png"
+            alt="Maneesh Amindu"
+            className="hero-portrait-photo"
+          />
+          <div className="hero-hiring-badge">
+            <span className="green-pulse-dot" />
+            <span>Available for hiring</span>
+          </div>
+        </div>
 
-          <button className="hero-close-button" onClick={() => setMenuOpen(true)} aria-label="Open Menu">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ width: '1rem', height: '1rem' }}>
-              <line x1="3" y1="12" x2="21" y2="12" />
-              <line x1="3" y1="6" x2="21" y2="6" />
-              <line x1="3" y1="18" x2="21" y2="18" />
-            </svg>
+      </section>
+
+      {/* ── STICKY CAPSULE NAVBAR ── */}
+      <nav className={`capsule-navbar ${scrollPast ? 'capsule-navbar--visible' : ''}`} aria-label="Capsule navigation">
+        <div className="capsule-navbar-inner">
+          <button className="capsule-nav-item" onClick={() => scrollTo('#home')}>HOME</button>
+          <button className="capsule-nav-item" onClick={() => scrollTo('#about')}>ABOUT</button>
+          <button className="capsule-nav-item mobile-hide" onClick={() => scrollTo('#skills')}>SKILLS</button>
+          <button className="capsule-nav-item" onClick={() => scrollTo('#work')}>WORK</button>
+
+          <button className="capsule-nav-talk-btn" onClick={() => setContactOpen(true)}>
+            LET'S TALK
           </button>
         </div>
-      </header>
+      </nav>
 
-      {/* ── HERO SECTION (Video → Freeze → Content) ── */}
-      <PageLoader onComplete={() => setReady(true)} />
+      {/* ── PORTFOLIO MAIN CONTENT ── */}
+      <main id="main-content" style={{ position: 'relative', zIndex: 15, background: 'var(--background)' }}>
 
-      <main id="main-content">
-        {/* 2. ABOUT */}
+        {/* 1. ABOUT SECTION */}
         <About />
 
-        {/* Tech Stack (Skills) Section */}
+        {/* 1.5. TESTIMONIALS SECTION */}
+        <Testimonials />
+
+        {/* 2. TECH STACK (Skills) SECTION */}
         <Skills />
 
-        {/* 3. CREATE BAND */}
-        <section className="create-band" ref={bandRef}>
-          <div className="shell">
-            <ul className="create-band-list">
-              {[
-                { label: 'Code', cls: 'light' },
-                { label: 'Design', cls: 'accent' },
-                { label: '→', cls: 'dark', isSvg: true },
-                { label: 'Ship', cls: 'ghost' },
-              ].map((item, i) => (
-                <li
-                  key={item.label}
-                  className={`create-band-item-wrapper ${bandInView ? 'reveal' : ''}`}
-                  style={{ transitionDelay: `${i * 120}ms` }}
-                >
-                  <div className={`create-band-tile ${item.cls}`}>
-                    {item.isSvg
-                      ? <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ width: '1em', height: '1em' }}><line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" /></svg>
-                      : item.label
-                    }
-                  </div>
-                </li>
-              ))}
-            </ul>
-          </div>
+        {/* 3. FLOWING MENU (Replaces Create Band) */}
+        <section style={{ height: '600px', position: 'relative', margin: '100px 0' }}>
+          <FlowingMenu items={flowingMenuItems} speed={12} bgColor="#ffffff" textColor="#111111" marqueeBgColor="#111111" marqueeTextColor="#ffffff" borderColor="rgba(0,0,0,0.1)" />
         </section>
 
-        {/* 4. PORTFOLIO */}
+        {/* 4. SELECTED WORK (Projects) SECTION */}
         <Projects />
 
-        {/* 5. SERVICES */}
-        <section id="services" className="services-section" ref={servicesRef}>
+        {/* 5. EXPERTISE (Services) SECTION */}
+        <section id="services" className="services-section">
           <div className="shell">
             <div className="eyebrow dark services-eyebrow">
               <span className="eyebrow-dot" />
               <span>Expertise</span>
             </div>
             <div className="services-h2-reveal">
-              <h2 className={`services-h2 services-h2-reveal-inner ${servicesInView ? 'reveal' : ''}`}>
+              <h2 className="services-h2 services-h2-reveal-inner reveal">
                 What we do best
               </h2>
             </div>
@@ -275,11 +273,7 @@ function App() {
                 { idx: '03', name: 'Music Production', desc: 'Sound design, electronic scores, and audio arrangement.' },
                 { idx: '04', name: 'Graphic Design', desc: 'Visually striking assets, brand identities, and layouts.' },
               ].map((service, index) => (
-                <li
-                  key={service.idx}
-                  className={`services-row-wrapper ${servicesInView ? 'reveal' : ''}`}
-                  style={{ transitionDelay: `${index * 80}ms` }}
-                >
+                <li key={service.idx} className="services-row-wrapper reveal" style={{ transitionDelay: `${index * 80}ms` }}>
                   <a
                     href="#services"
                     className="services-row-link"
@@ -290,7 +284,8 @@ function App() {
                     <p className="services-row-desc">{service.desc}</p>
                     <div className="services-row-badge">
                       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ width: '1em', height: '1em' }}>
-                        <line x1="7" y1="17" x2="17" y2="7" /><polyline points="7 7 17 7 17 17" />
+                        <line x1="7" y1="17" x2="17" y2="7" />
+                        <polyline points="7 7 17 7 17 17" />
                       </svg>
                     </div>
                   </a>
@@ -300,10 +295,10 @@ function App() {
           </div>
         </section>
 
-        {/* 6. STATS */}
-        <section className="stats-section" ref={statsRef}>
+        {/* 6. STATS SECTION */}
+        <section className="stats-section">
           <div className="shell">
-            <div className={`stats-panel-wrapper ${statsInView ? 'reveal' : ''}`}>
+            <div className="stats-panel-wrapper reveal">
               <div className="stats-panel">
                 <Particles
                   particleColors={['#ffffff', '#4f6bff']}
@@ -320,7 +315,7 @@ function App() {
                   </div>
                 </div>
                 <div className="stats-h2-reveal">
-                  <h2 className={`stats-h2 stats-h2-reveal-inner ${statsInView ? 'reveal' : ''}`}>
+                  <h2 className="stats-h2 stats-h2-reveal-inner reveal">
                     Proof in the work, not the words.
                   </h2>
                 </div>
@@ -331,12 +326,10 @@ function App() {
                     { target: '2', suffix: '+', label: 'Years of craft' },
                     { target: '12', suffix: '+', label: 'Happy clients' },
                   ].map((stat, idx) => (
-                    <li
-                      key={idx}
-                      className={`stats-item-wrapper ${statsInView ? 'reveal' : ''}`}
-                      style={{ transitionDelay: `${idx * 90}ms` }}
-                    >
-                      <div className="stats-num"><StatNumber target={stat.target} suffix={stat.suffix} /></div>
+                    <li key={idx} className="stats-item-wrapper reveal" style={{ transitionDelay: `${idx * 90}ms` }}>
+                      <div className="stats-num">
+                        <span>{stat.target}{stat.suffix}</span>
+                      </div>
                       <div className="stats-label">{stat.label}</div>
                     </li>
                   ))}
@@ -348,8 +341,8 @@ function App() {
 
       </main>
 
-      {/* ── FOOTER ── */}
-      <footer className="footer" ref={footerRef}>
+      {/* ── FOOTER SECTION ── */}
+      <footer className="footer">
         <Particles
           particleColors={['#ffffff', '#4f6bff']}
           particleCount={40}
@@ -359,10 +352,9 @@ function App() {
           className="footer-particles"
         />
         <div className="shell footer-inner">
-          {/* CTA Row */}
           <div className="footer-cta-row">
             <div className="footer-cta-h2-reveal">
-              <h2 className={`footer-cta-h2 footer-cta-h2-reveal-inner ${footerInView ? 'reveal' : ''}`}>
+              <h2 className="footer-cta-h2 footer-cta-h2-reveal-inner reveal">
                 Have a project in mind? Let's get to work.
               </h2>
             </div>
@@ -371,23 +363,23 @@ function App() {
                 <span>Start a project</span>
                 <span className="pill-btn-arrow-badge up-right">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ width: '1em', height: '1em' }}>
-                    <line x1="7" y1="17" x2="17" y2="7" /><polyline points="7 7 17 7 17 17" />
+                    <line x1="7" y1="17" x2="17" y2="7" />
+                    <polyline points="7 7 17 7 17 17" />
                   </svg>
                 </span>
               </span>
             </button>
           </div>
 
-          {/* Link columns */}
+          {/* Columns */}
           <div className="footer-cols">
             <div className="footer-brand-col">
-              <div className="footer-logo">
-                <BrandLogo height={20} />
+              <div className="footer-logo" style={{ width: '220px', mixBlendMode: 'normal' }}>
+                <InlineLogo />
               </div>
               <p className="footer-tagline">
                 A creative developer, designer, and music producer building digital experiences with quiet precision.
               </p>
-              {/* Social icons in footer */}
               <div style={{ display: 'flex', gap: '0.75rem', marginTop: '0.5rem' }}>
                 {[
                   { href: 'https://facebook.com', icon: <IconFacebook />, label: 'Facebook' },
@@ -410,7 +402,7 @@ function App() {
                       fontSize: '0.875rem',
                       transition: 'background 0.2s, color 0.2s',
                     }}
-                    onMouseEnter={(e) => { e.currentTarget.style.background = 'var(--accent)'; e.currentTarget.style.color = '#fff'; }}
+                    onMouseEnter={(e) => { e.currentTarget.style.background = '#fff'; e.currentTarget.style.color = '#000'; }}
                     onMouseLeave={(e) => { e.currentTarget.style.background = 'rgba(255,255,255,0.08)'; e.currentTarget.style.color = 'rgba(255,255,255,0.6)'; }}
                   >
                     {s.icon}
@@ -445,23 +437,12 @@ function App() {
                 ))}
               </div>
             </div>
-
-            <div className="footer-col">
-              <span className="footer-col-title">Social</span>
-              <div className="footer-col-links">
-                <a href="https://facebook.com" target="_blank" rel="noreferrer" className="animated-link"><span className="animated-link-span">Facebook</span></a>
-                <a href="https://open.spotify.com/artist/3u0fN7vcIuh9sv0HjIpEvs?si=0_LB1zsgT8yvzV20EmquhA" target="_blank" rel="noreferrer" className="animated-link"><span className="animated-link-span">Spotify (SYNTHV)</span></a>
-                <a href="https://github.com/manee235" target="_blank" rel="noreferrer" className="animated-link"><span className="animated-link-span">GitHub</span></a>
-                <a href="https://instagram.com/only.maneesh" target="_blank" rel="noreferrer" className="animated-link"><span className="animated-link-span">Instagram</span></a>
-              </div>
-            </div>
           </div>
 
-          {/* Legal bar */}
           <div className="footer-legal-bar">
             <div>© {new Date().getFullYear()} onlymaneesh. All rights reserved.</div>
             <div style={{ color: 'rgba(255,255,255,0.4)', fontSize: '0.75rem' }}>
-              Designed &amp; Developed by <span style={{ color: 'var(--accent-from)', fontWeight: 600 }}>Maneesh Amindu</span>
+              Designed &amp; Developed by <span style={{ color: '#fff', fontWeight: 600 }}>Maneesh Amindu</span>
             </div>
             <div className="footer-legal-links">
               <a href="#home" className="animated-link legal"><span className="animated-link-span">Privacy</span></a>

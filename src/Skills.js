@@ -20,14 +20,14 @@ const SkillCard = ({ title, description, icons, className, progress, index }) =>
     style={{ display: 'flex', height: '100%' }}
   >
     <BorderGlow
-      glowColor="220 90 60"
+      glowColor="0 0 100"
       backgroundColor="#161616"
       borderRadius={28}
       glowRadius={40}
-      glowIntensity={0.8}
+      glowIntensity={0.85}
       coneSpread={30}
-      colors={['#4f6bff', '#22c55e', '#3b82f6']}
-      fillOpacity={0.12}
+      colors={['#ffffff', '#ffffff', '#ffffff']}
+      fillOpacity={0.08}
       className="skill-card"
     >
       <div className="skill-icons">
