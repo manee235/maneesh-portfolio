@@ -6,8 +6,11 @@ import Projects from './Projects';
 import NavMenu from './NavMenu';
 import RequestModal from './RequestModal';
 import Particles from './Particles';
+import CanvasParticles from './CanvasParticles';
 import Testimonials from './Testimonials';
 import FlowingMenu from './FlowingMenu';
+import InitialLoader from './InitialLoader';
+import { supabase } from './supabaseClient';
 
 const IconCode = <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M8.293 6.293 2.586 12l5.707 5.707 1.414-1.414L5.414 12l4.293-4.293zm7.414 11.414L21.414 12l-5.707-5.707-1.414 1.414L18.586 12l-4.293 4.293z"></path></svg>;
 const IconDesign = <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2C6.486 2 2 6.486 2 12s4.486 10 10 10c1.225 0 2.507-.358 2.507-1.793 0-.54-.2-1.018-.543-1.391A1.666 1.666 0 0 1 13.5 17.5h1.798c3.155 0 6.702-2.316 6.702-7.5C22 5.589 17.514 2 12 2zm0 18c0 .323-.105.415-.125.438-.02.022-.115.127-.438.127C6.673 20 4 17.327 4 12S6.673 4 12 4s8 3.589 8 6c0 4.093-2.651 5.5-4.702 5.5h-1.798a3.67 3.67 0 0 0-2.457 1.042c-.524.571-.979 1.493-.979 2.571a3.023 3.023 0 0 0 .164 1.026c-.052-.089-.148-.139-.228-.139z"></path><circle cx="8.5" cy="10.5" r="1.5"></circle><circle cx="10.5" cy="6.5" r="1.5"></circle><circle cx="14.5" cy="7.5" r="1.5"></circle><circle cx="16.5" cy="11.5" r="1.5"></circle></svg>;
@@ -72,6 +75,12 @@ const InlineLogo = () => (
   </svg>
 );
 
+const DEMO_CLIENTS = [
+  { id: 1, name: 'Sarah Chen', image_url: 'https://images.unsplash.com/photo-1701615004837-40d8573b6652?q=80&w=100&auto=format&fit=crop' },
+  { id: 2, name: 'Marcus Johnson', image_url: 'https://plus.unsplash.com/premium_photo-1671656349218-5218444643d8?q=80&w=100&auto=format&fit=crop' },
+  { id: 3, name: 'Elena Rodriguez', image_url: 'https://images.unsplash.com/photo-1607746882042-944635dfe10e?q=80&w=100&auto=format&fit=crop' }
+];
+
 // ─── Main App Component ────────────────────────────────────────────────────────
 function App() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -79,6 +88,8 @@ function App() {
   const [localTime, setLocalTime] = useState('8:41am');
   const [width, setWidth] = useState(window.innerWidth);
   const [scrollPast, setScrollPast] = useState(false);
+  const [clientAvatars, setClientAvatars] = useState([]);
+  const [isLoaded, setIsLoaded] = useState(false);
 
   const lenisRef = useRef(null);
   const cursorRef = useRef(null);
@@ -90,6 +101,54 @@ function App() {
     };
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  // Fetch client avatars & preload core images
+  useEffect(() => {
+    let dbDone = false;
+    let imgDone = false;
+
+    const checkAllDone = () => {
+      if (dbDone && imgDone) {
+        setIsLoaded(true);
+      }
+    };
+
+    // Preload main avatar image
+    const img = new Image();
+    img.src = '/assets/avatar.png';
+    img.onload = () => {
+      imgDone = true;
+      checkAllDone();
+    };
+    img.onerror = () => {
+      imgDone = true;
+      checkAllDone();
+    };
+
+    const fetchClientAvatars = async () => {
+      try {
+        const { data, error } = await supabase
+          .from('testimonials')
+          .select('id, name, image_url')
+          .order('display_order', { ascending: true })
+          .limit(4);
+        
+        if (error) throw error;
+        if (data && data.length > 0) {
+          setClientAvatars(data);
+        } else {
+          setClientAvatars(DEMO_CLIENTS);
+        }
+      } catch (err) {
+        console.error('Error fetching client avatars:', err);
+        setClientAvatars(DEMO_CLIENTS);
+      } finally {
+        dbDone = true;
+        checkAllDone();
+      }
+    };
+    fetchClientAvatars();
   }, []);
 
   // ── 0. Dark Mode Class ───────────────────────────────────────────────────────
@@ -187,11 +246,37 @@ function App() {
 
   return (
     <>
+      <InitialLoader isLoaded={isLoaded} />
       <a href="#main-content" className="skip-link">Skip to content</a>
 
+      {/* Mobile Top Header (with Logo and Hamburger) */}
+      <header className={`mobile-header${scrollPast ? ' mobile-header--scrolled' : ''}`}>
+        <div className="mobile-header-logo" onClick={() => scrollTo('#home')}>
+          onlymaneesh
+        </div>
+        <button 
+          className="mobile-hamburger-btn" 
+          onClick={() => setMenuOpen(true)}
+          aria-label="Open navigation menu"
+        >
+          <span className="hamburger-line"></span>
+          <span className="hamburger-line"></span>
+          <span className="hamburger-line"></span>
+        </button>
+      </header>
 
       {/* ── HERO SECTION ── */}
       <section id="home" className="hero-typography-section">
+        <CanvasParticles
+          className="hero-particles"
+          quantity={100}
+          ease={80}
+          color="#000000"
+          refresh
+        />
+
+        {/* Top-left logo overlay */}
+        <button className="hero-topleft-logo" onClick={() => scrollTo('#home')}>onlymaneesh</button>
 
         {/* Layer 1: Giant background name text (behind avatar) */}
         <div className="hero-bg-name" data-parallax="0.2">
@@ -217,6 +302,59 @@ function App() {
           </div>
         </div>
 
+        {/* Layer 3: Floating Left content (Intro & CV & Clients) */}
+        <div className="hero-left-col hero-glass-card">
+          <p className="hero-intro-text animated-intro">
+            <strong>Mobile App Developer & Creative UI/UX Designer</strong> crafting clean digital products and modern user experiences.
+          </p>
+          
+          {clientAvatars.length > 0 && (
+            <div className="hero-clients-wrap">
+              <div className="hero-clients-avatars">
+                {clientAvatars.slice(0, 4).map((client, i) => (
+                  <img 
+                    key={client.id || i} 
+                    src={client.image_url || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=100&q=80'} 
+                    alt={client.name || 'Client'} 
+                    className="hero-client-avatar-circle" 
+                    title={client.name}
+                  />
+                ))}
+              </div>
+              <span className="hero-clients-text">Trusted by founders & creators</span>
+            </div>
+          )}
+
+          <a href="/assets/maneesh_amindu_cv.pdf" download="maneesh_amindu_cv.pdf" className="hero-cv-btn">
+            <span>Download CV</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="hero-cv-btn-icon">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+              <polyline points="7 10 12 15 17 10" />
+              <line x1="12" y1="15" x2="12" y2="3" />
+            </svg>
+          </a>
+        </div>
+
+        {/* Layer 4: Floating Right content (Stat Cards) */}
+        <div className="hero-right-col">
+          <div className="hero-stat-card-item hero-glass-card">
+            <span className="hero-stat-number">20+</span>
+            <span className="hero-stat-label">Projects Completed</span>
+          </div>
+          <div className="hero-stat-card-item hero-glass-card">
+            <span className="hero-stat-number">2+</span>
+            <span className="hero-stat-label">Years of Experience</span>
+          </div>
+        </div>
+
+        {/* Scroll Down Indicator */}
+        <div className="hero-scroll-down">
+          <span className="hero-scroll-down-text">Scroll</span>
+          <div className="hero-scroll-down-mouse">
+            <div className="hero-scroll-down-wheel" />
+          </div>
+        </div>
+
       </section>
 
       {/* ── STICKY CAPSULE NAVBAR ── */}
@@ -224,8 +362,8 @@ function App() {
         <div className="capsule-navbar-inner">
           <button className="capsule-nav-item" onClick={() => scrollTo('#home')}>HOME</button>
           <button className="capsule-nav-item" onClick={() => scrollTo('#about')}>ABOUT</button>
-          <button className="capsule-nav-item mobile-hide" onClick={() => scrollTo('#skills')}>SKILLS</button>
-          <button className="capsule-nav-item" onClick={() => scrollTo('#work')}>WORK</button>
+          <button className="capsule-nav-item mobile-hide" onClick={() => scrollTo('#tech-stack')}>SKILLS</button>
+          <button className="capsule-nav-item" onClick={() => scrollTo('#works')}>WORK</button>
 
           <button className="capsule-nav-talk-btn" onClick={() => setContactOpen(true)}>
             LET'S TALK

@@ -25,12 +25,21 @@ const IconInstagram = () => (
   </svg>
 );
 
-const BrandLogo = ({ height = 18, style = {} }) => (
-  <img
-    src="/assets/logo new.svg"
-    alt="onlymaneesh"
-    style={{ height: height, width: 'auto', display: 'block', ...style }}
-  />
+const BrandLogo = ({ style = {} }) => (
+  <span
+    style={{
+      fontFamily: "'Inter Tight', sans-serif",
+      fontWeight: 700,
+      fontSize: '20px',
+      letterSpacing: '-0.04em',
+      color: '#ffffff',
+      textTransform: 'lowercase',
+      display: 'inline-block',
+      ...style
+    }}
+  >
+    onlymaneesh
+  </span>
 );
 
 const NavMenu = ({ isOpen, onClose, onNavigate, onOpenContact, localTime }) => {
