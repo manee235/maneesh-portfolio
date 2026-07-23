@@ -18,7 +18,7 @@ const WORK_CATEGORIES = [
 
   {
     id: 'mobile-dev',
-    title: 'Routie - Mobile App & Admin Portal',
+    title: 'Routie - Mobile Bus Tracking App & Web Based Admin Portal',
     subtitle: 'Cross-platform mobile application solution featuring seamless UI & smart navigation.',
     image: '/assets/projects/routie.png',
     link: 'https://routie-web.vercel.app',
@@ -27,7 +27,7 @@ const WORK_CATEGORIES = [
     btnHover: '#38bdf8', // Warm Gold
     btnText: '',
     underDevelopment: false,
-    tools: ['Flutter', 'Dart', 'Supabase', 'Node.js']
+    tools: ['Flutter', 'Dart', 'React', 'Supabase', 'Node.js']
   },
 
   {

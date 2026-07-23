@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import { supabase } from './supabaseClient';
-import './TestimonialForm.css';
+import Stepper, { Step } from './Stepper';
 
 export default function TestimonialForm({ isOpen, onClose }) {
   const [formData, setFormData] = useState({
@@ -12,11 +12,30 @@ export default function TestimonialForm({ isOpen, onClose }) {
     rating: 5,
     image_url: ''
   });
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [successMsg, setSuccessMsg] = useState('');
+  const [status, setStatus] = useState('idle'); // idle, sending, success
   const [errorMsg, setErrorMsg] = useState('');
+  const panelRef = useRef(null);
 
-  if (!isOpen) return null;
+  // Close on Escape
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape' && isOpen) onClose();
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen, onClose]);
+
+  // Reset state on close
+  useEffect(() => {
+    if (!isOpen) {
+      const timer = setTimeout(() => {
+        setFormData({ name: '', job_title: '', company: '', testimonial: '', rating: 5, image_url: '' });
+        setStatus('idle');
+        setErrorMsg('');
+      }, 300);
+      return () => clearTimeout(timer);
+    }
+  }, [isOpen]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -34,18 +53,16 @@ export default function TestimonialForm({ isOpen, onClose }) {
     }
   };
 
-  const handleRating = (rating) => {
-    setFormData(prev => ({ ...prev, rating }));
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setIsSubmitting(true);
+  const handleSubmitFinal = async () => {
+    if (!formData.name || !formData.testimonial) {
+       setErrorMsg('Name and Feedback are required.');
+       return;
+    }
+    
+    setStatus('sending');
     setErrorMsg('');
-    setSuccessMsg('');
 
     try {
-      // Insert new testimonial. We set is_active: false so it requires approval before showing up.
       const { error } = await supabase.from('testimonials').insert([{
         name: formData.name,
         job_title: formData.job_title,
@@ -53,99 +70,205 @@ export default function TestimonialForm({ isOpen, onClose }) {
         image_url: formData.image_url,
         testimonial: formData.testimonial,
         rating: formData.rating,
-        is_active: true 
+        is_active: false // Require approval
       }]);
 
       if (error) throw error;
-
-      setSuccessMsg('Thank you! Your feedback has been submitted for review.');
-      setFormData({ name: '', job_title: '', company: '', image_url: '', testimonial: '', rating: 5 });
       
-      // Close automatically after 3 seconds
+      setStatus('success');
       setTimeout(() => {
-        setSuccessMsg('');
         onClose();
       }, 3000);
-      
     } catch (err) {
       console.error('Submission error:', err);
       setErrorMsg('Something went wrong. Please try again.');
-    } finally {
-      setIsSubmitting(false);
+      setStatus('idle');
     }
   };
 
+  if (!isOpen) return null;
+
   return createPortal(
-    <div className="tf-overlay" onClick={onClose}>
-      <div className="tf-modal" onClick={e => e.stopPropagation()}>
-        <button className="tf-close" onClick={onClose}>&times;</button>
-        
-        <h2 className="tf-title">Share Your Experience</h2>
-        <p className="tf-subtitle">How was your experience working with me?</p>
+    <div
+      className={`request-modal-backdrop ${isOpen ? 'open' : ''}`}
+      onClick={onClose}
+      role="dialog"
+      aria-modal="true"
+    >
+      <div
+        ref={panelRef}
+        className="request-modal-panel"
+        style={{ maxWidth: '620px', padding: '2rem 1.5rem' }}
+        onClick={(e) => e.stopPropagation()}
+      >
+        <button className="request-modal-close-btn" onClick={onClose} aria-label="Close modal">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ width: '0.875rem', height: '0.875rem' }}>
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
 
-        {successMsg ? (
-          <div className="tf-success">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-            <p>{successMsg}</p>
-          </div>
+        {status !== 'success' ? (
+          <>
+            <div className="request-modal-header" style={{ marginBottom: '1.2rem', textAlign: 'center' }}>
+              <div className="eyebrow dark" style={{ justifyContent: 'center' }}>
+                <span className="eyebrow-dot" style={{ backgroundColor: '#a855f7' }} />
+                <span>Client Review</span>
+              </div>
+              <h2 className="request-modal-h2" style={{ fontSize: '1.8rem', marginTop: '0.4rem' }}>
+                Share Your Experience
+              </h2>
+            </div>
+
+            {errorMsg && (
+               <div style={{ color: '#ef4444', textAlign: 'center', marginBottom: '1rem', fontSize: '0.9rem' }}>
+                  {errorMsg}
+               </div>
+            )}
+
+            <Stepper
+              initialStep={1}
+              onFinalStepCompleted={handleSubmitFinal}
+              backButtonText="Back"
+              nextButtonText="Submit Review"
+            >
+              {/* STEP 1: Basic Info */}
+              <Step>
+                <div style={{ textAlign: 'left', marginBottom: '1rem' }}>
+                  <h3 style={{ fontSize: '1.2rem', fontWeight: '700', color: '#ffffff', margin: '0 0 0.5rem 0' }}>
+                    1. Basic Details
+                  </h3>
+                  <p style={{ fontSize: '0.875rem', color: 'rgba(255, 255, 255, 0.7)', margin: 0 }}>
+                    Let us know who you are.
+                  </p>
+                </div>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', textAlign: 'left' }}>
+                  <div className="rm-form-group">
+                    <label>Your Name *</label>
+                    <input
+                      type="text"
+                      name="name"
+                      placeholder="Jane Doe"
+                      value={formData.name}
+                      onChange={handleChange}
+                      required
+                    />
+                  </div>
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+                    <div className="rm-form-group">
+                      <label>Job Title</label>
+                      <input
+                        type="text"
+                        name="job_title"
+                        placeholder="Product Manager"
+                        value={formData.job_title}
+                        onChange={handleChange}
+                      />
+                    </div>
+                    <div className="rm-form-group">
+                      <label>Company</label>
+                      <input
+                        type="text"
+                        name="company"
+                        placeholder="Tech Inc."
+                        value={formData.company}
+                        onChange={handleChange}
+                      />
+                    </div>
+                  </div>
+                </div>
+              </Step>
+
+              {/* STEP 2: Photo */}
+              <Step>
+                <div style={{ textAlign: 'left', marginBottom: '1rem' }}>
+                  <h3 style={{ fontSize: '1.2rem', fontWeight: '700', color: '#ffffff', margin: '0 0 0.5rem 0' }}>
+                    2. Profile Photo (Optional)
+                  </h3>
+                  <p style={{ fontSize: '0.875rem', color: 'rgba(255, 255, 255, 0.7)', margin: 0 }}>
+                    Add a picture to personalize your review.
+                  </p>
+                </div>
+                <div className="rm-form-group" style={{ textAlign: 'left' }}>
+                   <label>Upload Image</label>
+                   <input
+                     type="file"
+                     accept="image/*"
+                     onChange={handleFileChange}
+                     style={{ padding: '0.6rem', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px', background: 'rgba(255,255,255,0.03)', color: '#fff' }}
+                   />
+                </div>
+                {formData.image_url && (
+                  <div style={{ marginTop: '1rem', textAlign: 'center' }}>
+                     <img src={formData.image_url} alt="Preview" style={{ width: '80px', height: '80px', borderRadius: '50%', objectFit: 'cover' }} />
+                  </div>
+                )}
+              </Step>
+
+              {/* STEP 3: Feedback */}
+              <Step>
+                <div style={{ textAlign: 'left', marginBottom: '1rem' }}>
+                  <h3 style={{ fontSize: '1.2rem', fontWeight: '700', color: '#ffffff', margin: '0 0 0.5rem 0' }}>
+                    3. Your Feedback
+                  </h3>
+                  <p style={{ fontSize: '0.875rem', color: 'rgba(255, 255, 255, 0.7)', margin: 0 }}>
+                    How was your experience working with me?
+                  </p>
+                </div>
+                
+                <div className="rm-form-group" style={{ textAlign: 'left', marginBottom: '1rem' }}>
+                   <label>Rating *</label>
+                   <div style={{ display: 'flex', gap: '8px', fontSize: '1.5rem' }}>
+                     {[1, 2, 3, 4, 5].map(star => (
+                       <button
+                         key={star}
+                         type="button"
+                         onClick={() => setFormData(prev => ({ ...prev, rating: star }))}
+                         style={{
+                           background: 'none', border: 'none', cursor: 'pointer',
+                           color: star <= formData.rating ? '#fbbf24' : 'rgba(255,255,255,0.2)'
+                         }}
+                       >
+                         ★
+                       </button>
+                     ))}
+                   </div>
+                </div>
+
+                <div className="rm-form-group" style={{ textAlign: 'left' }}>
+                  <label>Testimonial *</label>
+                  <textarea
+                    name="testimonial"
+                    rows="4"
+                    placeholder="Creative, professional, and easy to work with..."
+                    value={formData.testimonial}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
+                
+                {status === 'sending' && (
+                  <p style={{ color: '#38bdf8', fontSize: '0.9rem', marginTop: '1rem' }}>Submitting your review...</p>
+                )}
+              </Step>
+            </Stepper>
+          </>
         ) : (
-          <form className="tf-form" onSubmit={handleSubmit}>
-            <div className="tf-row">
-              <div className="tf-group">
-                <label>Your Name *</label>
-                <input type="text" name="name" value={formData.name} onChange={handleChange} required placeholder="Jane Doe" />
-              </div>
-              <div className="tf-group">
-                <label>Profile Picture</label>
-                <input 
-                  type="file" 
-                  accept="image/*" 
-                  onChange={handleFileChange} 
-                  style={{ padding: '9px 12px' }}
-                />
-              </div>
+          <div style={{ textAlign: 'center', padding: '3rem 1rem' }}>
+            <div style={{
+              width: '64px', height: '64px', borderRadius: '50%', background: 'rgba(56, 189, 248, 0.1)',
+              display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 1.5rem auto'
+            }}>
+              <svg viewBox="0 0 24 24" fill="none" stroke="#38bdf8" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ width: '32px', height: '32px' }}>
+                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                <polyline points="22 4 12 14.01 9 11.01"></polyline>
+              </svg>
             </div>
-
-            <div className="tf-row">
-              <div className="tf-group">
-                <label>Job Title</label>
-                <input type="text" name="job_title" value={formData.job_title} onChange={handleChange} placeholder="Product Manager" />
-              </div>
-              <div className="tf-group">
-                <label>Company</label>
-                <input type="text" name="company" value={formData.company} onChange={handleChange} placeholder="Tech Inc." />
-              </div>
-            </div>
-
-            <div className="tf-group tf-full">
-              <label>Rating *</label>
-              <div className="tf-stars">
-                {[1, 2, 3, 4, 5].map(star => (
-                  <button
-                    type="button"
-                    key={star}
-                    onClick={() => handleRating(star)}
-                    className={`tf-star-btn ${star <= formData.rating ? 'active' : ''}`}
-                  >
-                    ★
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            <div className="tf-group tf-full">
-              <label>Your Feedback *</label>
-              <textarea name="testimonial" value={formData.testimonial} onChange={handleChange} required placeholder="Creative, professional, and easy to work with. Love the final design!" rows="4" />
-            </div>
-
-            {errorMsg && <div className="tf-error">{errorMsg}</div>}
-
-            <button type="submit" className="tf-submit-btn" disabled={isSubmitting}>
-              {isSubmitting ? 'Submitting...' : 'Submit Feedback'}
-            </button>
-          </form>
+            <h2 className="request-modal-h2" style={{ fontSize: '1.8rem', marginBottom: '0.5rem' }}>Review Submitted!</h2>
+            <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: '1rem', maxWidth: '400px', margin: '0 auto' }}>
+              Thank you for your feedback! It has been received and is pending approval.
+            </p>
+          </div>
         )}
       </div>
     </div>,
