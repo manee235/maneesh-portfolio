@@ -6,7 +6,7 @@ import Projects from './Projects';
 import NavMenu from './NavMenu';
 import RequestModal from './RequestModal';
 import Particles from './Particles';
-import CanvasParticles from './CanvasParticles';
+import MetaBalls from './MetaBalls';
 import Testimonials from './Testimonials';
 import FlowingMenu from './FlowingMenu';
 import InitialLoader from './InitialLoader';
@@ -267,12 +267,18 @@ function App() {
 
       {/* ── HERO SECTION ── */}
       <section id="home" className="hero-typography-section">
-        <CanvasParticles
+        <MetaBalls
           className="hero-particles"
-          quantity={100}
-          ease={80}
           color="#000000"
-          refresh
+          cursorBallColor="#000000"
+          cursorBallSize={2}
+          ballCount={15}
+          animationSize={28}
+          enableMouseInteraction={true}
+          enableTransparency={true}
+          hoverSmoothness={0.05}
+          clumpFactor={2}
+          speed={0.9}
         />
 
         {/* Top-left logo overlay */}
