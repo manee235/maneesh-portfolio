@@ -36,6 +36,7 @@ const OptionWheel = ({
   draggable = true,
   soundUrl = '',
   soundVolume = 0.5,
+  useWindowScroll = true,
   className = ''
 }) => {
   const rootRef = useRef(null);
@@ -174,24 +175,51 @@ const OptionWheel = ({
     [startLoop, playTick]
   );
 
+  // Smooth mouse wheel / touchpad scrolling listener
   useEffect(() => {
     const el = rootRef.current;
     if (!el) return;
     const onWheel = e => {
-      e.preventDefault();
       const cfg = cfgRef.current;
       const delta = e.deltaMode === 1 ? e.deltaY * 24 : e.deltaY;
-      const step = Math.max(-1, Math.min(1, delta / cfg.rowH));
+      const step = delta / (cfg.rowH * 1.5);
       applyTarget(targetRef.current + step, false);
       if (wheelTimerRef.current) clearTimeout(wheelTimerRef.current);
-      wheelTimerRef.current = setTimeout(() => applyTarget(targetRef.current, true), 140);
+      wheelTimerRef.current = setTimeout(() => applyTarget(targetRef.current, true), 120);
     };
-    el.addEventListener('wheel', onWheel, { passive: false });
+    el.addEventListener('wheel', onWheel, { passive: true });
     return () => {
       el.removeEventListener('wheel', onWheel);
       if (wheelTimerRef.current) clearTimeout(wheelTimerRef.current);
     };
   }, [applyTarget]);
+
+  // Window scroll sync so scrolling the page rotates the OptionWheel smoothly
+  useEffect(() => {
+    if (!useWindowScroll) return;
+    const handleWindowScroll = () => {
+      const el = rootRef.current;
+      if (!el) return;
+      const rect = el.getBoundingClientRect();
+      const windowHeight = window.innerHeight;
+
+      const start = windowHeight * 0.75;
+      const end = -rect.height * 0.25;
+      const current = rect.top;
+
+      if (current <= start && current >= end) {
+        const total = start - end;
+        const progress = Math.min(Math.max((start - current) / total, 0), 1);
+        const targetIndex = progress * (items.length - 1);
+        applyTarget(targetIndex, false);
+        if (wheelTimerRef.current) clearTimeout(wheelTimerRef.current);
+        wheelTimerRef.current = setTimeout(() => applyTarget(targetIndex, true), 100);
+      }
+    };
+
+    window.addEventListener('scroll', handleWindowScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleWindowScroll);
+  }, [useWindowScroll, items.length, applyTarget]);
 
   const handlePointerDown = useCallback(e => {
     if (!cfgRef.current.draggable) return;
