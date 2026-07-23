@@ -155,7 +155,7 @@ const WhatWeDoBest = ({ onStartProject }) => {
               fade={0.3}
               smoothing={180}
               inset={30}
-              loop={false}
+              loop={true}
               draggable
             />
           </div>
