@@ -1,0 +1,198 @@
+/* ==========================================================================
+   WHAT WE DO BEST SECTION — FEATURING REACT BITS SCROLL STACK
+   ========================================================================== */
+
+.what-we-do-best-section {
+  width: 100%;
+  padding: 100px 5% 40px;
+  position: relative;
+  z-index: 12;
+  background: var(--background, #0a0a0a);
+}
+
+.what-we-do-best-header {
+  max-width: 800px;
+  margin: 0 auto 40px auto;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.what-we-do-best-title {
+  font-family: 'Inter Tight', 'Inter', sans-serif;
+  font-size: clamp(2.5rem, 5vw, 4.2rem);
+  font-weight: 800;
+  color: var(--text-color, #ffffff);
+  letter-spacing: -0.04em;
+  margin: 12px 0 16px 0;
+  line-height: 1.05;
+}
+
+.what-we-do-best-subtitle {
+  font-family: 'Inter', sans-serif;
+  font-size: clamp(1rem, 1.3vw, 1.2rem);
+  color: rgba(255, 255, 255, 0.7);
+  line-height: 1.6;
+  margin: 0;
+  max-width: 620px;
+}
+
+.light-mode .what-we-do-best-subtitle,
+body:not(.dark-mode) .what-we-do-best-subtitle {
+  color: rgba(0, 0, 0, 0.7);
+}
+
+/* Stack Container */
+.what-we-do-best-stack-container {
+  max-width: 1100px;
+  width: 100%;
+  margin: 0 auto;
+  position: relative;
+}
+
+/* Custom Card Content Styling */
+.wwdb-card-content {
+  width: 100%;
+  height: 100%;
+  border-radius: 36px;
+  padding: 40px 48px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4),
+              0 0 40px var(--card-glow, rgba(255, 255, 255, 0.05));
+  box-sizing: border-box;
+  transition: box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.wwdb-card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.wwdb-card-number {
+  font-family: 'Inter Tight', sans-serif;
+  font-size: 2.8rem;
+  font-weight: 800;
+  color: rgba(255, 255, 255, 0.3);
+  letter-spacing: -0.04em;
+  line-height: 1;
+}
+
+.wwdb-card-category {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 6px 14px;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.wwdb-card-body {
+  margin: 20px 0;
+}
+
+.wwdb-card-title {
+  font-family: 'Inter Tight', sans-serif;
+  font-size: clamp(1.8rem, 3vw, 2.6rem);
+  font-weight: 800;
+  color: #ffffff;
+  margin: 0 0 14px 0;
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+}
+
+.wwdb-card-desc {
+  font-family: 'Inter', sans-serif;
+  font-size: clamp(0.98rem, 1.2vw, 1.12rem);
+  color: rgba(255, 255, 255, 0.85);
+  line-height: 1.6;
+  margin: 0;
+  max-width: 800px;
+}
+
+.wwdb-card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+  padding-top: 16px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.wwdb-tags-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.wwdb-tag-pill {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 5px 12px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+}
+
+.wwdb-action-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 22px;
+  border-radius: 30px;
+  border: none;
+  font-family: 'Inter Tight', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.wwdb-action-btn:hover {
+  transform: translateY(-2px) scale(1.03);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+}
+
+.wwdb-btn-icon {
+  width: 16px;
+  height: 16px;
+  transition: transform 0.3s ease;
+}
+
+.wwdb-action-btn:hover .wwdb-btn-icon {
+  transform: translate(2px, -2px);
+}
+
+/* Mobile responsive adjustments */
+@media (max-width: 768px) {
+  .what-we-do-best-stack-container {
+    height: 640px;
+  }
+
+  .wwdb-card-content {
+    padding: 28px 24px;
+    border-radius: 28px;
+  }
+
+  .wwdb-card-number {
+    font-size: 2rem;
+  }
+
+  .wwdb-card-footer {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

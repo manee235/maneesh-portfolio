@@ -8,19 +8,13 @@ import RequestModal from './RequestModal';
 import Particles from './Particles';
 import MetaBalls from './MetaBalls';
 import Testimonials from './Testimonials';
-import FlowingMenu from './FlowingMenu';
+import RotatingText from './components/ui/RotatingText';
+import WhatWeDoBest from './WhatWeDoBest';
+import { Stats } from './components/ui/statistics-card';
 import InitialLoader from './InitialLoader';
 import { supabase } from './supabaseClient';
 
-const IconCode = <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M8.293 6.293 2.586 12l5.707 5.707 1.414-1.414L5.414 12l4.293-4.293zm7.414 11.414L21.414 12l-5.707-5.707-1.414 1.414L18.586 12l-4.293 4.293z"></path></svg>;
-const IconDesign = <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2C6.486 2 2 6.486 2 12s4.486 10 10 10c1.225 0 2.507-.358 2.507-1.793 0-.54-.2-1.018-.543-1.391A1.666 1.666 0 0 1 13.5 17.5h1.798c3.155 0 6.702-2.316 6.702-7.5C22 5.589 17.514 2 12 2zm0 18c0 .323-.105.415-.125.438-.02.022-.115.127-.438.127C6.673 20 4 17.327 4 12S6.673 4 12 4s8 3.589 8 6c0 4.093-2.651 5.5-4.702 5.5h-1.798a3.67 3.67 0 0 0-2.457 1.042c-.524.571-.979 1.493-.979 2.571a3.023 3.023 0 0 0 .164 1.026c-.052-.089-.148-.139-.228-.139z"></path><circle cx="8.5" cy="10.5" r="1.5"></circle><circle cx="10.5" cy="6.5" r="1.5"></circle><circle cx="14.5" cy="7.5" r="1.5"></circle><circle cx="16.5" cy="11.5" r="1.5"></circle></svg>;
-const IconDeploy = <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M2.203 11.233c-.22.112-.34.341-.31.58.03.24.195.438.423.51l5.441 1.705 3.393 7.828c.092.213.298.344.524.344h.018c.23-.005.43-.146.516-.364l7.632-19.464c.096-.245.031-.527-.165-.724-.195-.196-.477-.26-.723-.165L2.203 11.233zm16.143-6.26-9.67 9.67-3.955-1.24 13.625-8.43zm-8.43 13.625-1.24-3.955 9.67-9.67-8.43 13.625z"></path></svg>;
 
-const flowingMenuItems = [
-  { link: '#', text: 'Code', icon: IconCode },
-  { link: '#', text: 'Design', icon: IconDesign },
-  { link: '#', text: 'Deploy', icon: IconDeploy }
-];
 
 // ─── Social Icon Components ───────────────────────────────────────────────────
 const IconFacebook = () => (
@@ -389,99 +383,34 @@ function App() {
         {/* 2. TECH STACK (Skills) SECTION */}
         <Skills />
 
-        {/* 3. FLOWING MENU (Replaces Create Band) */}
-        <section style={{ height: '600px', position: 'relative', margin: '100px 0' }}>
-          <FlowingMenu items={flowingMenuItems} speed={12} bgColor="#ffffff" textColor="#111111" marqueeBgColor="#111111" marqueeTextColor="#ffffff" borderColor="rgba(0,0,0,0.1)" />
+        {/* 3. ROTATING TEXT BAND (Replaces Flowing Menu) */}
+        <section style={{ padding: '120px 20px', display: 'flex', justifyContent: 'center', alignItems: 'center', margin: '60px 0' }}>
+          <div style={{ fontSize: 'clamp(2rem, 5vw, 4rem)', fontWeight: '900', color: '#fff', display: 'flex', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'center', gap: '15px' }}>
+            <span>We</span>
+            <RotatingText 
+              texts={['Code', 'Design', 'Deploy']} 
+              mainClassName="rotating-badge"
+              staggerFrom="last"
+              initial={{ y: "100%" }}
+              animate={{ y: 0 }}
+              exit={{ y: "-120%" }}
+              staggerDuration={0.025}
+              splitLevelClassName="overflow-hidden pb-1"
+              transition={{ type: "spring", damping: 30, stiffness: 400 }}
+              rotationInterval={2500}
+            />
+            <span>Experiences.</span>
+          </div>
         </section>
 
         {/* 4. SELECTED WORK (Projects) SECTION */}
         <Projects />
 
-        {/* 5. EXPERTISE (Services) SECTION */}
-        <section id="services" className="services-section">
-          <div className="shell">
-            <div className="eyebrow dark services-eyebrow">
-              <span className="eyebrow-dot" />
-              <span>Expertise</span>
-            </div>
-            <div className="services-h2-reveal">
-              <h2 className="services-h2 services-h2-reveal-inner reveal">
-                What we do best
-              </h2>
-            </div>
-
-            <ul className="services-list">
-              {[
-                { idx: '01', name: 'Software Development', desc: 'Scalable web & mobile products built to last.' },
-                { idx: '02', name: 'Product Design', desc: 'Interfaces that feel effortless and look sharp.' },
-                { idx: '03', name: 'Music Production', desc: 'Sound design, electronic scores, and audio arrangement.' },
-                { idx: '04', name: 'Graphic Design', desc: 'Visually striking assets, brand identities, and layouts.' },
-              ].map((service, index) => (
-                <li key={service.idx} className="services-row-wrapper reveal" style={{ transitionDelay: `${index * 80}ms` }}>
-                  <a
-                    href="#services"
-                    className="services-row-link"
-                    onClick={(e) => { e.preventDefault(); setContactOpen(true); }}
-                  >
-                    <span className="services-row-index">{service.idx}</span>
-                    <h3 className="services-row-h3">{service.name}</h3>
-                    <p className="services-row-desc">{service.desc}</p>
-                    <div className="services-row-badge">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ width: '1em', height: '1em' }}>
-                        <line x1="7" y1="17" x2="17" y2="7" />
-                        <polyline points="7 7 17 7 17 17" />
-                      </svg>
-                    </div>
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </section>
+        {/* 5. EXPERTISE (What We Do Best) SECTION FEATURING SCROLL STACK */}
+        <WhatWeDoBest onStartProject={() => setContactOpen(true)} />
 
         {/* 6. STATS SECTION */}
-        <section className="stats-section">
-          <div className="shell">
-            <div className="stats-panel-wrapper reveal">
-              <div className="stats-panel">
-                <Particles
-                  particleColors={['#ffffff', '#4f6bff']}
-                  particleCount={30}
-                  particleSpread={10}
-                  speed={0.1}
-                  particleBaseSize={70}
-                  className="stats-panel-particles"
-                />
-                <div className="stats-eyebrow">
-                  <div className="eyebrow light">
-                    <span className="eyebrow-dot" />
-                    <span>By the numbers</span>
-                  </div>
-                </div>
-                <div className="stats-h2-reveal">
-                  <h2 className="stats-h2 stats-h2-reveal-inner reveal">
-                    Proof in the work, not the words.
-                  </h2>
-                </div>
-                <ul className="stats-grid">
-                  {[
-                    { target: '20', suffix: '+', label: 'Projects & designs' },
-                    { target: '98', suffix: '%', label: 'Client satisfaction' },
-                    { target: '2', suffix: '+', label: 'Years of craft' },
-                    { target: '12', suffix: '+', label: 'Happy clients' },
-                  ].map((stat, idx) => (
-                    <li key={idx} className="stats-item-wrapper reveal" style={{ transitionDelay: `${idx * 90}ms` }}>
-                      <div className="stats-num">
-                        <span>{stat.target}{stat.suffix}</span>
-                      </div>
-                      <div className="stats-label">{stat.label}</div>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-          </div>
-        </section>
+        <Stats />
 
       </main>
 

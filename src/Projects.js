@@ -4,61 +4,71 @@ import './Projects.css';
 const WORK_CATEGORIES = [
   {
     id: 'web-dev',
-    title: 'Web Development',
-    subtitle: 'A responsive architecture and consulting website featuring elegant UI, smooth animations, and an engaging user experience across all devices.',
+    title: 'Dreamscape Designs',
+    subtitle: 'A responsive architecture and consulting web application with elegant UI & fluid animations.',
     image: '/assets/projects/dreamscape.png',
     link: 'https://dreamscape-gray.vercel.app/',
-    bgHover: '#2563eb', // Electric Blue
+    bgHover: '#3f25ebff', // Electric Blue
     glowColor: 'rgba(37, 99, 235, 0.45)',
     btnHover: '#38bdf8', // Sky Cyan
-    btnText: '#0f172a'
+    btnText: '#ffffffff',
+    underDevelopment: true,
+    tools: ['React', 'Next.js', 'Tailwind', 'Framer Motion']
   },
 
   {
     id: 'mobile-dev',
-    title: 'Mobile Development',
-    subtitle: 'Flutter & iOS / Android Solutions',
+    title: 'Routie - Mobile App & Admin Portal',
+    subtitle: 'Cross-platform mobile application solution featuring seamless UI & smart navigation.',
     image: '/assets/projects/routie.png',
-    link: 'https://github.com/manee235',
-    bgHover: '#ea580c', // Sunset Amber / Orange
-    glowColor: 'rgba(234, 88, 12, 0.45)',
-    btnHover: '#fbbf24', // Warm Gold
-    btnText: '#451a03'
+    link: 'https://routie-web.vercel.app',
+    bgHover: '#2563eb', // Sunset Amber / Orange
+    glowColor: 'rgba(37, 99, 235, 0.45)',
+    btnHover: '#38bdf8', // Warm Gold
+    btnText: '',
+    underDevelopment: false,
+    tools: ['Flutter', 'Dart', 'Supabase', 'Node.js']
   },
 
   {
-    id: 'ui-ux',
-    title: 'UI/UX Design',
-    subtitle: 'User Systems & Figma Prototypes',
+    id: 'full-stack',
+    title: 'Nuvia - LMS Platform',
+    subtitle: 'Responsive LMS built with full student management and automated course portals.',
     image: '/assets/projects/nuvia.png',
     link: 'https://github.com/manee235',
     bgHover: '#6c2bd9', // Signature Purple
     glowColor: 'rgba(108, 43, 217, 0.45)',
     btnHover: '#ccff00', // Neon Lime
-    btnText: '#000000'
+    btnText: '#000000',
+    underDevelopment: false,
+    tools: ['HTML5', 'CSS3', 'JavaScript', 'PHP', 'MySQL']
   },
   {
-    id: 'full-stack',
-    title: 'Full Stack Development',
-    subtitle: 'End-to-End Node, React & Supabase Apps',
+    id: 'ui-ux',
+    title: 'Lily - Food Ordering Portal',
+    subtitle: 'Clean & modern interface design for an online food ordering platform.',
     image: '/assets/projects/lily.png',
     link: 'https://github.com/manee235',
     bgHover: '#059669', // Emerald Green
     glowColor: 'rgba(5, 150, 105, 0.45)',
     btnHover: '#a3e635', // Neon Mint
-    btnText: '#064e3b'
+    btnText: '#064e3b',
+    underDevelopment: false,
+    tools: ['Figma']
   },
 
   {
     id: 'interactive-apps',
-    title: 'Interactive Web Apps',
-    subtitle: 'Cultural Installations & WebGL FX',
+    title: 'Digital Thorana',
+    subtitle: 'Cultural lighting installations featuring high-performance WebGL 3D effects.',
     image: '/assets/projects/thorana.png',
     link: 'https://thoranait.vercel.app/',
     bgHover: '#c026d3', // Deep Fuchsia / Magenta
     glowColor: 'rgba(192, 38, 211, 0.45)',
     btnHover: '#f472b6', // Bright Pink
-    btnText: '#701a75'
+    btnText: '#701a75',
+    underDevelopment: false,
+    tools: ['React', 'Three.js', 'WebGL', 'JavaScript']
   }
 ];
 
@@ -146,6 +156,12 @@ const Projects = () => {
                 <div className="dreamscape-preview-box">
                   {/* Image container */}
                   <div className="dreamscape-image-wrapper">
+                    {cat.underDevelopment && (
+                      <div className="under-dev-badge">
+                        <span className="under-dev-dot"></span>
+                        Under Development
+                      </div>
+                    )}
                     <img
                       src={cat.image}
                       alt={cat.title}
@@ -172,9 +188,18 @@ const Projects = () => {
                   </div>
                 </div>
 
-                {/* Card Description Below Image */}
+                {/* Card Description & Tech Stack Below Image */}
                 <div className="dreamscape-card-footer">
                   <p className="dreamscape-card-subtitle">{cat.subtitle}</p>
+                  {cat.tools && (
+                    <div className="dreamscape-tools-list">
+                      {cat.tools.map((tool, idx) => (
+                        <span key={idx} className="dreamscape-tool-tag">
+                          {tool}
+                        </span>
+                      ))}
+                    </div>
+                  )}
                 </div>
               </div>
             </a>

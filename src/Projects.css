@@ -135,7 +135,8 @@ body:not(.dark-mode) .slider-arrow-btn:hover {
 .dreamscape-card {
   --default-card-bg: #1c1c20;
   width: 325px;
-  height: 450px;
+  min-height: 450px;
+  height: 100%;
   background: var(--default-card-bg);
   border-radius: 28px;
   padding: 22px 20px 20px 20px;
@@ -146,7 +147,7 @@ body:not(.dark-mode) .slider-arrow-btn:hover {
   transition: transform 0.38s cubic-bezier(0.25, 1, 0.5, 1),
               background-color 0.38s ease,
               box-shadow 0.38s ease;
-  border: 1px solid rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.09);
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
 }
 
@@ -166,72 +167,93 @@ body:not(.dark-mode) .slider-arrow-btn:hover {
 
 .dreamscape-card-title {
   font-family: 'Inter Tight', 'Inter', sans-serif;
-  font-size: 1.55rem;
-  font-weight: 700;
+  font-size: 1.7rem;
+  font-weight: 800;
   color: #ffffff;
   margin: 0;
-  letter-spacing: -0.02em;
-  line-height: 1.2;
+  letter-spacing: -0.03em;
+  line-height: 1.18;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
 }
 
 /* ─── Card Footer Description Below Image ─── */
 .dreamscape-card-footer {
-  margin-top: 14px;
+  margin-top: 16px;
   padding: 0 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex: 1;
+  justify-content: space-between;
 }
 
 .dreamscape-card-subtitle {
   font-family: 'Inter', sans-serif;
-  font-size: 0.85rem;
-  color: rgba(255, 255, 255, 0.72);
+  font-size: 0.91rem;
+  color: rgba(255, 255, 255, 0.95);
   margin: 0;
-  line-height: 1.45;
-  font-weight: 400;
+  line-height: 1.5;
+  font-weight: 500;
+  letter-spacing: -0.01em;
   transition: color 0.38s ease;
 }
 
 .dreamscape-card:hover .dreamscape-card-subtitle {
-  color: rgba(255, 255, 255, 0.95);
+  color: #ffffff;
+}
+
+/* ─── Tech Tools Badges List ─── */
+.dreamscape-tools-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 2px;
+}
+
+.dreamscape-tool-tag {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  letter-spacing: 0.02em;
+  transition: all 0.38s ease;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+.dreamscape-card:hover .dreamscape-tool-tag {
+  background: rgba(255, 255, 255, 0.25);
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.4);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
 /* ─── Inner Preview Container ─── */
 .dreamscape-preview-box {
-  flex: 1;
-  background: #ffffff;
+  width: 100%;
+  height: 210px;
+  flex: none;
+  background: #121215;
   border-radius: 22px;
   position: relative;
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.08);
-}
-
-/* Top toolbar dots */
-.dreamscape-preview-topbar {
-  height: 24px;
-  background: #f1f5f9;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  padding-left: 14px;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-}
-
-.preview-dot {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: #cbd5e1;
+  box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.2);
 }
 
 /* Image wrapper */
 .dreamscape-image-wrapper {
-  flex: 1;
   width: 100%;
   height: 100%;
   position: relative;
   overflow: hidden;
-  background: #ffffff;
+  background: #121215;
 }
 
 .dreamscape-card-img {
@@ -244,6 +266,54 @@ body:not(.dark-mode) .slider-arrow-btn:hover {
 
 .dreamscape-card:hover .dreamscape-card-img {
   transform: scale(1.07);
+}
+
+/* ─── Under Development Badge ─── */
+.under-dev-badge {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  z-index: 5;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 6px 12px;
+  border-radius: 20px;
+  background: rgba(15, 23, 42, 0.85);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(245, 158, 11, 0.5);
+  color: #fbbf24;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35), 0 0 10px rgba(245, 158, 11, 0.15);
+  pointer-events: none;
+  transition: transform 0.3s ease, border-color 0.3s ease;
+}
+
+.under-dev-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background-color: #f59e0b;
+  box-shadow: 0 0 8px #f59e0b;
+  animation: pulseDevDot 1.8s infinite ease-in-out;
+}
+
+@keyframes pulseDevDot {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+    box-shadow: 0 0 8px #f59e0b;
+  }
+  50% {
+    transform: scale(1.35);
+    opacity: 0.5;
+    box-shadow: 0 0 16px #f59e0b;
+  }
 }
 
 /* ─── Inverted Corner Cutout & Arrow Button ─── */
@@ -339,13 +409,15 @@ body:not(.dark-mode) .slider-arrow-btn:hover {
 @media (max-width: 640px) {
   .dreamscape-card {
     width: 270px;
-    height: 380px;
+    min-height: 440px;
+    height: auto;
     padding: 18px 16px 16px 16px;
     border-radius: 24px;
   }
 
   .dreamscape-card-title {
-    font-size: 1.35rem;
+    font-size: 1.45rem;
+    font-weight: 800;
   }
 
   .dreamscape-corner-cutout {
@@ -361,5 +433,18 @@ body:not(.dark-mode) .slider-arrow-btn:hover {
   .arrow-icon {
     width: 18px;
     height: 18px;
+  }
+
+  .under-dev-badge {
+    top: 10px;
+    left: 10px;
+    padding: 4px 9px;
+    font-size: 0.65rem;
+    gap: 5px;
+  }
+
+  .dreamscape-tool-tag {
+    font-size: 0.65rem;
+    padding: 2px 8px;
   }
 }
