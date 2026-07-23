@@ -1,10 +1,10 @@
 /* ==========================================================================
-   WHAT WE DO BEST SECTION — FEATURING REACT BITS SCROLL STACK
+   WHAT WE DO BEST SECTION
    ========================================================================== */
 
 .what-we-do-best-section {
   width: 100%;
-  padding: 100px 5% 40px;
+  padding: 100px 5% 80px;
   position: relative;
   z-index: 12;
   background: var(--background, #0a0a0a);
@@ -12,7 +12,7 @@
 
 .what-we-do-best-header {
   max-width: 800px;
-  margin: 0 auto 40px auto;
+  margin: 0 auto 60px auto;
   text-align: center;
   display: flex;
   flex-direction: column;
@@ -38,27 +38,40 @@
   max-width: 620px;
 }
 
-.light-mode .what-we-do-best-subtitle,
-body:not(.dark-mode) .what-we-do-best-subtitle {
-  color: rgba(0, 0, 0, 0.7);
-}
-
-/* Wheel Container Layout */
+/* ── Wheel + Card side-by-side ─────────────────────────────────────────── */
 .wwdb-wheel-container {
   max-width: 1200px;
   width: 100%;
   margin: 0 auto;
   display: flex;
-  align-items: center;
-  gap: 40px;
-  min-height: 500px;
+  align-items: stretch;
+  gap: 48px;
 }
 
+/* Left column — the OptionWheel lives here.
+   It MUST have an explicit height so the absolute-positioned items
+   have a coordinate space to inhabit. overflow:hidden clips the blur. */
 .wwdb-wheel-left {
-  flex: 0 0 45%;
-  height: 500px;
+  flex: 0 0 42%;
+  height: 480px;
+  /* subtle left mask so items fade out at the edges */
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    black 15%,
+    black 85%,
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    black 15%,
+    black 85%,
+    transparent 100%
+  );
 }
 
+/* Right column — service detail card */
 .wwdb-wheel-right {
   flex: 1;
   display: flex;
@@ -66,23 +79,7 @@ body:not(.dark-mode) .what-we-do-best-subtitle {
   justify-content: center;
 }
 
-/* Mobile Cards List Styling */
-.wwdb-mobile-cards-list {
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-  width: 100%;
-  max-width: 600px;
-  margin: 0 auto;
-}
-
-.wwdb-mobile-card {
-  min-height: auto !important;
-  padding: 32px 24px !important;
-  border-radius: 28px !important;
-}
-
-/* Custom Card Content Styling */
+/* ── Service card ─────────────────────────────────────────────────────── */
 .wwdb-card-content {
   width: 100%;
   min-height: 400px;
@@ -92,10 +89,11 @@ body:not(.dark-mode) .what-we-do-best-subtitle {
   flex-direction: column;
   justify-content: space-between;
   border: 1px solid rgba(255, 255, 255, 0.12);
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4),
-              0 0 40px var(--card-glow, rgba(255, 255, 255, 0.05));
+  box-shadow:
+    0 20px 60px rgba(0, 0, 0, 0.4),
+    0 0 40px var(--card-glow, rgba(255, 255, 255, 0.05));
   box-sizing: border-box;
-  transition: box-shadow 0.3s ease, border-color 0.3s ease;
+  transition: box-shadow 0.35s ease, border-color 0.35s ease, background 0.35s ease;
 }
 
 .wwdb-card-top {
@@ -147,7 +145,6 @@ body:not(.dark-mode) .what-we-do-best-subtitle {
   color: rgba(255, 255, 255, 0.85);
   line-height: 1.6;
   margin: 0;
-  max-width: 800px;
 }
 
 .wwdb-card-footer {
@@ -190,6 +187,7 @@ body:not(.dark-mode) .what-we-do-best-subtitle {
   cursor: pointer;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  white-space: nowrap;
 }
 
 .wwdb-action-btn:hover {
@@ -207,15 +205,29 @@ body:not(.dark-mode) .what-we-do-best-subtitle {
   transform: translate(2px, -2px);
 }
 
-/* Mobile responsive adjustments */
+/* ── Mobile ───────────────────────────────────────────────────────────── */
+.wwdb-mobile-cards-list {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.wwdb-mobile-card {
+  /* override any desktop min-height */
+}
+
 @media (max-width: 768px) {
-  .what-we-do-best-stack-container {
-    height: 640px;
+  .what-we-do-best-section {
+    padding: 80px 5% 60px;
   }
 
   .wwdb-card-content {
     padding: 28px 24px;
     border-radius: 28px;
+    min-height: unset;
   }
 
   .wwdb-card-number {

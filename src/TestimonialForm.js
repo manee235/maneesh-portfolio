@@ -143,11 +143,12 @@ export default function TestimonialForm({ isOpen, onClose }) {
                   </p>
                 </div>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', textAlign: 'left' }}>
-                  <div className="rm-form-group">
-                    <label>Your Name *</label>
+                  <div className="request-modal-field">
+                    <label className="request-modal-label-text">Your Name *</label>
                     <input
                       type="text"
                       name="name"
+                      className="request-modal-input"
                       placeholder="Jane Doe"
                       value={formData.name}
                       onChange={handleChange}
@@ -155,21 +156,23 @@ export default function TestimonialForm({ isOpen, onClose }) {
                     />
                   </div>
                   <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
-                    <div className="rm-form-group">
-                      <label>Job Title</label>
+                    <div className="request-modal-field">
+                      <label className="request-modal-label-text">Job Title</label>
                       <input
                         type="text"
                         name="job_title"
+                        className="request-modal-input"
                         placeholder="Product Manager"
                         value={formData.job_title}
                         onChange={handleChange}
                       />
                     </div>
-                    <div className="rm-form-group">
-                      <label>Company</label>
+                    <div className="request-modal-field">
+                      <label className="request-modal-label-text">Company</label>
                       <input
                         type="text"
                         name="company"
+                        className="request-modal-input"
                         placeholder="Tech Inc."
                         value={formData.company}
                         onChange={handleChange}
@@ -189,18 +192,19 @@ export default function TestimonialForm({ isOpen, onClose }) {
                     Add a picture to personalize your review.
                   </p>
                 </div>
-                <div className="rm-form-group" style={{ textAlign: 'left' }}>
-                   <label>Upload Image</label>
+                <div className="request-modal-field" style={{ textAlign: 'left' }}>
+                   <label className="request-modal-label-text">Upload Image</label>
                    <input
                      type="file"
                      accept="image/*"
                      onChange={handleFileChange}
-                     style={{ padding: '0.6rem', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px', background: 'rgba(255,255,255,0.03)', color: '#fff' }}
+                     className="request-modal-input"
+                     style={{ padding: '0.5rem 0.8rem', cursor: 'pointer' }}
                    />
                 </div>
                 {formData.image_url && (
                   <div style={{ marginTop: '1rem', textAlign: 'center' }}>
-                     <img src={formData.image_url} alt="Preview" style={{ width: '80px', height: '80px', borderRadius: '50%', objectFit: 'cover' }} />
+                     <img src={formData.image_url} alt="Preview" style={{ width: '80px', height: '80px', borderRadius: '50%', objectFit: 'cover', border: '2px solid rgba(168, 85, 247, 0.5)' }} />
                   </div>
                 )}
               </Step>
@@ -216,9 +220,9 @@ export default function TestimonialForm({ isOpen, onClose }) {
                   </p>
                 </div>
                 
-                <div className="rm-form-group" style={{ textAlign: 'left', marginBottom: '1rem' }}>
-                   <label>Rating *</label>
-                   <div style={{ display: 'flex', gap: '8px', fontSize: '1.5rem' }}>
+                <div className="request-modal-field" style={{ textAlign: 'left', marginBottom: '1rem' }}>
+                   <label className="request-modal-label-text">Rating *</label>
+                   <div style={{ display: 'flex', gap: '8px', fontSize: '1.5rem', marginTop: '0.2rem' }}>
                      {[1, 2, 3, 4, 5].map(star => (
                        <button
                          key={star}
@@ -226,7 +230,8 @@ export default function TestimonialForm({ isOpen, onClose }) {
                          onClick={() => setFormData(prev => ({ ...prev, rating: star }))}
                          style={{
                            background: 'none', border: 'none', cursor: 'pointer',
-                           color: star <= formData.rating ? '#fbbf24' : 'rgba(255,255,255,0.2)'
+                           color: star <= formData.rating ? '#fbbf24' : 'rgba(255,255,255,0.2)',
+                           transition: 'transform 0.15s ease'
                          }}
                        >
                          ★
@@ -235,11 +240,12 @@ export default function TestimonialForm({ isOpen, onClose }) {
                    </div>
                 </div>
 
-                <div className="rm-form-group" style={{ textAlign: 'left' }}>
-                  <label>Testimonial *</label>
+                <div className="request-modal-field" style={{ textAlign: 'left' }}>
+                  <label className="request-modal-label-text">Testimonial *</label>
                   <textarea
                     name="testimonial"
                     rows="4"
+                    className="request-modal-textarea"
                     placeholder="Creative, professional, and easy to work with..."
                     value={formData.testimonial}
                     onChange={handleChange}

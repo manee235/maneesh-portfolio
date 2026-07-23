@@ -8,8 +8,8 @@ const SERVICES_STACK = [
     number: '01',
     category: 'Full-Stack Architecture',
     title: 'Software Development & Web Apps',
-    description: 'Software development, UI UX DESIGN, WEB DEVELOPMENT....',
-    tags: ['React', 'Next.js', 'Node.js', 'PHP', 'Supabase', 'REST APIs'],
+    description: 'Full-stack software development across web, desktop, and enterprise — building scalable systems with modern and traditional stacks alike.',
+    tags: ['React', 'Next.js', 'Node.js', 'Java', 'C#', 'PHP', 'Supabase'],
     badgeColor: '#38bdf8',
     glowColor: 'rgba(56, 189, 248, 0.4)',
     bgGradient: 'linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #0f172a 100%)',
@@ -50,6 +50,54 @@ const SERVICES_STACK = [
   }
 ];
 
+const ServiceCard = ({ service, onStartProject }) => (
+  <div
+    className="wwdb-card-content"
+    style={{
+      background: service.bgGradient,
+      borderColor: service.borderColor,
+      '--card-glow': service.glowColor
+    }}
+  >
+    <div className="wwdb-card-top">
+      <span className="wwdb-card-number">{service.number}</span>
+      <span
+        className="wwdb-card-category"
+        style={{ color: service.badgeColor, borderColor: `${service.badgeColor}40` }}
+      >
+        {service.category}
+      </span>
+    </div>
+
+    <div className="wwdb-card-body">
+      <h3 className="wwdb-card-title">{service.title}</h3>
+      <p className="wwdb-card-desc">{service.description}</p>
+    </div>
+
+    <div className="wwdb-card-footer">
+      <div className="wwdb-tags-list">
+        {service.tags.map((tag, idx) => (
+          <span key={idx} className="wwdb-tag-pill">{tag}</span>
+        ))}
+      </div>
+      {onStartProject && (
+        <button
+          className="wwdb-action-btn"
+          onClick={() => onStartProject()}
+          style={{ background: service.badgeColor, color: '#09090b' }}
+        >
+          Start a Project
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"
+               strokeLinecap="round" strokeLinejoin="round" className="wwdb-btn-icon">
+            <line x1="7" y1="17" x2="17" y2="7" />
+            <polyline points="7 7 17 7 17 17" />
+          </svg>
+        </button>
+      )}
+    </div>
+  </div>
+);
+
 const WhatWeDoBest = ({ onStartProject }) => {
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [isMobile, setIsMobile] = useState(
@@ -57,17 +105,17 @@ const WhatWeDoBest = ({ onStartProject }) => {
   );
 
   React.useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(window.innerWidth <= 768);
-    };
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
+    const handle = () => setIsMobile(window.innerWidth <= 768);
+    window.addEventListener('resize', handle);
+    return () => window.removeEventListener('resize', handle);
   }, []);
 
   const selectedService = SERVICES_STACK[selectedIndex] || SERVICES_STACK[0];
 
   return (
     <section id="services" className="what-we-do-best-section">
+
+      {/* ── Header ── */}
       <div className="what-we-do-best-header">
         <div className="eyebrow dark services-eyebrow">
           <span className="eyebrow-dot" />
@@ -81,134 +129,48 @@ const WhatWeDoBest = ({ onStartProject }) => {
           direction="top"
         />
         <p className="what-we-do-best-subtitle">
-          Explore our core engineering & design capabilities—delivering end-to-end digital solutions crafted with technical precision.
+          Explore our core engineering &amp; design capabilities—delivering end-to-end digital
+          solutions crafted with technical precision.
         </p>
       </div>
 
+      {/* ── Desktop: wheel + card ── */}
       {!isMobile ? (
-        /* Desktop Mode: OptionWheel + Side-by-Side Card */
         <div className="wwdb-wheel-container">
+
+          {/* Left — OptionWheel. Scroll *inside* this element to navigate. */}
           <div className="wwdb-wheel-left">
             <OptionWheel
               items={SERVICES_STACK.map(s => s.title)}
               defaultSelected={0}
-              onChange={(idx) => setSelectedIndex(idx)}
-              textColor="rgba(255, 255, 255, 0.4)"
+              onChange={idx => setSelectedIndex(idx)}
+              textColor="rgba(255,255,255,0.38)"
               activeColor="#ffffff"
               side="left"
-              fontSize={1.8}
-              spacing={1.8}
-              curve={0.8}
-              tilt={5}
-              blur={1}
-              fade={0.35}
+              fontSize={1.75}
+              spacing={1.7}
+              curve={0.9}
+              tilt={6}
+              blur={1.5}
+              fade={0.3}
+              smoothing={180}
               inset={30}
-              loop={true}
-              draggable={true}
+              loop={false}
+              draggable
             />
           </div>
 
+          {/* Right — active service card */}
           <div className="wwdb-wheel-right">
-            <div
-              className="wwdb-card-content"
-              style={{
-                background: selectedService.bgGradient,
-                borderColor: selectedService.borderColor,
-                '--card-glow': selectedService.glowColor
-              }}
-            >
-              <div className="wwdb-card-top">
-                <span className="wwdb-card-number">{selectedService.number}</span>
-                <span
-                  className="wwdb-card-category"
-                  style={{ color: selectedService.badgeColor, borderColor: `${selectedService.badgeColor}40` }}
-                >
-                  {selectedService.category}
-                </span>
-              </div>
-
-              <div className="wwdb-card-body">
-                <h3 className="wwdb-card-title">{selectedService.title}</h3>
-                <p className="wwdb-card-desc">{selectedService.description}</p>
-              </div>
-
-              <div className="wwdb-card-footer">
-                <div className="wwdb-tags-list">
-                  {selectedService.tags.map((tag, idx) => (
-                    <span key={idx} className="wwdb-tag-pill">
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-
-                {onStartProject && (
-                  <button
-                    className="wwdb-action-btn"
-                    onClick={() => onStartProject()}
-                    style={{ background: selectedService.badgeColor, color: '#09090b' }}
-                  >
-                    Start a Project
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="wwdb-btn-icon">
-                      <line x1="7" y1="17" x2="17" y2="7" />
-                      <polyline points="7 7 17 7 17 17" />
-                    </svg>
-                  </button>
-                )}
-              </div>
-            </div>
+            <ServiceCard service={selectedService} onStartProject={onStartProject} />
           </div>
         </div>
       ) : (
-        /* Mobile Mode: Clean Stack of Service Cards */
+        /* ── Mobile: stacked cards ── */
         <div className="wwdb-mobile-cards-list">
           {SERVICES_STACK.map((service, index) => (
-            <div
-              key={index}
-              className="wwdb-card-content wwdb-mobile-card"
-              style={{
-                background: service.bgGradient,
-                borderColor: service.borderColor,
-                '--card-glow': service.glowColor
-              }}
-            >
-              <div className="wwdb-card-top">
-                <span className="wwdb-card-number">{service.number}</span>
-                <span
-                  className="wwdb-card-category"
-                  style={{ color: service.badgeColor, borderColor: `${service.badgeColor}40` }}
-                >
-                  {service.category}
-                </span>
-              </div>
-
-              <div className="wwdb-card-body">
-                <h3 className="wwdb-card-title">{service.title}</h3>
-                <p className="wwdb-card-desc">{service.description}</p>
-              </div>
-
-              <div className="wwdb-card-footer">
-                <div className="wwdb-tags-list">
-                  {service.tags.map((tag, idx) => (
-                    <span key={idx} className="wwdb-tag-pill">
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-
-                {onStartProject && (
-                  <button
-                    className="wwdb-action-btn"
-                    onClick={() => onStartProject()}
-                    style={{ background: service.badgeColor, color: '#09090b' }}
-                  >
-                    Start a Project
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="wwdb-btn-icon">
-                      <line x1="7" y1="17" x2="17" y2="7" />
-                      <polyline points="7 7 17 7 17 17" />
-                    </svg>
-                  </button>
-                )}
-              </div>
+            <div key={index} className="wwdb-mobile-card">
+              <ServiceCard service={service} onStartProject={onStartProject} />
             </div>
           ))}
         </div>
