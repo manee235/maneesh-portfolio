@@ -332,7 +332,7 @@
 /* ─── Hero Right Bento Stat Grid (Perfect Alignments, Animations & Vibrant Hovers) ─── */
 .mv-hero-right-bento {
   position: absolute;
-  top: 60%;
+  top: 68%;
   transform: translateY(-50%);
   right: 5.5%;
   z-index: 25;
