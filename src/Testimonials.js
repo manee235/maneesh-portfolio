@@ -1,53 +1,53 @@
 import React, { useEffect, useState } from 'react';
 import { supabase } from './supabaseClient';
 import Particles from './Particles';
-import { GlobeAnalytics } from './components/ui/cobe-globe-analytics';
+import { Globe } from './components/ui/globe';
 import TestimonialForm from './TestimonialForm';
 import './Testimonials.css';
 
-const PARTNER_MARKERS = [
+const PARTNERS_LIST = [
   {
     id: "nagomi-japan",
     name: "Nagomi Lanka Tours",
     city: "Kamiyamakawa, Yuki-shi, Ibaraki, Japan",
     location: [36.2917, 139.8789],
-    visitors: 1450,
-    trend: 22,
-    isPartner: true,
+    tag: "Inbound Tourism Partner",
+    flag: "🇯🇵",
+    isPrimary: true,
   },
   {
     id: "hq-srilanka",
     name: "Maneesh Amindu HQ",
-    city: "Kurunegala / Colombo, LK",
+    city: "Kurunegala / Colombo, Sri Lanka",
     location: [7.8731, 80.7718],
-    visitors: 3200,
-    trend: 28,
-    isPartner: true,
+    tag: "Design & Dev Engineering",
+    flag: "🇱🇰",
+    isPrimary: true,
   },
   {
     id: "partner-usa",
-    name: "North America Network",
-    city: "San Francisco, USA",
+    name: "North America Studio",
+    city: "San Francisco & New York, USA",
     location: [37.7749, -122.4194],
-    visitors: 980,
-    trend: 15,
+    tag: "Architecture & Consulting",
+    flag: "🇺🇸",
   },
   {
     id: "partner-uk",
-    name: "Europe Creative Studio",
+    name: "Europe Creative Network",
     city: "London, UK",
     location: [51.5074, -0.1278],
-    visitors: 850,
-    trend: 12,
+    tag: "Digital Products",
+    flag: "🇬🇧",
   },
   {
     id: "partner-aus",
     name: "Oceania Clients",
     city: "Sydney, Australia",
     location: [-33.8688, 151.2093],
-    visitors: 620,
-    trend: 9,
-  },
+    tag: "Transit & Mobility",
+    flag: "🇦🇺",
+  }
 ];
 
 export default function Testimonials() {
@@ -60,6 +60,7 @@ export default function Testimonials() {
   const [displayedRole, setDisplayedRole] = useState('');
   const [hoveredIndex, setHoveredIndex] = useState(null);
   const [isFormOpen, setIsFormOpen] = useState(false);
+  const [activePartner, setActivePartner] = useState(PARTNERS_LIST[0]);
 
   useEffect(() => {
     const fetchTestimonials = async () => {
@@ -110,7 +111,7 @@ export default function Testimonials() {
   if (loading) {
     return (
       <section className="unique-tst-section">
-        <div style={{ height: '400px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'rgba(255,255,255,0.6)' }}>
+        <div style={{ height: '400px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#64748b' }}>
           Loading testimonials...
         </div>
       </section>
@@ -122,7 +123,7 @@ export default function Testimonials() {
   return (
     <section id="testimonials" className="unique-tst-section">
       <Particles
-        particleColors={['#ffffff', '#38bdf8']}
+        particleColors={['#0f172a', '#0284c7']}
         particleCount={25}
         particleSpread={12}
         speed={0.08}
@@ -133,13 +134,13 @@ export default function Testimonials() {
       <div className="shell" style={{ position: 'relative', zIndex: 2, width: '100%' }}>
         {/* Section Header */}
         <div className="tst-header-wrap">
-          <div className="eyebrow dark" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', padding: '6px 14px', borderRadius: '999px', background: 'rgba(56, 189, 248, 0.08)', border: '1px solid rgba(56, 189, 248, 0.25)', color: '#38bdf8', fontSize: '0.75rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.1em' }}>
-            <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#38bdf8', boxShadow: '0 0 8px #38bdf8' }} />
+          <div className="eyebrow dark" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', padding: '6px 14px', borderRadius: '999px', background: 'rgba(2, 132, 199, 0.08)', border: '1px solid rgba(2, 132, 199, 0.25)', color: '#0284c7', fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em' }}>
+            <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#0284c7', boxShadow: '0 0 8px #0284c7' }} />
             <span>Global Reach &amp; Client Trust</span>
           </div>
           <h2 className="tst-main-title">Partners &amp; Testimonials</h2>
           <p className="tst-main-subtitle">
-            Collaborating with forward-thinking teams worldwide — including our key partner <strong style={{ color: '#38bdf8' }}>Nagomi Lanka Tours</strong> based in Japan.
+            Collaborating with visionary clients worldwide — including our key partner <strong style={{ color: '#0284c7' }}>Nagomi Lanka Tours</strong> located in Kamiyamakawa, Yuki-shi, Ibaraki, Japan.
           </p>
         </div>
 
@@ -210,17 +211,49 @@ export default function Testimonials() {
             </div>
           </div>
 
-          {/* Right Column: 3D Interactive Partner Globe */}
+          {/* Right Column: 3D Interactive Partner Dome Globe */}
           <div className="tst-globe-wrapper">
             <div className="tst-globe-card">
+              
+              {/* Card Header */}
               <div className="tst-globe-card-header">
                 <span className="tst-globe-live-dot" />
-                <span style={{ fontSize: '0.75rem', fontWeight: 600, color: 'rgba(255,255,255,0.7)', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
-                  Interactive Global Network
+                <span style={{ fontSize: '0.75rem', fontWeight: 700, color: '#0f172a', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
+                  Worldwide Network
                 </span>
               </div>
 
-              <GlobeAnalytics markers={PARTNER_MARKERS} speed={0.0035} />
+              {/* Big Globe Container with Backdrop Title */}
+              <div className="globe-dome-container">
+                <span className="globe-watermark-text">
+                  WORLD
+                </span>
+                
+                <Globe className="globe-canvas-pos" />
+
+                <div className="globe-bottom-fade" />
+              </div>
+
+              {/* Partner Badges / Description Chips */}
+              <div className="globe-partners-chips">
+                {PARTNERS_LIST.map((partner) => {
+                  const isSelected = activePartner.id === partner.id;
+                  return (
+                    <button
+                      key={partner.id}
+                      onClick={() => setActivePartner(partner)}
+                      className={`globe-partner-pill ${isSelected ? 'active' : ''}`}
+                    >
+                      <span className="globe-partner-flag">{partner.flag}</span>
+                      <div className="globe-partner-info">
+                        <span className="globe-partner-name">{partner.name}</span>
+                        <span className="globe-partner-city">{partner.city}</span>
+                      </div>
+                    </button>
+                  );
+                })}
+              </div>
+
             </div>
           </div>
 
