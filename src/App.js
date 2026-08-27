@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from 'react';
-import MusicPlayer from './MusicPlayer';
 import Lenis from 'lenis';
 import About from './About';
 import Skills from './Skills';
@@ -18,6 +17,11 @@ import { supabase } from './supabaseClient';
 
 
 // ─── Social Icon Components ───────────────────────────────────────────────────
+const IconBehance = () => (
+  <svg viewBox="0 0 24 24" fill="currentColor" style={{ width: '1em', height: '1em' }}>
+    <path d="M22 7h-7v-2h7v2zm1.726 10c-.442 1.297-2.029 3-5.101 3-4.259 0-6.625-2.859-6.625-6.923 0-4.484 2.809-7.077 6.643-7.077 4.195 0 6.069 2.946 5.86 6.554h-9.45c.088 2.051 1.488 3.518 3.52 3.518 1.494 0 2.518-.737 2.955-1.782l2.198 2.71zm-9.043-5.548h6.467c-.073-1.686-.999-2.732-2.92-2.732-1.921 0-3.328 1.109-3.547 2.732zm-10.683-7.452h5.719c2.479 0 4.181.996 4.181 3.036 0 1.277-.665 2.215-1.777 2.684 1.439.421 2.378 1.543 2.378 3.208 0 2.454-2.024 3.572-4.521 3.572h-6.04v-12.5zm3.178 4.797h2.181c.883 0 1.562-.398 1.562-1.229 0-.853-.668-1.19-1.574-1.19h-2.169v2.419zm0 5.375h2.463c1.037 0 1.838-.456 1.838-1.393 0-.962-.832-1.404-1.879-1.404h-2.422v2.797z" />
+  </svg>
+);
 const IconFacebook = () => (
   <svg viewBox="0 0 24 24" fill="currentColor" style={{ width: '1em', height: '1em' }}>
     <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
@@ -314,11 +318,6 @@ function App() {
           </div>
         </div>
 
-        {/* Glassmorphism pill music player — floating right, above avatar waist */}
-        <div className="hero-music-player-wrap">
-          <MusicPlayer src="/assets/ice - slowed.mp3" />
-        </div>
-
         {/* Layer 3: Floating Left content (Intro & CV & Clients) */}
         <div className="hero-left-col hero-glass-card">
           <p className="hero-intro-text animated-intro">
@@ -479,10 +478,11 @@ function App() {
 
               <div className="footer-social-row">
                 {[
-                  { href: 'https://facebook.com', icon: <IconFacebook />, label: 'Facebook' },
-                  { href: 'https://open.spotify.com/artist/3u0fN7vcIuh9sv0HjIpEvs', icon: <IconSpotify />, label: 'Spotify' },
+                  { href: 'https://www.behance.net/maneesh_amindu', icon: <IconBehance />, label: 'Behance' },
                   { href: 'https://github.com/manee235', icon: <IconGithub />, label: 'GitHub' },
                   { href: 'https://instagram.com/only.maneesh', icon: <IconInstagram />, label: 'Instagram' },
+                  { href: 'https://facebook.com', icon: <IconFacebook />, label: 'Facebook' },
+                  { href: 'https://open.spotify.com/artist/3u0fN7vcIuh9sv0HjIpEvs', icon: <IconSpotify />, label: 'Spotify' },
                 ].map((s) => (
                   <a
                     key={s.label}
