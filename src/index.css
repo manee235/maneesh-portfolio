@@ -1,5 +1,5 @@
 /* ===== LIBRARIES & GOOGLE FONTS ===== */
-@import url('https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Onest:wght@300;400;500;600;700&display=swap');
 
 /* ─── Sticky Capsule Navbar ─────────────────────────────────────────────────── */
 .capsule-navbar {
@@ -44,8 +44,8 @@
 }
 
 .capsule-nav-item {
-  font-family: 'Inter Tight', sans-serif;
-  font-weight: 600;
+  font-family: 'Outfit', 'Plus Jakarta Sans', sans-serif;
+  font-weight: 500;
   font-size: 13px;
   color: #475569;
   background: transparent;
@@ -61,8 +61,8 @@
 }
 
 .capsule-nav-talk-btn {
-  font-family: 'Inter Tight', sans-serif;
-  font-weight: 700;
+  font-family: 'Outfit', 'Plus Jakarta Sans', sans-serif;
+  font-weight: 600;
   font-size: 12px;
   color: #ffffff;
   background: #0f172a;
@@ -80,7 +80,7 @@
 }
 
 .capsule-nav-logo {
-  font-family: 'Inter Tight', sans-serif;
+  font-family: 'Outfit', 'Plus Jakarta Sans', sans-serif;
   font-weight: 700;
   font-size: 15px;
   letter-spacing: -0.04em;
@@ -100,13 +100,12 @@
 .capsule-nav-divider {
   width: 1px;
   height: 18px;
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(0, 0, 0, 0.1);
   border-radius: 9999px;
   flex-shrink: 0;
 }
 
 @media (max-width: 1023px) {
-  /* Completely hide the capsule navbar on mobile — hamburger nav takes over */
   .capsule-navbar {
     display: none !important;
   }
@@ -119,8 +118,6 @@
 }
 
 /* ─── Parallax System ───────────────────────────────────────────────────────── */
-
-/* GPU-promote every parallax element */
 [data-parallax] {
   will-change: transform;
   backface-visibility: hidden;
@@ -128,25 +125,20 @@
   transform-style: preserve-3d;
 }
 
-/* Contain hero overflow so drifting text doesn't scroll the page width */
 .hero-typography-section {
   overflow: hidden;
 }
 
-/* Sections that hold parallax children need overflow:clip not hidden
-   so sticky nav still works */
 .atl-section,
 .skills-section,
 #work {
   overflow: clip;
 }
 
-/* Parallax decorative headings — handled via JS, just promote GPU */
 .parallax-heading {
   will-change: transform;
   backface-visibility: hidden;
 }
-
 
 /* ===== GLOBAL DESIGN TOKENS ===== */
 :root {
@@ -190,14 +182,14 @@ html {
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   scroll-behavior: auto;
-  /* Handled by Lenis */
   overflow-x: hidden;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: 'Inter Tight', sans-serif;
+  font-family: 'Outfit', 'Plus Jakarta Sans', sans-serif;
+  font-weight: 400;
   overflow-x: hidden;
   width: 100%;
 }

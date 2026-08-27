@@ -1,91 +1,111 @@
-import React, { useRef, useState } from 'react';
-import { MapPin, Sparkles, Bookmark, ArrowRight, Star } from 'lucide-react';
+import React, { useRef, useState, useEffect, useCallback } from 'react';
+import { Sparkles, Bookmark, ArrowRight, Star } from 'lucide-react';
 import './Projects.css';
+
+const DEVICON_BASE = 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons';
 
 const WORK_CATEGORIES = [
   {
     id: 'nagomi-tours',
-    location: 'Kamiyamakawa, Yuki-shi, Ibaraki, Japan',
-    badge: 'Client Partner',
+    badge: 'Client Project',
     title: 'Nagomi Lanka Tours',
     quote: '"Dynamic tour booking portal bridging Japan & Sri Lanka with high-speed headless CMS."',
     image: '/assets/projects/nagomi.png',
     link: 'https://www.nagomilankatours.jp/',
     rating: '4.9',
-    tag1: 'Sanity CMS',
-    tag2: 'React + Tailwind',
-    underDevelopment: false,
+    techIcons: [
+      { name: 'React', src: `${DEVICON_BASE}/react/react-original.svg` },
+      { name: 'Sanity', src: `${DEVICON_BASE}/sanity/sanity-original.svg` },
+      { name: 'Tailwind CSS', src: `${DEVICON_BASE}/tailwindcss/tailwindcss-original.svg` },
+    ],
   },
   {
     id: 'web-dev',
-    location: 'Kurunegala, Sri Lanka',
-    badge: 'Architecture & UI',
+    badge: 'Commercial Project',
     title: 'Dreamscape Designs',
     quote: '"Responsive architecture and consulting web application with fluid micro-animations."',
     image: '/assets/projects/dreamscape.png',
     link: 'https://dreamscape-gray.vercel.app/',
     rating: '4.8',
-    tag1: 'Next.js',
-    tag2: 'Framer Motion',
-    underDevelopment: true,
+    techIcons: [
+      { name: 'Next.js', src: `${DEVICON_BASE}/nextjs/nextjs-original.svg` },
+      { name: 'Framer Motion', src: `${DEVICON_BASE}/framermotion/framermotion-original.svg` },
+      { name: 'React', src: `${DEVICON_BASE}/react/react-original.svg` },
+    ],
   },
   {
     id: 'mobile-dev',
-    location: 'SLIATE Kurunegala',
     badge: 'Academic Project',
     title: 'Routie Bus Tracker',
     quote: '"Cross-platform mobile transit tracking with real-time GPS and smart admin portal."',
     image: '/assets/projects/routie.png',
     link: 'https://routie-web.vercel.app',
     rating: '4.9',
-    tag1: 'Flutter & Dart',
-    tag2: 'Supabase Realtime',
-    underDevelopment: false,
+    techIcons: [
+      { name: 'Flutter', src: `${DEVICON_BASE}/flutter/flutter-original.svg` },
+      { name: 'Dart', src: `${DEVICON_BASE}/dart/dart-original.svg` },
+      { name: 'Supabase', src: `${DEVICON_BASE}/supabase/supabase-original.svg` },
+    ],
   },
   {
     id: 'full-stack',
-    location: 'NIBM Computing',
     badge: 'Academic Project',
     title: 'Nuvia - LMS Platform',
     quote: '"Full-scale automated student management, lecture streaming, and automated grading."',
     image: '/assets/projects/nuvia.png',
     link: 'https://github.com/manee235',
     rating: '4.7',
-    tag1: 'Full Stack',
-    tag2: 'MySQL & PHP',
-    underDevelopment: false,
+    techIcons: [
+      { name: 'PHP', src: `${DEVICON_BASE}/php/php-original.svg` },
+      { name: 'MySQL', src: `${DEVICON_BASE}/mysql/mysql-original.svg` },
+      { name: 'JavaScript', src: `${DEVICON_BASE}/javascript/javascript-original.svg` },
+    ],
   },
   {
     id: 'ui-ux',
-    location: 'UI/UX Design Lab',
     badge: 'Academic Project',
     title: 'Lily - Food Portal',
     quote: '"Clean & modern interface design for a frictionless culinary ordering experience."',
     image: '/assets/projects/lily.png',
     link: 'https://github.com/manee235',
     rating: '4.9',
-    tag1: 'Figma UI/UX',
-    tag2: 'Design System',
-    underDevelopment: false,
+    techIcons: [
+      { name: 'Figma', src: `${DEVICON_BASE}/figma/figma-original.svg` },
+      { name: 'HTML5', src: `${DEVICON_BASE}/html5/html5-original.svg` },
+      { name: 'CSS3', src: `${DEVICON_BASE}/css3/css3-original.svg` },
+    ],
   },
   {
     id: 'interactive-apps',
-    location: 'Creative Tech Lab',
     badge: 'Academic Project',
     title: 'Digital Thorana 3D',
     quote: '"Cultural lighting visualizer featuring high-performance WebGL shaders and audio sync."',
     image: '/assets/projects/thorana.png',
     link: 'https://thoranait.vercel.app/',
     rating: '5.0',
-    tag1: 'Three.js',
-    tag2: 'Creative Code',
-    underDevelopment: false,
+    techIcons: [
+      { name: 'Three.js', src: `${DEVICON_BASE}/threejs/threejs-original.svg` },
+      { name: 'WebGL', src: `${DEVICON_BASE}/webgl/webgl-original.svg` },
+      { name: 'JavaScript', src: `${DEVICON_BASE}/javascript/javascript-original.svg` },
+    ],
   }
 ];
 
 const Projects = () => {
   const sliderRef = useRef(null);
   const [savedProjects, setSavedProjects] = useState({});
+  const [isMouseDown, setIsMouseDown] = useState(false);
+  const [hasDragged, setHasDragged] = useState(false);
+
+  // 60FPS Inertial Momentum drag physics state
+  const dragInfo = useRef({
+    isDown: false,
+    startX: 0,
+    scrollLeft: 0,
+    prevX: 0,
+    velocity: 0,
+    rafId: null,
+  });
 
   const scrollLeft = () => {
     if (sliderRef.current) {
@@ -106,6 +126,88 @@ const Projects = () => {
       ...prev,
       [id]: !prev[id]
     }));
+  };
+
+  // ── 60FPS Inertia Momentum Animation Loop ──────────────────────────────────
+  const applyMomentum = useCallback(() => {
+    if (!sliderRef.current) return;
+    const currentVelocity = dragInfo.current.velocity;
+    if (Math.abs(currentVelocity) > 0.4) {
+      sliderRef.current.scrollLeft += currentVelocity;
+      dragInfo.current.velocity *= 0.94; // Smooth friction decay
+      dragInfo.current.rafId = requestAnimationFrame(applyMomentum);
+    } else {
+      dragInfo.current.velocity = 0;
+      if (dragInfo.current.rafId) {
+        cancelAnimationFrame(dragInfo.current.rafId);
+        dragInfo.current.rafId = null;
+      }
+    }
+  }, []);
+
+  const handleMouseDown = (e) => {
+    if (!sliderRef.current) return;
+    if (dragInfo.current.rafId) {
+      cancelAnimationFrame(dragInfo.current.rafId);
+      dragInfo.current.rafId = null;
+    }
+
+    dragInfo.current.isDown = true;
+    dragInfo.current.startX = e.pageX - sliderRef.current.offsetLeft;
+    dragInfo.current.scrollLeft = sliderRef.current.scrollLeft;
+    dragInfo.current.prevX = e.pageX;
+    dragInfo.current.velocity = 0;
+
+    setIsMouseDown(true);
+    setHasDragged(false);
+  };
+
+  const handleMouseMove = (e) => {
+    if (!dragInfo.current.isDown || !sliderRef.current) return;
+    e.preventDefault();
+
+    const x = e.pageX - sliderRef.current.offsetLeft;
+    const walk = (x - dragInfo.current.startX) * 1.35; // Responsive speed multiplier
+    sliderRef.current.scrollLeft = dragInfo.current.scrollLeft - walk;
+
+    // Track instant velocity for 60fps momentum release
+    dragInfo.current.velocity = -(e.pageX - dragInfo.current.prevX) * 1.25;
+    dragInfo.current.prevX = e.pageX;
+
+    if (Math.abs(walk) > 6) {
+      setHasDragged(true);
+    }
+  };
+
+  const handleMouseUpOrLeave = () => {
+    if (!dragInfo.current.isDown) return;
+    dragInfo.current.isDown = false;
+    setIsMouseDown(false);
+
+    // Trigger 60fps momentum inertia release
+    dragInfo.current.rafId = requestAnimationFrame(applyMomentum);
+
+    setTimeout(() => {
+      setHasDragged(false);
+    }, 80);
+  };
+
+  useEffect(() => {
+    const currentDrag = dragInfo.current;
+    return () => {
+      if (currentDrag.rafId) {
+        cancelAnimationFrame(currentDrag.rafId);
+      }
+    };
+  }, []);
+
+  const handleCardClick = (e, link) => {
+    if (hasDragged) {
+      e.preventDefault();
+      e.stopPropagation();
+      return;
+    }
+    window.open(link, '_blank', 'noopener,noreferrer');
   };
 
   return (
@@ -153,17 +255,22 @@ const Projects = () => {
           </div>
         </div>
 
-        {/* Horizontal Card Slider Track */}
-        <div className="dreamscape-slider-track" ref={sliderRef}>
+        {/* 60FPS Drag-to-Scroll Horizontal Track */}
+        <div
+          className={`dreamscape-slider-track ${isMouseDown ? 'is-dragging' : ''}`}
+          ref={sliderRef}
+          onMouseDown={handleMouseDown}
+          onMouseMove={handleMouseMove}
+          onMouseUp={handleMouseUpOrLeave}
+          onMouseLeave={handleMouseUpOrLeave}
+        >
           {WORK_CATEGORIES.map((cat) => {
             const isBookmarked = !!savedProjects[cat.id];
 
             return (
-              <a
+              <div
                 key={cat.id}
-                href={cat.link}
-                target="_blank"
-                rel="noopener noreferrer"
+                onClick={(e) => handleCardClick(e, cat.link)}
                 className="exact-card-link"
               >
                 <div className="exact-project-card">
@@ -172,22 +279,17 @@ const Projects = () => {
                     src={cat.image}
                     alt={cat.title}
                     className="exact-card-bg-img"
+                    draggable="false"
                   />
 
                   {/* Gradient Overlay */}
                   <div className="exact-card-overlay" />
 
-                  {/* Top Layer: Badges and Bookmark Button */}
+                  {/* Top Layer: Single Tag & Bookmark Button */}
                   <div className="exact-card-top-row">
-                    <div className="exact-badges-stack">
-                      <div className="exact-badge-pill">
-                        <MapPin size={11} className="exact-badge-icon" />
-                        <span>{cat.location}</span>
-                      </div>
-                      <div className="exact-badge-pill">
-                        <Sparkles size={11} className="exact-badge-icon" />
-                        <span>{cat.badge}</span>
-                      </div>
+                    <div className="exact-badge-pill">
+                      <Sparkles size={12} className="exact-badge-icon" />
+                      <span>{cat.badge}</span>
                     </div>
 
                     <button
@@ -199,7 +301,7 @@ const Projects = () => {
                     </button>
                   </div>
 
-                  {/* Bottom Layer: Content, Meta Chips & Action CTA */}
+                  {/* Bottom Layer: Content, Tech Stack Icons & Action CTA */}
                   <div className="exact-card-bottom-content">
                     {/* Big Title */}
                     <h3 className="exact-card-title">{cat.title}</h3>
@@ -207,20 +309,31 @@ const Projects = () => {
                     {/* Subtitle / Quote */}
                     <p className="exact-card-quote">{cat.quote}</p>
 
-                    {/* Meta Chips Row */}
+                    {/* Meta Chips Row: Rating + Tech Stack Icons (No Text Labels) */}
                     <div className="exact-chips-row">
+                      {/* Rating Chip */}
                       <div className="exact-chip exact-rating-chip">
-                        <Star size={12} fill="#eab308" color="#eab308" />
+                        <Star size={13} fill="#eab308" color="#eab308" />
                         <span>{cat.rating}</span>
                       </div>
-                      <div className="exact-chip">
-                        <span>{cat.tag1}</span>
+
+                      {/* Tech Stack Icons */}
+                      <div className="exact-tech-icons-group">
+                        {cat.techIcons.map((tech, idx) => (
+                          <div
+                            key={idx}
+                            className="exact-tech-icon-pill"
+                            title={tech.name}
+                          >
+                            <img
+                              src={tech.src}
+                              alt={tech.name}
+                              className="exact-tech-img"
+                              draggable="false"
+                            />
+                          </div>
+                        ))}
                       </div>
-                      {cat.tag2 && (
-                        <div className="exact-chip">
-                          <span>{cat.tag2}</span>
-                        </div>
-                      )}
                     </div>
 
                     {/* Full-width Explore CTA Button */}
@@ -232,7 +345,7 @@ const Projects = () => {
                     </div>
                   </div>
                 </div>
-              </a>
+              </div>
             );
           })}
         </div>

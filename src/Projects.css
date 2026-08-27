@@ -1,5 +1,5 @@
 /* ==========================================================================
-   OUR WORKS SECTION — EXACT MODERN LUXURY PROJECT CARD
+   OUR WORKS SECTION — EXACT MODERN LUXURY PROJECT CARD (WHITE THEME)
    ========================================================================== */
 
 .our-works-section {
@@ -115,20 +115,31 @@
   border-color: rgba(0, 0, 0, 0.2);
 }
 
-/* ─── Horizontal Slider Track ─── */
+/* ─── Horizontal Slider Track (60FPS Drag Enabled) ─── */
 .dreamscape-slider-track {
   display: flex;
   gap: 28px;
   overflow-x: auto;
-  scroll-behavior: smooth;
+  scroll-behavior: auto;
   scroll-snap-type: x mandatory;
   padding: 12px 4px 40px 4px;
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
+  cursor: grab;
+  user-select: none;
 }
 
 .dreamscape-slider-track::-webkit-scrollbar {
   display: none;
+}
+
+.dreamscape-slider-track.is-dragging {
+  cursor: grabbing !important;
+  scroll-snap-type: none !important;
+}
+
+.dreamscape-slider-track.is-dragging .exact-project-card {
+  pointer-events: none;
 }
 
 /* Link Wrapper */
@@ -138,6 +149,7 @@
   flex-shrink: 0;
   scroll-snap-align: start;
   display: block;
+  user-select: none;
 }
 
 /* ═══════════════════════════════════════════════════
@@ -203,39 +215,33 @@
   pointer-events: none;
 }
 
-/* Top Row: Badges & Bookmark */
+/* Top Row: Single Tag & Bookmark */
 .exact-card-top-row {
   position: relative;
   z-index: 5;
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
+  align-items: center;
   width: 100%;
-}
-
-.exact-badges-stack {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
 }
 
 .exact-badge-pill {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  padding: 6px 14px;
-  background: rgba(10, 14, 26, 0.65);
+  padding: 7px 16px;
+  background: rgba(10, 14, 26, 0.7);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.18);
+  border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 9999px;
   font-family: 'Inter Tight', sans-serif;
-  font-size: 0.7rem;
+  font-size: 0.72rem;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.08em;
   color: #ffffff;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.35);
 }
 
 .exact-badge-icon {
@@ -308,13 +314,13 @@
   overflow: hidden;
 }
 
-/* Chips Row */
+/* Chips Row: Rating + Tech Stack Icons */
 .exact-chips-row {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
   flex-wrap: wrap;
-  margin: 2px 0 6px 0;
+  margin: 4px 0 6px 0;
 }
 
 .exact-chip {
@@ -324,19 +330,54 @@
   padding: 6px 12px;
   background: rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(8px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: 9999px;
   font-family: 'Inter', sans-serif;
   font-size: 0.75rem;
-  font-weight: 600;
+  font-weight: 700;
   color: rgba(255, 255, 255, 0.9);
   white-space: nowrap;
 }
 
 .exact-rating-chip {
-  background: rgba(234, 179, 8, 0.15);
-  border-color: rgba(234, 179, 8, 0.3);
+  background: rgba(234, 179, 8, 0.18);
+  border-color: rgba(234, 179, 8, 0.35);
   color: #fef08a;
+}
+
+/* Tech Stack Icons Group */
+.exact-tech-icons-group {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.exact-tech-icon-pill {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.14);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+  transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+.exact-tech-icon-pill:hover {
+  transform: translateY(-3px) scale(1.1);
+  background: rgba(255, 255, 255, 0.25);
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+.exact-tech-img {
+  width: 18px;
+  height: 18px;
+  object-fit: contain;
 }
 
 /* Full Width Explore CTA Button */
