@@ -1,103 +1,111 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
+import { MapPin, Sparkles, Bookmark, ArrowRight, Star } from 'lucide-react';
 import './Projects.css';
 
 const WORK_CATEGORIES = [
   {
     id: 'nagomi-tours',
+    location: 'Tokyo, Japan',
+    badge: 'Inbound Tourism',
     title: 'Nagomi Lanka Tours',
-    subtitle: 'A modern tourism and travel booking web platform with dynamic itineraries and seamless headless CMS integration.',
+    quote: '"Dynamic tour booking portal bridging Japan & Sri Lanka with high-speed headless CMS."',
     image: '/assets/projects/nagomi.png',
     link: 'https://www.nagomilankatours.jp/',
-    bgHover: '#0d9488', // Vibrant Teal
-    glowColor: 'rgba(13, 148, 136, 0.45)',
-    btnHover: '#2dd4bf', // Mint / Aqua
-    btnText: '#042f2e',
+    rating: '4.9',
+    tag1: 'Sanity CMS',
+    tag2: 'React + Tailwind',
     underDevelopment: false,
-    tools: ['React', 'Sanity CMS', 'Tailwind', 'JavaScript']
   },
   {
     id: 'web-dev',
+    location: 'San Francisco, USA',
+    badge: 'Architecture & UI',
     title: 'Dreamscape Designs',
-    subtitle: 'A responsive architecture and consulting web application with elegant UI & fluid animations.',
+    quote: '"Responsive architecture and consulting web application with fluid micro-animations."',
     image: '/assets/projects/dreamscape.png',
     link: 'https://dreamscape-gray.vercel.app/',
-    bgHover: '#3f25ebff', // Electric Blue
-    glowColor: 'rgba(37, 99, 235, 0.45)',
-    btnHover: '#38bdf8', // Sky Cyan
-    btnText: '#ffffffff',
+    rating: '4.8',
+    tag1: 'Next.js',
+    tag2: 'Framer Motion',
     underDevelopment: true,
-    tools: ['React', 'Next.js', 'Tailwind', 'Framer Motion']
   },
-
   {
     id: 'mobile-dev',
-    title: 'Routie - Mobile Bus Tracking App & Web Based Admin Portal',
-    subtitle: 'Cross-platform mobile application solution featuring seamless UI & smart navigation.',
+    location: 'Colombo, Sri Lanka',
+    badge: 'Transit Mobility',
+    title: 'Routie Bus Tracker',
+    quote: '"Cross-platform mobile transit tracking with real-time GPS and smart admin portal."',
     image: '/assets/projects/routie.png',
     link: 'https://routie-web.vercel.app',
-    bgHover: '#2563eb', // Sunset Amber / Orange
-    glowColor: 'rgba(37, 99, 235, 0.45)',
-    btnHover: '#38bdf8', // Warm Gold
-    btnText: '',
+    rating: '4.9',
+    tag1: 'Flutter & Dart',
+    tag2: 'Supabase Realtime',
     underDevelopment: false,
-    tools: ['Flutter', 'Dart', 'React', 'Supabase', 'Node.js']
   },
-
   {
     id: 'full-stack',
+    location: 'Enterprise EdTech',
+    badge: 'Cloud LMS',
     title: 'Nuvia - LMS Platform',
-    subtitle: 'Responsive LMS built with full student management and automated course portals.',
+    quote: '"Full-scale automated student management, lecture streaming, and automated grading."',
     image: '/assets/projects/nuvia.png',
     link: 'https://github.com/manee235',
-    bgHover: '#6c2bd9', // Signature Purple
-    glowColor: 'rgba(108, 43, 217, 0.45)',
-    btnHover: '#ccff00', // Neon Lime
-    btnText: '#000000',
+    rating: '4.7',
+    tag1: 'Full Stack',
+    tag2: 'MySQL & PHP',
     underDevelopment: false,
-    tools: ['HTML5', 'CSS3', 'JavaScript', 'PHP', 'MySQL']
   },
   {
     id: 'ui-ux',
-    title: 'Lily - Food Ordering Portal',
-    subtitle: 'Clean & modern interface design for an online food ordering platform.',
+    location: 'Food & Beverage',
+    badge: 'Product Design',
+    title: 'Lily - Food Portal',
+    quote: '"Clean & modern interface design for a frictionless culinary ordering experience."',
     image: '/assets/projects/lily.png',
     link: 'https://github.com/manee235',
-    bgHover: '#059669', // Emerald Green
-    glowColor: 'rgba(5, 150, 105, 0.45)',
-    btnHover: '#a3e635', // Neon Mint
-    btnText: '#064e3b',
+    rating: '4.9',
+    tag1: 'Figma UI/UX',
+    tag2: 'Design System',
     underDevelopment: false,
-    tools: ['Figma']
   },
-
   {
     id: 'interactive-apps',
-    title: 'Digital Thorana',
-    subtitle: 'Cultural lighting installations featuring high-performance WebGL 3D effects.',
+    location: 'Cultural Heritage',
+    badge: '3D WebGL',
+    title: 'Digital Thorana 3D',
+    quote: '"Cultural lighting visualizer featuring high-performance WebGL shaders and audio sync."',
     image: '/assets/projects/thorana.png',
     link: 'https://thoranait.vercel.app/',
-    bgHover: '#c026d3', // Deep Fuchsia / Magenta
-    glowColor: 'rgba(192, 38, 211, 0.45)',
-    btnHover: '#f472b6', // Bright Pink
-    btnText: '#701a75',
+    rating: '5.0',
+    tag1: 'Three.js',
+    tag2: 'Creative Code',
     underDevelopment: false,
-    tools: ['React', 'Three.js', 'WebGL', 'JavaScript']
   }
 ];
 
 const Projects = () => {
   const sliderRef = useRef(null);
+  const [savedProjects, setSavedProjects] = useState({});
 
   const scrollLeft = () => {
     if (sliderRef.current) {
-      sliderRef.current.scrollBy({ left: -360, behavior: 'smooth' });
+      sliderRef.current.scrollBy({ left: -380, behavior: 'smooth' });
     }
   };
 
   const scrollRight = () => {
     if (sliderRef.current) {
-      sliderRef.current.scrollBy({ left: 360, behavior: 'smooth' });
+      sliderRef.current.scrollBy({ left: 380, behavior: 'smooth' });
     }
+  };
+
+  const toggleBookmark = (e, id) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setSavedProjects(prev => ({
+      ...prev,
+      [id]: !prev[id]
+    }));
   };
 
   return (
@@ -107,9 +115,13 @@ const Projects = () => {
         {/* Section Top Header & Slider Controls */}
         <div className="our-works-header">
           <div className="our-works-header-left">
+            <div className="works-eyebrow">
+              <span className="works-eyebrow-dot" />
+              <span>Selected Portfolio</span>
+            </div>
             <h2 className="our-works-title">Our Works</h2>
             <p className="our-works-subtitle">
-              Explore digital journeys designed and developed with precision & creativity.
+              Explore digital journeys designed and developed with precision &amp; creativity.
             </p>
           </div>
 
@@ -143,80 +155,86 @@ const Projects = () => {
 
         {/* Horizontal Card Slider Track */}
         <div className="dreamscape-slider-track" ref={sliderRef}>
-          {WORK_CATEGORIES.map((cat) => (
-            <a
-              key={cat.id}
-              href={cat.link}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="dreamscape-card-link"
-            >
-              <div
-                className="dreamscape-card"
-                style={{
-                  '--card-active-bg': cat.bgHover,
-                  '--card-active-glow': cat.glowColor,
-                  '--btn-active-bg': cat.btnHover,
-                  '--btn-active-text': cat.btnText
-                }}
+          {WORK_CATEGORIES.map((cat) => {
+            const isBookmarked = !!savedProjects[cat.id];
+
+            return (
+              <a
+                key={cat.id}
+                href={cat.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="exact-card-link"
               >
-                {/* Top Title Inside Card */}
-                <div className="dreamscape-card-header">
-                  <h3 className="dreamscape-card-title">{cat.title}</h3>
-                </div>
+                <div className="exact-project-card">
+                  {/* Full-bleed background image */}
+                  <img
+                    src={cat.image}
+                    alt={cat.title}
+                    className="exact-card-bg-img"
+                  />
 
-                {/* Inner Preview Box */}
-                <div className="dreamscape-preview-box">
-                  {/* Image container */}
-                  <div className="dreamscape-image-wrapper">
-                    {cat.underDevelopment && (
-                      <div className="under-dev-badge">
-                        <span className="under-dev-dot"></span>
-                        Under Development
+                  {/* Gradient Overlay */}
+                  <div className="exact-card-overlay" />
+
+                  {/* Top Layer: Badges and Bookmark Button */}
+                  <div className="exact-card-top-row">
+                    <div className="exact-badges-stack">
+                      <div className="exact-badge-pill">
+                        <MapPin size={11} className="exact-badge-icon" />
+                        <span>{cat.location}</span>
                       </div>
-                    )}
-                    <img
-                      src={cat.image}
-                      alt={cat.title}
-                      className="dreamscape-card-img"
-                    />
+                      <div className="exact-badge-pill">
+                        <Sparkles size={11} className="exact-badge-icon" />
+                        <span>{cat.badge}</span>
+                      </div>
+                    </div>
+
+                    <button
+                      className={`exact-bookmark-btn ${isBookmarked ? 'bookmarked' : ''}`}
+                      onClick={(e) => toggleBookmark(e, cat.id)}
+                      aria-label="Save Project"
+                    >
+                      <Bookmark size={15} fill={isBookmarked ? '#ffffff' : 'none'} />
+                    </button>
                   </div>
 
-                  {/* Bottom-Right Inverted Corner Cutout & Arrow Button */}
-                  <div className="dreamscape-corner-cutout">
-                    <div className="dreamscape-arrow-btn">
-                      <svg
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2.5"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        className="arrow-icon"
-                      >
-                        <line x1="7" y1="17" x2="17" y2="7" />
-                        <polyline points="7 7 17 7 17 17" />
-                      </svg>
+                  {/* Bottom Layer: Content, Meta Chips & Action CTA */}
+                  <div className="exact-card-bottom-content">
+                    {/* Big Title */}
+                    <h3 className="exact-card-title">{cat.title}</h3>
+
+                    {/* Subtitle / Quote */}
+                    <p className="exact-card-quote">{cat.quote}</p>
+
+                    {/* Meta Chips Row */}
+                    <div className="exact-chips-row">
+                      <div className="exact-chip exact-rating-chip">
+                        <Star size={12} fill="#eab308" color="#eab308" />
+                        <span>{cat.rating}</span>
+                      </div>
+                      <div className="exact-chip">
+                        <span>{cat.tag1}</span>
+                      </div>
+                      {cat.tag2 && (
+                        <div className="exact-chip">
+                          <span>{cat.tag2}</span>
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Full-width Explore CTA Button */}
+                    <div className="exact-cta-btn">
+                      <span className="exact-cta-text">EXPLORE NOW</span>
+                      <div className="exact-cta-arrow-circle">
+                        <ArrowRight size={14} strokeWidth={2.5} />
+                      </div>
                     </div>
                   </div>
                 </div>
-
-                {/* Card Description & Tech Stack Below Image */}
-                <div className="dreamscape-card-footer">
-                  <p className="dreamscape-card-subtitle">{cat.subtitle}</p>
-                  {cat.tools && (
-                    <div className="dreamscape-tools-list">
-                      {cat.tools.map((tool, idx) => (
-                        <span key={idx} className="dreamscape-tool-tag">
-                          {tool}
-                        </span>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              </div>
-            </a>
-          ))}
+              </a>
+            );
+          })}
         </div>
 
       </div>
