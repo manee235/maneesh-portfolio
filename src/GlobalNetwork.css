@@ -1,0 +1,182 @@
+/* ═══════════════════════════════════════════════════
+   GLOBAL NETWORK 3D GLOBE (Vintage White Theme)
+   Partners: Sri Lanka, France, Japan
+═══════════════════════════════════════════════════ */
+
+.gn-section {
+  width: 100%;
+  background: #ffffff;
+  padding: 100px 5% 90px;
+  position: relative;
+  z-index: 18;
+  overflow: hidden;
+}
+
+.gn-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+  text-align: center;
+}
+
+/* ─── Header ─── */
+.gn-header {
+  max-width: 680px;
+  margin: 0 auto 2.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.85rem;
+}
+
+.gn-title {
+  font-family: 'Inter Tight', 'Outfit', sans-serif;
+  font-size: clamp(2.2rem, 4vw, 3rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: #09090b;
+  margin: 0;
+}
+
+.gn-subtitle {
+  font-family: 'Outfit', sans-serif;
+  font-size: clamp(0.95rem, 1.25vw, 1.08rem);
+  line-height: 1.6;
+  color: #64748b;
+  margin: 0;
+  max-width: 580px;
+}
+
+/* ─── Seamless 3D Globe Wrapper ─── */
+.gn-globe-container {
+  position: relative;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.gn-globe-stage {
+  position: relative;
+  width: 100%;
+  max-width: 560px;
+  height: 480px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+}
+
+.gn-globe-canvas {
+  width: 100%;
+  height: 100%;
+  max-width: 560px;
+  max-height: 560px;
+  aspect-ratio: 1 / 1;
+  opacity: 0;
+  transition: opacity 0.6s ease;
+  contain: layout paint size;
+  cursor: grab;
+}
+
+/* ─── 3 Country Partner Cards ─── */
+.gn-country-pills-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  margin-top: 1rem;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.gn-country-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+  padding: 12px 22px;
+  border-radius: 18px;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.04);
+  cursor: pointer;
+  user-select: none;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  text-align: left;
+  min-width: 200px;
+}
+
+.gn-country-card:hover {
+  transform: translateY(-3px);
+  border-color: #2563eb;
+  box-shadow: 0 10px 25px rgba(37, 99, 235, 0.15);
+}
+
+.gn-country-card.card-hq {
+  border-color: #2563eb;
+  background: #f8faff;
+}
+
+.gn-country-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.gn-country-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #2563eb;
+  box-shadow: 0 0 6px rgba(37, 99, 235, 0.6);
+}
+
+.gn-country-name {
+  font-family: 'Inter Tight', 'Outfit', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: #09090b;
+  letter-spacing: -0.01em;
+}
+
+.gn-country-tag {
+  font-size: 0.64rem;
+  font-weight: 800;
+  color: #ffffff;
+  background: #2563eb;
+  padding: 1px 7px;
+  border-radius: 9999px;
+  text-transform: uppercase;
+}
+
+.gn-country-desc {
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.76rem;
+  color: #64748b;
+  font-weight: 500;
+}
+
+/* ─── Responsive Adjustments ─── */
+@media (max-width: 768px) {
+  .gn-section {
+    padding: 75px 4% 70px;
+  }
+
+  .gn-globe-stage {
+    max-width: 340px;
+    height: 320px;
+  }
+
+  .gn-country-pills-row {
+    flex-direction: column;
+    align-items: center;
+    gap: 0.85rem;
+  }
+
+  .gn-country-card {
+    width: 100%;
+    max-width: 300px;
+  }
+}

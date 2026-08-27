@@ -34,16 +34,19 @@ const BrandLogo = ({ style = {} }) => (
   <span
     style={{
       fontFamily: "'Inter Tight', sans-serif",
-      fontWeight: 700,
+      fontWeight: 800,
       fontSize: '20px',
       letterSpacing: '-0.04em',
       color: '#ffffff',
       textTransform: 'lowercase',
-      display: 'inline-block',
+      display: 'inline-flex',
+      alignItems: 'baseline',
       ...style
     }}
   >
     onlymaneesh
+    <span style={{ color: '#38bdf8', filter: 'drop-shadow(0 0 6px rgba(56, 189, 248, 0.8))', fontWeight: 900 }}>.</span>
+    <span style={{ fontSize: '11px', fontWeight: 600, color: 'rgba(255, 255, 255, 0.6)', marginLeft: '3px', position: 'relative', top: '-0.35em' }}>®</span>
   </span>
 );
 
@@ -55,11 +58,9 @@ const NavMenu = ({ isOpen, onClose, onNavigate, onOpenContact, localTime }) => {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [isOpen, onClose]);
 
-  // Removed Careers from nav items
   const navItems = [
     { label: 'Home', id: '#home' },
     { label: 'About', id: '#about' },
-    { label: 'Tech Stack', id: '#tech-stack' },
     { label: 'Projects', id: '#works' },
     { label: 'Contact', id: 'contact' },
   ];

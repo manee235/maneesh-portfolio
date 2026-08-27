@@ -1,337 +1,229 @@
 /* ═══════════════════════════════════════════════════
-   FULL-WIDTH UNIFIED 3D GLOBE & TESTIMONIALS SECTION
+   TESTIMONIALS SECTION (What our users say)
+   Exact Match to Uploaded Reference Design
 ═══════════════════════════════════════════════════ */
 
-.unique-tst-section {
+.tm-section {
   width: 100%;
-  padding: 100px 4% 80px;
-  background: radial-gradient(circle at 50% 20%, #f8fafc 0%, #ffffff 80%);
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  background: #ffffff;
+  padding: 110px 5% 120px;
   position: relative;
+  z-index: 18;
   overflow: hidden;
-  border-top: 1px solid rgba(0, 0, 0, 0.06);
-  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
 }
 
-.tst-particles {
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  pointer-events: none;
-}
-
-.full-globe-shell {
-  width: 100%;
-  max-width: 1100px;
+.tm-container {
+  max-width: 1240px;
   margin: 0 auto;
-  position: relative;
-  z-index: 2;
-}
-
-/* ─── FULL-WIDTH SHOWCASE CARD ─── */
-.full-globe-showcase-card {
   width: 100%;
-  background: rgba(255, 255, 255, 0.96);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  border-radius: 36px;
-  padding: 48px 36px 36px 36px;
-  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.04), 0 1px 3px rgba(0, 0, 0, 0.02);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
   text-align: center;
-  position: relative;
-  overflow: hidden;
 }
 
-/* Top Live Badge */
-.full-globe-badge-pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 7px 18px;
-  background: #f1f5f9;
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  border-radius: 9999px;
-  font-family: 'Outfit', 'Plus Jakarta Sans', sans-serif;
-  font-size: 0.75rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  color: #0f172a;
-  margin-bottom: 20px;
-  z-index: 10;
-}
-
-.full-globe-live-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: #fb6415;
-  box-shadow: 0 0 10px #fb6415;
-  animation: ping 2s cubic-bezier(0, 0, 0.2, 1) infinite;
-}
-
-/* ─── Big Country Watermark + Partner Tag ─── */
-.full-globe-hero-text-wrap {
-  position: relative;
-  width: 100%;
+/* ─── Header ─── */
+.tm-header {
+  max-width: 650px;
+  margin: 0 auto 3.5rem;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  z-index: 10;
-  margin-bottom: 16px;
+  gap: 0.75rem;
 }
 
-.full-globe-country-watermark {
-  font-family: 'Outfit', 'Arial Black', sans-serif;
-  font-size: clamp(3.5rem, 10vw, 7rem);
-  font-weight: 900;
-  letter-spacing: -0.04em;
-  line-height: 0.95;
-  background: linear-gradient(180deg, #0f172a 0%, rgba(15, 23, 42, 0.6) 50%, rgba(148, 163, 184, 0.15) 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  user-select: none;
-  transition: opacity 0.35s ease, transform 0.35s ease;
-}
-
-.full-globe-country-watermark.animating {
-  opacity: 0;
-  transform: scale(0.96) translateY(-8px);
-}
-
-.full-globe-active-partner-tag {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 6px 16px;
-  background: rgba(255, 255, 255, 0.92);
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  border-radius: 9999px;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.04);
-  font-family: 'Outfit', sans-serif;
-  font-size: 0.85rem;
-  font-weight: 700;
-  color: #0f172a;
-  margin-top: 10px;
-  transition: opacity 0.3s ease, transform 0.3s ease;
-}
-
-.full-globe-active-partner-tag.animating {
-  opacity: 0;
-  transform: translateY(6px);
-}
-
-.full-globe-flag {
-  font-size: 1.1rem;
-}
-
-.full-globe-partner-name {
-  color: #0284c7;
-}
-
-.full-globe-dot-sep {
-  color: #94a3b8;
-}
-
-.full-globe-city-text {
-  color: #64748b;
-  font-weight: 500;
-}
-
-/* ─── Quote Display ─── */
-.full-globe-quote-container {
-  position: relative;
-  max-width: 680px;
-  width: 100%;
-  margin: 10px auto 20px auto;
-  padding: 0 20px;
-  z-index: 10;
-}
-
-.full-globe-quote-glyph {
-  position: absolute;
-  font-family: serif;
-  font-size: 4rem;
-  line-height: 1;
-  color: rgba(2, 132, 199, 0.2);
-  pointer-events: none;
-  user-select: none;
-}
-
-.full-globe-quote-glyph.left {
-  left: -10px;
-  top: -20px;
-}
-
-.full-globe-quote-glyph.right {
-  right: -10px;
-  bottom: 0px;
-}
-
-.full-globe-quote-body {
-  font-family: 'Outfit', sans-serif;
-  font-size: clamp(1.15rem, 2.2vw, 1.4rem);
-  font-weight: 400;
-  line-height: 1.6;
-  color: #1e293b;
+.tm-title {
+  font-family: 'Inter Tight', 'Outfit', sans-serif;
+  font-size: clamp(2.3rem, 4.5vw, 3.4rem);
+  font-weight: 800;
+  letter-spacing: -0.035em;
+  color: #09090b;
   margin: 0;
-  transition: opacity 0.3s ease, transform 0.3s ease;
+  line-height: 1.15;
 }
 
-.full-globe-quote-body.animating {
-  opacity: 0;
-  transform: translateY(6px);
-}
-
-.full-globe-author-meta {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  margin-top: 12px;
+.tm-subtitle {
   font-family: 'Outfit', sans-serif;
-  font-size: 0.85rem;
+  font-size: clamp(0.98rem, 1.3vw, 1.12rem);
+  line-height: 1.5;
   color: #64748b;
-  transition: opacity 0.3s ease;
+  margin: 0;
 }
 
-.full-globe-author-meta.animating {
-  opacity: 0;
+/* ─── 3-Column Masonry Wrapper ─── */
+.tm-columns-wrapper {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  gap: 1.5rem;
+  width: 100%;
+  height: 640px;
+  overflow: hidden;
+  position: relative;
+  -webkit-mask-image: linear-gradient(to bottom, transparent, black 10%, black 90%, transparent);
+  mask-image: linear-gradient(to bottom, transparent, black 10%, black 90%, transparent);
+  padding: 10px 0;
 }
 
-.full-globe-author-name {
-  color: #0f172a;
-  font-weight: 700;
+@media (min-width: 640px) {
+  .tm-columns-wrapper {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+  }
 }
 
-.full-globe-author-comp {
-  color: #64748b;
+@media (min-width: 1024px) {
+  .tm-columns-wrapper {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.75rem;
+    height: 700px;
+  }
 }
 
-/* ─── Avatar Switcher ─── */
-.full-globe-avatars-row {
+.tm-columns-wrapper:hover .tm-track {
+  animation-play-state: paused;
+}
+
+/* Column */
+.tm-column {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  height: 100%;
+}
+
+/* Vertical Scrolling Tracks */
+.tm-track {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  width: 100%;
+  will-change: transform;
+}
+
+.tm-track-up {
+  animation: tmScrollUp 32s linear infinite;
+}
+
+.tm-track-down {
+  animation: tmScrollDown 36s linear infinite;
+}
+
+@keyframes tmScrollUp {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(-50%);
+  }
+}
+
+@keyframes tmScrollDown {
+  0% {
+    transform: translateY(-50%);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+/* ─── Testimonial Card (Exact Match) ─── */
+.tm-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 24px;
+  padding: 2rem 1.75rem;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.035), 0 1px 3px rgba(0, 0, 0, 0.02);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 1.75rem;
+  text-align: left;
+  user-select: none;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.3s ease;
+}
+
+.tm-card:hover {
+  transform: translateY(-4px);
+  border-color: #cbd5e1;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.07);
+}
+
+.tm-quote {
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.95rem;
+  line-height: 1.65;
+  color: #334155;
+  margin: 0;
+  font-weight: 450;
+  letter-spacing: -0.01em;
+}
+
+/* Author Row */
+.tm-author {
   display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 12px;
-  margin: 16px 0 24px 0;
-  z-index: 15;
+  gap: 14px;
 }
 
-.full-globe-avatar-btn {
-  position: relative;
+.tm-avatar-wrap {
   width: 44px;
   height: 44px;
   border-radius: 50%;
-  border: 2px solid transparent;
-  background: transparent;
-  padding: 0;
-  cursor: pointer;
-  transition: transform 0.25s ease, border-color 0.25s ease;
+  overflow: hidden;
+  flex-shrink: 0;
+  border: 1.5px solid #e2e8f0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.25s ease;
 }
 
-.full-globe-avatar-btn:hover {
-  transform: scale(1.12);
+.tm-card:hover .tm-avatar-wrap {
+  transform: scale(1.06);
+  border-color: #cbd5e1;
 }
 
-.full-globe-avatar-btn.selected {
-  transform: scale(1.18);
-}
-
-.full-globe-avatar-img {
+.tm-avatar-placeholder-svg {
   width: 100%;
   height: 100%;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  display: block;
 }
 
-.full-globe-avatar-active-ring {
-  position: absolute;
-  inset: -4px;
-  border-radius: 50%;
-  border: 2px solid #fb6415;
-  pointer-events: none;
-  animation: ping 2s cubic-bezier(0, 0, 0.2, 1) infinite;
-}
-
-/* ─── 3D Globe Dome Stage ─── */
-.full-globe-dome-stage {
-  position: relative;
-  width: 100%;
-  max-width: 680px;
-  height: 420px;
+.tm-author-info {
   display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-  margin: 0 auto;
-  border-radius: 28px;
-  z-index: 5;
+  flex-direction: column;
+  gap: 2px;
 }
 
-.full-globe-canvas {
-  top: 10px;
-}
-
-.full-globe-bottom-fade-mask {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background: radial-gradient(circle at 50% 190%, rgba(255, 255, 255, 0.98), transparent 70%);
-  z-index: 6;
-}
-
-/* ─── Action Button ─── */
-.full-globe-action-row {
-  margin-top: 12px;
-  z-index: 15;
-}
-
-.full-globe-review-cta {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 10px 24px;
-  border-radius: 9999px;
-  background: #0f172a;
-  color: #ffffff;
-  border: none;
-  font-family: 'Outfit', sans-serif;
-  font-size: 0.85rem;
+.tm-name {
+  font-family: 'Inter Tight', 'Outfit', sans-serif;
+  font-size: 0.95rem;
   font-weight: 700;
-  cursor: pointer;
-  box-shadow: 0 10px 25px rgba(15, 23, 42, 0.15);
-  transition: transform 0.2s ease, background 0.2s ease;
+  color: #09090b;
+  letter-spacing: -0.02em;
 }
 
-.full-globe-review-cta:hover {
-  background: #1e293b;
-  transform: translateY(-2px) scale(1.02);
+.tm-role {
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: #64748b;
+  line-height: 1.3;
 }
 
+/* ─── Responsive Adjustments ─── */
 @media (max-width: 768px) {
-  .full-globe-showcase-card {
-    padding: 32px 18px 24px 18px;
-    border-radius: 26px;
+  .tm-section {
+    padding: 85px 4% 90px;
   }
-  .full-globe-dome-stage {
-    height: 320px;
+
+  .tm-columns-wrapper {
+    height: 520px;
   }
-  .full-globe-country-watermark {
-    font-size: 3rem;
+
+  .tm-card {
+    padding: 1.5rem 1.35rem;
+    border-radius: 20px;
   }
-  .full-globe-active-partner-tag {
-    flex-wrap: wrap;
-    justify-content: center;
-    font-size: 0.78rem;
+
+  .tm-quote {
+    font-size: 0.9rem;
   }
 }

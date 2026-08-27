@@ -1,188 +1,160 @@
-import React, { useEffect, useState } from 'react';
-import Particles from './Particles';
-import { Globe } from './components/ui/globe';
-import TestimonialForm from './TestimonialForm';
-import { MessageSquarePlus } from 'lucide-react';
+import React from 'react';
 import './Testimonials.css';
 
-const CLIENT_STORIES = [
+// ─── Real Verified Client Testimonials ─────────────────────────────────────────
+// Tharanga Romen (Singer / Artist · France): Music Production & Graphic Design
+// Dreamscape Designs (Sri Lanka): Full Website Development & Frontend
+// Nagomi Lanka (Japan): Cross-Border Website & Digital Platform
+
+const REAL_TESTIMONIALS_COL_1 = [
   {
-    id: 1,
-    country: "JAPAN",
-    city: "Kamiyamakawa, Yuki-shi, Ibaraki",
-    flag: "🇯🇵",
-    partnerName: "Nagomi Lanka Tours",
-    author: "Partner & Founder",
-    company: "Nagomi Lanka Tours",
-    quote: "Maneesh built our entire tour booking portal and Sanity CMS architecture seamlessly. Launching our Japan-to-Sri Lanka travel platform was a huge success.",
-    avatar: "/assets/projects/nagomi.png",
+    id: 'dreamscape-web-1',
+    quote: 'Maneesh developed a high-performance modern website for our brand. Ultra-fast loading speeds, smooth interactive components, and clean modular architecture.',
+    name: 'Dreamscape Designs',
+    role: 'Website Development · Sri Lanka',
   },
   {
-    id: 2,
-    country: "SRI LANKA",
-    city: "Kurunegala",
-    flag: "🇱🇰",
-    partnerName: "Dreamscape Designs",
-    author: "Isanka Tharindu",
-    company: "Owner at Dreamscape Designs",
-    quote: "Creative, reliable, and detail-oriented. Delivered a beautiful architectural web application with fluid animations that exceeded all expectations.",
-    avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80",
+    id: 'tharanga-music-1',
+    quote: 'Maneesh produced and mixed exceptional tracks for my music releases. The audio engineering, sound design, and arrangement were festival-grade quality.',
+    name: 'Tharanga Romen',
+    role: 'Singer & Music Producer · France',
   },
   {
-    id: 3,
-    country: "UNITED STATES",
-    city: "San Francisco, CA",
-    flag: "🇺🇸",
-    partnerName: "Figma Community",
-    author: "Sarah Chen",
-    company: "Lead Designer",
-    quote: "This changed everything for our product workflow. Delivered ahead of schedule with a level of polish and aesthetic refinement that set a new benchmark.",
-    avatar: "https://images.unsplash.com/photo-1701615004837-40d8573b6652?q=80&w=1480&auto=format&fit=crop&ixlib=rb-4.1.0",
-  },
-  {
-    id: 4,
-    country: "UNITED KINGDOM",
-    city: "London",
-    flag: "🇬🇧",
-    partnerName: "Creative Studio UK",
-    author: "Marcus Johnson",
-    company: "Staff Engineer",
-    quote: "Simply brilliant. He brought creative problem-solving and modern Next.js performance to every challenge with high-performance animations.",
-    avatar: "https://plus.unsplash.com/premium_photo-1671656349218-5218444643d8?q=80&w=1287&auto=format&fit=crop&ixlib=rb-4.1.0",
-  },
-  {
-    id: 5,
-    country: "AUSTRALIA",
-    city: "Sydney",
-    flag: "🇦🇺",
-    partnerName: "Craft Collective",
-    author: "Elena Rodriguez",
-    company: "Founder",
-    quote: "The attention to detail is unmatched. Working with Maneesh felt like having a senior UI/UX designer and full-stack developer rolled into one.",
-    avatar: "https://images.unsplash.com/photo-1607746882042-944635dfe10e?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.1.0",
+    id: 'nagomi-web-1',
+    quote: 'Engineered a seamless cross-border website connecting Japanese travelers with Sri Lanka. Intuitive user flow, multi-device responsiveness, and high reliability.',
+    name: 'Nagomi Lanka',
+    role: 'Website Development · Japan',
   },
 ];
 
-export default function Testimonials() {
-  const [activeIndex, setActiveIndex] = useState(0);
-  const [isAnimating, setIsAnimating] = useState(false);
-  const [isFormOpen, setIsFormOpen] = useState(false);
+const REAL_TESTIMONIALS_COL_2 = [
+  {
+    id: 'tharanga-design-1',
+    quote: 'Designed stunning cover artwork, visual identity, and promotional graphic design assets for my releases. Pixel-perfect creative direction with great artistic taste.',
+    name: 'Tharanga Romen',
+    role: 'Graphic Design & Visuals · France',
+  },
+  {
+    id: 'dreamscape-web-2',
+    quote: 'Exceptional frontend development velocity and responsive precision. The custom web components and clean UI elevated our online presence significantly.',
+    name: 'Dreamscape Designs',
+    role: 'Web Platform & UI · Sri Lanka',
+  },
+  {
+    id: 'nagomi-web-2',
+    quote: 'Delivered an elegant, fast, and user-friendly web platform. The attention to detail, modern styling, and clean performance exceeded our expectations.',
+    name: 'Nagomi Lanka',
+    role: 'Web Engineering · Japan',
+  },
+];
 
-  const activeStory = CLIENT_STORIES[activeIndex];
+const REAL_TESTIMONIALS_COL_3 = [
+  {
+    id: 'tharanga-music-2',
+    quote: 'From custom beats to final audio mastering, working with Maneesh brought my musical vision to life. Reliable collaborator with deep creative intuition.',
+    name: 'Tharanga Romen',
+    role: 'Music & Audio Collaboration · France',
+  },
+  {
+    id: 'dreamscape-web-3',
+    quote: 'Flawless execution on our web development requirements. Maneesh wrote robust code that handles traffic seamlessly with zero maintenance headaches.',
+    name: 'Dreamscape Designs',
+    role: 'Full-Stack Web · Sri Lanka',
+  },
+  {
+    id: 'nagomi-web-3',
+    quote: 'Great communication across international timezones. The website launched on time and provided our international audience with a smooth digital experience.',
+    name: 'Nagomi Lanka',
+    role: 'Digital Web Solutions · Japan',
+  },
+];
 
-  const handleSelect = (index) => {
-    if (index === activeIndex || isAnimating) return;
-    setIsAnimating(true);
-    setTimeout(() => {
-      setActiveIndex(index);
-      setTimeout(() => setIsAnimating(false), 300);
-    }, 150);
-  };
-
-  // Auto-cycle through partner stories every 6.5s
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setActiveIndex((prev) => (prev + 1) % CLIENT_STORIES.length);
-    }, 6500);
-    return () => clearInterval(timer);
-  }, []);
-
+// Clean Circular Profile Avatar Placeholder (Exact Match to Reference Image)
+function ProfileAvatarPlaceholder() {
   return (
-    <section id="testimonials" className="unique-tst-section">
-      <Particles
-        particleColors={['#0f172a', '#0284c7']}
-        particleCount={20}
-        particleSpread={12}
-        speed={0.06}
-        particleBaseSize={50}
-        className="tst-particles"
-      />
+    <svg
+      viewBox="0 0 100 100"
+      className="tm-avatar-placeholder-svg"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <defs>
+        <clipPath id="avatarCircleClip">
+          <circle cx="50" cy="50" r="50" />
+        </clipPath>
+      </defs>
+      {/* Outer Circle Background */}
+      <circle cx="50" cy="50" r="50" fill="#f1f5f9" />
+      {/* Clipped Head & Shoulders Silhouette */}
+      <g clipPath="url(#avatarCircleClip)">
+        {/* Head */}
+        <circle cx="50" cy="44" r="17" fill="#cbd5e1" />
+        {/* Rounded Shoulders */}
+        <path
+          d="M 18 88 C 18 69, 32 63, 50 63 C 68 63, 82 69, 82 88 Z"
+          fill="#cbd5e1"
+        />
+      </g>
+    </svg>
+  );
+}
 
-      <div className="shell full-globe-shell">
+function TestimonialCard({ item }) {
+  return (
+    <div className="tm-card">
+      <p className="tm-quote">"{item.quote}"</p>
+      <div className="tm-author">
+        <div className="tm-avatar-wrap">
+          <ProfileAvatarPlaceholder />
+        </div>
+        <div className="tm-author-info">
+          <span className="tm-name">{item.name}</span>
+          <span className="tm-role">{item.role}</span>
+        </div>
+      </div>
+    </div>
+  );
+}
 
-        {/* ── UNIFIED FULL-WIDTH GLOBE SHOWCASE ── */}
-        <div className="full-globe-showcase-card">
-
-          {/* Top Header Pill */}
-          <div className="full-globe-badge-pill">
-            <span className="full-globe-live-dot" />
-            <span>GLOBAL PARTNERS &amp; TESTIMONIALS</span>
-          </div>
-
-          {/* Massive Country & Partner Name in Background Text Position */}
-          <div className="full-globe-hero-text-wrap">
-            <div className={`full-globe-country-watermark ${isAnimating ? 'animating' : ''}`}>
-              {activeStory.country}
-            </div>
-
-            <div className={`full-globe-active-partner-tag ${isAnimating ? 'animating' : ''}`}>
-              <span className="full-globe-flag">{activeStory.flag}</span>
-              <span className="full-globe-partner-name">{activeStory.partnerName}</span>
-              <span className="full-globe-dot-sep">•</span>
-              <span className="full-globe-city-text">{activeStory.city}</span>
-            </div>
-          </div>
-
-          {/* Testimonial Quote Display */}
-          <div className="full-globe-quote-container">
-            <span className="full-globe-quote-glyph left">“</span>
-            <p className={`full-globe-quote-body ${isAnimating ? 'animating' : ''}`}>
-              {activeStory.quote}
-            </p>
-            <span className="full-globe-quote-glyph right">”</span>
-
-            <div className={`full-globe-author-meta ${isAnimating ? 'animating' : ''}`}>
-              <strong className="full-globe-author-name">{activeStory.author}</strong>
-              <span className="full-globe-author-comp">{activeStory.company}</span>
-            </div>
-          </div>
-
-          {/* Interactive Avatars Selector */}
-          <div className="full-globe-avatars-row">
-            {CLIENT_STORIES.map((story, index) => {
-              const isSelected = activeIndex === index;
-              return (
-                <button
-                  key={story.id}
-                  onClick={() => handleSelect(index)}
-                  className={`full-globe-avatar-btn ${isSelected ? 'selected' : ''}`}
-                  title={`${story.partnerName} (${story.country})`}
-                >
-                  <img
-                    src={story.avatar}
-                    alt={story.partnerName}
-                    className="full-globe-avatar-img"
-                  />
-                  {isSelected && (
-                    <span className="full-globe-avatar-active-ring" />
-                  )}
-                </button>
-              );
-            })}
-          </div>
-
-          {/* Big 3D Cobe Globe Dome Container */}
-          <div className="full-globe-dome-stage">
-            <Globe className="full-globe-canvas" />
-            <div className="full-globe-bottom-fade-mask" />
-          </div>
-
-          {/* Bottom Review Action */}
-          <div className="full-globe-action-row">
-            <button
-              onClick={() => setIsFormOpen(true)}
-              className="full-globe-review-cta"
-            >
-              <MessageSquarePlus size={15} />
-              <span>Leave a Review</span>
-            </button>
-          </div>
-
+export default function Testimonials() {
+  return (
+    <section className="tm-section" id="testimonials">
+      <div className="tm-container">
+        {/* ── Section Header ── */}
+        <div className="tm-header">
+          <h2 className="tm-title">What our clients say</h2>
+          <p className="tm-subtitle">Verified feedback from real client projects &amp; collaborations.</p>
         </div>
 
-      </div>
+        {/* ── 3-Column Masonry Marquee ── */}
+        <div className="tm-columns-wrapper">
+          {/* Column 1 (Scrolls Up) */}
+          <div className="tm-column">
+            <div className="tm-track tm-track-up">
+              {[...REAL_TESTIMONIALS_COL_1, ...REAL_TESTIMONIALS_COL_1].map((item, idx) => (
+                <TestimonialCard key={`col1-${idx}`} item={item} />
+              ))}
+            </div>
+          </div>
 
-      <TestimonialForm isOpen={isFormOpen} onClose={() => setIsFormOpen(false)} />
+          {/* Column 2 (Scrolls Down) */}
+          <div className="tm-column">
+            <div className="tm-track tm-track-down">
+              {[...REAL_TESTIMONIALS_COL_2, ...REAL_TESTIMONIALS_COL_2].map((item, idx) => (
+                <TestimonialCard key={`col2-${idx}`} item={item} />
+              ))}
+            </div>
+          </div>
+
+          {/* Column 3 (Scrolls Up) */}
+          <div className="tm-column">
+            <div className="tm-track tm-track-up">
+              {[...REAL_TESTIMONIALS_COL_3, ...REAL_TESTIMONIALS_COL_3].map((item, idx) => (
+                <TestimonialCard key={`col3-${idx}`} item={item} />
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
     </section>
   );
 }

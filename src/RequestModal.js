@@ -1,341 +1,333 @@
-import React, { useState, useEffect, useRef } from 'react';
-import Stepper, { Step } from './Stepper';
-import { LogoMark } from './PageLoader';
+import React, { useState, useEffect } from 'react';
 
 const SERVICES_OPTIONS = [
-  'Web Development',
-  'Mobile App Development',
-  'UI/UX Design',
-  'Full Stack Solution',
-  'Music Production',
-  'Graphic Design'
+  { label: 'Web Development', iconClass: 'bx bx-globe' },
+  { label: 'Mobile App Development', iconClass: 'bx bx-mobile-alt' },
+  { label: 'UI/UX Design', iconClass: 'bx bx-palette' },
+  { label: 'Full Stack Solution', iconClass: 'bx bx-layer' },
+  { label: 'Music Production', iconClass: 'bx bx-music' },
+  { label: 'Graphic Design', iconClass: 'bx bx-pen' },
 ];
 
 const TIMELINE_OPTIONS = [
-  'Urgent (< 2 weeks)',
-  'Standard (1 month)',
-  'Flexible (2+ months)'
+  { label: 'Urgent', sub: 'Less than 2 weeks', iconClass: 'bx bx-zap' },
+  { label: 'Standard', sub: 'Around 1 month', iconClass: 'bx bx-calendar' },
+  { label: 'Flexible', sub: '2+ months', iconClass: 'bx bx-time-five' },
 ];
 
-const BUDGET_OPTIONS = [
-  '< LKR 200,000',
-  'LKR 200,000 – 1,000,000',
-  'LKR 1,000,000 – 3,000,000',
-  'LKR 3,000,000+'
-];
+const WHATSAPP_NUMBER = '94759051430';
+const EMAIL_ADDRESS = 'ganegodamaneesh@gmail.com';
 
-const RequestModal = ({ isOpen, onClose }) => {
-  const [formState, setFormState] = useState({
+const TOTAL_STEPS = 3;
+const stepLabels = ['Service', 'Timeline', 'Contact'];
+
+export default function RequestModal({ isOpen, onClose }) {
+  const [step, setStep] = useState(1);
+  const [form, setForm] = useState({
     service: 'Web Development',
-    timeline: 'Standard (1 month)',
-    budget: 'LKR 200,000 – 1,000,000',
+    timeline: 'Standard',
     name: '',
     email: '',
-    project: ''
+    project: '',
   });
+  const [inquiryMethod, setInquiryMethod] = useState('whatsapp'); // 'whatsapp' | 'email'
+  const [sent, setSent] = useState(false);
 
-  const [status, setStatus] = useState('idle'); // idle | sending | success
-  const panelRef = useRef(null);
-
-  // Close on Escape key press
-  useEffect(() => {
-    if (!isOpen) return;
-
-    const handleKeyDown = (e) => {
-      if (e.key === 'Escape') {
-        onClose();
-      }
-    };
-
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [isOpen, onClose]);
-
-  // Reset form status when modal closes
+  // Reset on close
   useEffect(() => {
     if (!isOpen) {
-      const timer = setTimeout(() => {
-        setFormState({
-          service: 'Web Development',
-          timeline: 'Standard (1 month)',
-          budget: '$1,000 – $5,000',
-          name: '',
-          email: '',
-          project: ''
-        });
-        setStatus('idle');
-      }, 300);
-      return () => clearTimeout(timer);
+      const t = setTimeout(() => {
+        setStep(1);
+        setForm({ service: 'Web Development', timeline: 'Standard', name: '', email: '', project: '' });
+        setInquiryMethod('whatsapp');
+        setSent(false);
+      }, 350);
+      return () => clearTimeout(t);
     }
   }, [isOpen]);
 
-  const handleChange = (e) => {
-    setFormState({ ...formState, [e.target.name]: e.target.value });
-  };
+  // Escape to close
+  useEffect(() => {
+    if (!isOpen) return;
+    const handler = (e) => {
+      if (e.key === 'Escape') onClose();
+    };
+    window.addEventListener('keydown', handler);
+    return () => window.removeEventListener('keydown', handler);
+  }, [isOpen, onClose]);
 
-  const handleSelectOption = (field, value) => {
-    setFormState({ ...formState, [field]: value });
-  };
+  const handleChange = (e) =>
+    setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
 
-  const handleSubmitFinal = () => {
-    setStatus('sending');
+  const buildMessage = () =>
+    `Hi Maneesh! 👋\n\nI'd like to start a project with you.\n\n` +
+    `📋 Service: ${form.service || 'Not selected'}\n` +
+    `⏱ Timeline: ${form.timeline || 'Not selected'}\n` +
+    `👤 Name: ${form.name || 'Not provided'}\n` +
+    `✉️ Email: ${form.email || 'Not provided'}\n\n` +
+    `Project Details:\n${form.project || 'No additional details provided.'}`;
 
-    const whatsappNumber = '94759051430';
-    const text = encodeURIComponent(
-      `Hi Maneesh! 👋\n\nI'd like to start a project with you.\n\n` +
-      `📋 Service: ${formState.service}\n` +
-      `⏱ Timeline: ${formState.timeline}\n` +
-      `💰 Budget: ${formState.budget}\n` +
-      `👤 Name: ${formState.name || 'Not specified'}\n` +
-      `✉️ Email: ${formState.email || 'Not specified'}\n\n` +
-      `Project Details:\n${formState.project || 'No additional details provided.'}`
-    );
-
-    setTimeout(() => {
-      window.open(`https://wa.me/${whatsappNumber}?text=${text}`, '_blank');
-      setStatus('success');
-    }, 800);
+  const handleSend = () => {
+    if (inquiryMethod === 'whatsapp') {
+      window.open(
+        `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(buildMessage())}`,
+        '_blank'
+      );
+    } else {
+      const subject = encodeURIComponent(`Project Inquiry: ${form.service} — from ${form.name || 'Client'}`);
+      const body = encodeURIComponent(buildMessage());
+      window.open(`mailto:${EMAIL_ADDRESS}?subject=${subject}&body=${body}`, '_blank');
+    }
+    setSent(true);
   };
 
   if (!isOpen) return null;
 
   return (
     <div
-      className={`request-modal-backdrop ${isOpen ? 'open' : ''}`}
+      className="rm-backdrop"
       onClick={onClose}
       role="dialog"
       aria-modal="true"
     >
-      <div
-        ref={panelRef}
-        className="request-modal-panel"
-        style={{ maxWidth: '620px', padding: '2rem 1.5rem' }}
-        onClick={(e) => e.stopPropagation()}
-      >
+      <div className="rm-panel" onClick={(e) => e.stopPropagation()}>
         {/* Close Button */}
-        <button className="request-modal-close-btn" onClick={onClose} aria-label="Close modal">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ width: '0.875rem', height: '0.875rem' }}>
-            <line x1="18" y1="6" x2="6" y2="18"></line>
-            <line x1="6" y1="6" x2="18" y2="18"></line>
-          </svg>
+        <button className="rm-close" onClick={onClose} aria-label="Close">
+          <i className="bx bx-x"></i>
         </button>
 
-        {status !== 'success' ? (
+        {sent ? (
+          /* ── Success State ── */
+          <div className="rm-success">
+            <div className="rm-success-icon">
+              <i className="bx bx-check"></i>
+            </div>
+            <h2>Inquiry Ready!</h2>
+            <p>
+              {inquiryMethod === 'whatsapp'
+                ? 'Your WhatsApp chat has been initiated with project details.'
+                : 'Your email client has been opened with your inquiry ready to send.'}
+            </p>
+            <button className="rm-btn-primary" onClick={onClose}>
+              Done
+            </button>
+          </div>
+        ) : (
           <>
-            <div className="request-modal-header" style={{ marginBottom: '1.2rem', textAlign: 'center' }}>
-              <div className="eyebrow dark" style={{ justifyContent: 'center' }}>
-                <span className="eyebrow-dot" style={{ backgroundColor: '#2563eb' }} />
-                <span>Start a Project</span>
-              </div>
-              <h2 className="request-modal-h2" style={{ fontSize: '1.8rem', marginTop: '0.4rem' }}>
-                Tell us what you're building
+            {/* ── Step label + heading ── */}
+            <div className="rm-header">
+              <span className="rm-step-badge">
+                Step {step} of {TOTAL_STEPS} · Start a Project
+              </span>
+              <h2 className="rm-title">
+                {step === 1 && 'Select Required Service'}
+                {step === 2 && 'Desired Timeline'}
+                {step === 3 && 'Choose Inquiry Method'}
               </h2>
             </div>
 
-            <Stepper
-              initialStep={1}
-              onFinalStepCompleted={handleSubmitFinal}
-              backButtonText="Back"
-              nextButtonText="Continue"
-            >
-              {/* STEP 1: SERVICE */}
-              <Step>
-                <div style={{ textAlign: 'left', marginBottom: '1rem' }}>
-                  <h3 style={{ fontSize: '1.2rem', fontWeight: '700', color: '#ffffff', margin: '0 0 0.5rem 0' }}>
-                    1. Select Required Service
-                  </h3>
-                  <p style={{ fontSize: '0.875rem', color: 'rgba(255, 255, 255, 0.7)', margin: 0 }}>
-                    What core expertise does your project require?
-                  </p>
+            {/* ── Stepper Progress Bar ── */}
+            <div className="rm-stepper-wrap">
+              {stepLabels.map((label, i) => {
+                const idx = i + 1;
+                const isActive = idx === step;
+                const isDone = idx < step;
+                return (
+                  <React.Fragment key={label}>
+                    <div className={`rm-step-node ${isActive ? 'active' : ''} ${isDone ? 'done' : ''}`}>
+                      <div className="rm-step-circle">
+                        {isDone ? (
+                          <i className="bx bx-check" style={{ fontSize: '1rem' }}></i>
+                        ) : (
+                          <span>{idx}</span>
+                        )}
+                      </div>
+                      <span className="rm-step-label">{label}</span>
+                    </div>
+                    {i < stepLabels.length - 1 && (
+                      <div className={`rm-step-line ${isDone ? 'done' : ''}`} />
+                    )}
+                  </React.Fragment>
+                );
+              })}
+            </div>
+
+            {/* ── STEP 1: SERVICE (BOXICONS) ── */}
+            {step === 1 && (
+              <div className="rm-grid-2">
+                {SERVICES_OPTIONS.map(({ label, iconClass }) => {
+                  const sel = form.service === label;
+                  return (
+                    <button
+                      key={label}
+                      type="button"
+                      className={`rm-card ${sel ? 'selected' : ''}`}
+                      onClick={() => setForm((p) => ({ ...p, service: label }))}
+                    >
+                      <div className="rm-card-left">
+                        <i className={`rm-card-icon ${iconClass}`}></i>
+                        <span className="rm-card-name">{label}</span>
+                      </div>
+                      {sel && <span className="rm-card-dot" />}
+                    </button>
+                  );
+                })}
+              </div>
+            )}
+
+            {/* ── STEP 2: TIMELINE ── */}
+            {step === 2 && (
+              <div className="rm-col">
+                {TIMELINE_OPTIONS.map(({ label, sub, iconClass }) => {
+                  const sel = form.timeline === label;
+                  return (
+                    <button
+                      key={label}
+                      type="button"
+                      className={`rm-row-card ${sel ? 'selected' : ''}`}
+                      onClick={() => setForm((p) => ({ ...p, timeline: label }))}
+                    >
+                      <div className="rm-row-left">
+                        <i className={`rm-row-icon ${iconClass}`}></i>
+                        <div>
+                          <div className="rm-row-label">{label}</div>
+                          <div className="rm-row-sub">{sub}</div>
+                        </div>
+                      </div>
+                      {sel && <span className="rm-card-dot" />}
+                    </button>
+                  );
+                })}
+              </div>
+            )}
+
+            {/* ── STEP 3: CONTACT + 2 INQUIRY OPTIONS (WHATSAPP & EMAIL) ── */}
+            {step === 3 && (
+              <div className="rm-col">
+                {/* 2 Clear Inquiry Options */}
+                <div className="rm-inquiry-toggle-container">
+                  <span className="rm-inquiry-label">Select How to Contact:</span>
+                  <div className="rm-inquiry-toggle">
+                    <button
+                      type="button"
+                      className={`rm-inquiry-btn ${inquiryMethod === 'whatsapp' ? 'active' : ''}`}
+                      onClick={() => setInquiryMethod('whatsapp')}
+                    >
+                      <i className="bx bxl-whatsapp" style={{ fontSize: '1.25rem' }}></i>
+                      <span>WhatsApp Inquiry</span>
+                    </button>
+
+                    <button
+                      type="button"
+                      className={`rm-inquiry-btn ${inquiryMethod === 'email' ? 'active' : ''}`}
+                      onClick={() => setInquiryMethod('email')}
+                    >
+                      <i className="bx bx-envelope" style={{ fontSize: '1.25rem' }}></i>
+                      <span>Email Inquiry</span>
+                    </button>
+                  </div>
                 </div>
 
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: '10px', marginTop: '1rem' }}>
-                  {SERVICES_OPTIONS.map((item) => {
-                    const isSelected = formState.service === item;
-                    return (
-                      <button
-                        key={item}
-                        type="button"
-                        onClick={() => handleSelectOption('service', item)}
-                        style={{
-                          padding: '12px 14px',
-                          borderRadius: '16px',
-                          background: isSelected ? 'rgba(37, 99, 235, 0.25)' : 'rgba(255, 255, 255, 0.05)',
-                          border: isSelected ? '1.5px solid #3b82f6' : '1px solid rgba(255, 255, 255, 0.1)',
-                          color: isSelected ? '#ffffff' : 'rgba(255, 255, 255, 0.8)',
-                          fontWeight: isSelected ? '700' : '500',
-                          fontSize: '0.85rem',
-                          textAlign: 'left',
-                          cursor: 'pointer',
-                          transition: 'all 0.2s ease',
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'space-between'
-                        }}
-                      >
-                        <span>{item}</span>
-                        {isSelected && <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#3b82f6' }} />}
-                      </button>
-                    );
-                  })}
-                </div>
-              </Step>
-
-              {/* STEP 2: TIMELINE */}
-              <Step>
-                <div style={{ textAlign: 'left', marginBottom: '1rem' }}>
-                  <h3 style={{ fontSize: '1.2rem', fontWeight: '700', color: '#ffffff', margin: '0 0 0.5rem 0' }}>
-                    2. Desired Timeline
-                  </h3>
-                  <p style={{ fontSize: '0.875rem', color: 'rgba(255, 255, 255, 0.7)', margin: 0 }}>
-                    When do you need this project completed?
-                  </p>
+                <div className="rm-contact-info-pill">
+                  {inquiryMethod === 'whatsapp' ? (
+                    <>
+                      <i className="bx bxl-whatsapp" style={{ color: '#22c55e', fontSize: '1.1rem' }}></i>
+                      <span>Direct to WhatsApp: <strong>+{WHATSAPP_NUMBER}</strong></span>
+                    </>
+                  ) : (
+                    <>
+                      <i className="bx bx-envelope" style={{ color: '#3b82f6', fontSize: '1.1rem' }}></i>
+                      <span>Direct to Email: <strong>{EMAIL_ADDRESS}</strong></span>
+                    </>
+                  )}
                 </div>
 
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginTop: '1rem' }}>
-                  {TIMELINE_OPTIONS.map((item) => {
-                    const isSelected = formState.timeline === item;
-                    return (
-                      <button
-                        key={item}
-                        type="button"
-                        onClick={() => handleSelectOption('timeline', item)}
-                        style={{
-                          padding: '14px 18px',
-                          borderRadius: '16px',
-                          background: isSelected ? 'rgba(37, 99, 235, 0.25)' : 'rgba(255, 255, 255, 0.05)',
-                          border: isSelected ? '1.5px solid #3b82f6' : '1px solid rgba(255, 255, 255, 0.1)',
-                          color: isSelected ? '#ffffff' : 'rgba(255, 255, 255, 0.8)',
-                          fontWeight: isSelected ? '700' : '500',
-                          fontSize: '0.9rem',
-                          textAlign: 'left',
-                          cursor: 'pointer',
-                          transition: 'all 0.2s ease',
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'space-between'
-                        }}
-                      >
-                        <span>{item}</span>
-                        {isSelected && <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#3b82f6' }} />}
-                      </button>
-                    );
-                  })}
-                </div>
-              </Step>
-
-              {/* STEP 3: BUDGET */}
-              <Step>
-                <div style={{ textAlign: 'left', marginBottom: '1rem' }}>
-                  <h3 style={{ fontSize: '1.2rem', fontWeight: '700', color: '#ffffff', margin: '0 0 0.5rem 0' }}>
-                    3. Estimated Budget
-                  </h3>
-                  <p style={{ fontSize: '0.875rem', color: 'rgba(255, 255, 255, 0.7)', margin: 0 }}>
-                    Select an approximate budget range for your project.
-                  </p>
-                </div>
-
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '10px', marginTop: '1rem' }}>
-                  {BUDGET_OPTIONS.map((item) => {
-                    const isSelected = formState.budget === item;
-                    return (
-                      <button
-                        key={item}
-                        type="button"
-                        onClick={() => handleSelectOption('budget', item)}
-                        style={{
-                          padding: '16px',
-                          borderRadius: '16px',
-                          background: isSelected ? 'rgba(37, 99, 235, 0.25)' : 'rgba(255, 255, 255, 0.05)',
-                          border: isSelected ? '1.5px solid #3b82f6' : '1px solid rgba(255, 255, 255, 0.1)',
-                          color: isSelected ? '#ffffff' : 'rgba(255, 255, 255, 0.8)',
-                          fontWeight: isSelected ? '700' : '500',
-                          fontSize: '0.92rem',
-                          textAlign: 'center',
-                          cursor: 'pointer',
-                          transition: 'all 0.2s ease'
-                        }}
-                      >
-                        {item}
-                      </button>
-                    );
-                  })}
-                </div>
-              </Step>
-
-              {/* STEP 4: CONTACT & DETAILS */}
-              <Step>
-                <div style={{ textAlign: 'left', marginBottom: '1rem' }}>
-                  <h3 style={{ fontSize: '1.2rem', fontWeight: '700', color: '#ffffff', margin: '0 0 0.5rem 0' }}>
-                    4. Your Name & Project Details
-                  </h3>
-                  <p style={{ fontSize: '0.875rem', color: 'rgba(255, 255, 255, 0.7)', margin: 0 }}>
-                    How can we reach you with the proposal?
-                  </p>
-                </div>
-
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginTop: '0.8rem' }}>
-                  <div className="request-modal-field">
-                    <label htmlFor="req-name" className="request-modal-label-text">Your Name</label>
+                <div className="rm-form-fields">
+                  <div>
+                    <label className="rm-input-label">Your Name</label>
                     <input
-                      id="req-name"
                       type="text"
                       name="name"
-                      required
-                      placeholder="e.g. Alex Johnson"
-                      value={formState.name}
+                      placeholder="e.g. Alex"
+                      value={form.name}
                       onChange={handleChange}
-                      className="request-modal-input"
+                      className="rm-input"
                     />
                   </div>
 
-                  <div className="request-modal-field">
-                    <label htmlFor="req-email" className="request-modal-label-text">Email Address</label>
+                  <div>
+                    <label className="rm-input-label">Your Email</label>
                     <input
-                      id="req-email"
                       type="email"
                       name="email"
-                      required
-                      placeholder="alex@company.com"
-                      value={formState.email}
+                      placeholder="e.g. alex@example.com"
+                      value={form.email}
                       onChange={handleChange}
-                      className="request-modal-input"
+                      className="rm-input"
                     />
                   </div>
 
-                  <div className="request-modal-field">
-                    <label htmlFor="req-project" className="request-modal-label-text">Additional Project Brief (Optional)</label>
+                  <div>
+                    <label className="rm-input-label">Project Details (Optional)</label>
                     <textarea
-                      id="req-project"
                       name="project"
+                      placeholder="Briefly describe your project requirements..."
                       rows={3}
-                      placeholder="Tell us a few words about your goals or specific features..."
-                      value={formState.project}
+                      value={form.project}
                       onChange={handleChange}
-                      className="request-modal-textarea"
+                      className="rm-input rm-textarea"
                     />
                   </div>
                 </div>
-              </Step>
-            </Stepper>
-          </>
-        ) : (
-          <div className="request-modal-success">
-            <div className="request-modal-success-badge">
-              <LogoMark size="1.5rem" />
+              </div>
+            )}
+
+            {/* ── Navigation Buttons ── */}
+            <div className="rm-footer">
+              {step > 1 ? (
+                <button
+                  type="button"
+                  className="rm-btn-back"
+                  onClick={() => setStep((p) => p - 1)}
+                >
+                  <i className="bx bx-left-arrow-alt"></i> Back
+                </button>
+              ) : (
+                <div />
+              )}
+
+              {step < TOTAL_STEPS ? (
+                <button
+                  type="button"
+                  className="rm-btn-primary"
+                  onClick={() => setStep((p) => p + 1)}
+                  disabled={(step === 1 && !form.service) || (step === 2 && !form.timeline)}
+                >
+                  Continue <i className="bx bx-right-arrow-alt"></i>
+                </button>
+              ) : (
+                <button
+                  type="button"
+                  className={`rm-btn-send ${inquiryMethod === 'whatsapp' ? 'rm-send-whatsapp' : 'rm-send-email'}`}
+                  onClick={handleSend}
+                >
+                  {inquiryMethod === 'whatsapp' ? (
+                    <>
+                      <i className="bx bxl-whatsapp" style={{ fontSize: '1.2rem' }}></i>
+                      <span>Send via WhatsApp</span>
+                    </>
+                  ) : (
+                    <>
+                      <i className="bx bx-envelope" style={{ fontSize: '1.2rem' }}></i>
+                      <span>Send via Email</span>
+                    </>
+                  )}
+                </button>
+              )}
             </div>
-            <h2 className="request-modal-success-h2">Request Received!</h2>
-            <p className="request-modal-success-p">
-              Thanks for reaching out — we've captured your project requirements (Service, Timeline, Budget & Details) and will contact you within one business day!
-            </p>
-            <button className="pill-btn dark no-arrow" onClick={onClose}>
-              <span className="pill-btn-inner">Close</span>
-            </button>
-          </div>
+          </>
         )}
       </div>
     </div>
   );
-};
-
-export default RequestModal;
+}

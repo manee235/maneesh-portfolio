@@ -1,0 +1,191 @@
+/* ═══════════════════════════════════════════════════
+   STATS & PERFORMANCE SECTION (Smooth Blur-Fade Animations)
+═══════════════════════════════════════════════════ */
+
+.st-section {
+  width: 100%;
+  background: #ffffff;
+  padding: 85px 5% 95px;
+  position: relative;
+  z-index: 18;
+  overflow: hidden;
+}
+
+.st-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4rem;
+}
+
+/* ─── 3 Stat Cards Grid ─── */
+.st-grid {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  gap: 1.5rem;
+  width: 100%;
+}
+
+@media (min-width: 768px) {
+  .st-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.75rem;
+  }
+}
+
+/* Initial Hidden Animation State for Cards */
+.st-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 24px;
+  padding: 2.25rem 2rem;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03), 0 1px 3px rgba(0, 0, 0, 0.02);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  text-align: left;
+  min-height: 220px;
+  user-select: none;
+  opacity: 0;
+  transform: translateY(36px);
+  filter: blur(14px);
+  transition: opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.85s cubic-bezier(0.16, 1, 0.3, 1),
+              filter 0.85s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.3s ease,
+              box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform, filter;
+}
+
+/* Revealed Visible State */
+.st-section.st-visible .st-card {
+  opacity: 1;
+  transform: translateY(0);
+  filter: blur(0px);
+}
+
+.st-card:hover {
+  transform: translateY(-4px);
+  border-color: #2563eb;
+  box-shadow: 0 18px 40px rgba(37, 99, 235, 0.09);
+}
+
+.st-card-label {
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.88rem;
+  font-weight: 500;
+  color: #64748b;
+}
+
+.st-card-number-wrap {
+  margin: 1.25rem 0 0.5rem;
+}
+
+.st-card-number {
+  font-family: 'Inter Tight', 'Outfit', sans-serif;
+  font-size: clamp(3rem, 4.5vw, 4rem);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  color: #09090b;
+  line-height: 1;
+}
+
+.st-card-sub {
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.88rem;
+  line-height: 1.5;
+  color: #64748b;
+  margin: 0;
+}
+
+/* ─── Center Statement (Blur-Fading Reveal) ─── */
+.st-center-content {
+  max-width: 780px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  opacity: 0;
+  transform: translateY(32px);
+  filter: blur(14px);
+  transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.5s,
+              transform 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.5s,
+              filter 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.5s;
+  will-change: opacity, transform, filter;
+}
+
+.st-section.st-visible .st-center-content {
+  opacity: 1;
+  transform: translateY(0);
+  filter: blur(0px);
+}
+
+.st-headline {
+  font-family: 'Inter Tight', 'Outfit', sans-serif;
+  font-size: clamp(2.2rem, 4.2vw, 3.4rem);
+  font-weight: 800;
+  letter-spacing: -0.035em;
+  color: #09090b;
+  line-height: 1.15;
+  margin: 0;
+}
+
+.st-subheadline {
+  font-family: 'Outfit', sans-serif;
+  font-size: clamp(1rem, 1.35vw, 1.15rem);
+  line-height: 1.6;
+  color: #64748b;
+  margin: 0 0 0.5rem;
+  max-width: 600px;
+}
+
+/* CTA Action */
+.st-action-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.85rem;
+}
+
+.st-cta-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 14px 34px;
+  border-radius: 12px;
+  background: #09090b;
+  color: #ffffff;
+  font-family: 'Inter Tight', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 8px 24px rgba(9, 9, 11, 0.15);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.st-cta-btn:hover {
+  background: #2563eb;
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(37, 99, 235, 0.35);
+}
+
+/* ─── Responsive Adjustments ─── */
+@media (max-width: 768px) {
+  .st-section {
+    padding: 60px 4% 70px;
+  }
+
+  .st-container {
+    gap: 3rem;
+  }
+
+  .st-card {
+    padding: 1.75rem 1.5rem;
+    min-height: auto;
+  }
+}

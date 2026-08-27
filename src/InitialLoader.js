@@ -1,105 +1,64 @@
 import React, { useEffect, useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import ShiningText from './components/ui/ShiningText';
-
-const STATUS_MESSAGES = [
-  "Initializing portfolio...",
-  "Loading interactive experiences...",
-  "Synthesizing digital crafts...",
-  "Preparing visual assets...",
-  "Ready!"
-];
 
 const InitialLoader = ({ isLoaded, onComplete }) => {
-  const [progress, setProgress] = useState(0);
-  const [statusIndex, setStatusIndex] = useState(0);
   const [fadingOut, setFadingOut] = useState(false);
   const [hidden, setHidden] = useState(false);
 
   useEffect(() => {
-    let current = 0;
-    const interval = setInterval(() => {
-      current += Math.floor(Math.random() * 7) + 4;
-      
-      if (!isLoaded && current > 88) {
-        current = 88;
-      } else if (isLoaded) {
-        current += 15;
-      }
+    if (!isLoaded) return;
 
-      if (current >= 100) {
-        current = 100;
-        clearInterval(interval);
-        setProgress(100);
-        setStatusIndex(4);
+    const timeout = setTimeout(() => {
+      setFadingOut(true);
+      setTimeout(() => {
+        setHidden(true);
+        if (onComplete) onComplete();
+      }, 900);
+    }, 1200);
 
-        setTimeout(() => {
-          setFadingOut(true);
-          setTimeout(() => {
-            setHidden(true);
-            if (onComplete) onComplete();
-          }, 700);
-        }, 400);
-      } else {
-        setProgress(current);
-        if (current < 25) setStatusIndex(0);
-        else if (current < 55) setStatusIndex(1);
-        else if (current < 80) setStatusIndex(2);
-        else setStatusIndex(3);
-      }
-    }, 45);
-
-    return () => clearInterval(interval);
+    return () => clearTimeout(timeout);
   }, [isLoaded, onComplete]);
 
   if (hidden) return null;
 
   return (
-    <AnimatePresence>
-      {!hidden && (
-        <motion.div
-          className={`initial-loader-overlay ${fadingOut ? 'fade-out' : ''}`}
-          initial={{ opacity: 1 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0, translateY: "-100%" }}
-          transition={{ duration: 0.6, ease: [0.76, 0, 0.24, 1] }}
-        >
-          <div className="loader-content-wrap">
-            {/* Brand Title & Status with ShiningText */}
-            <div className="loader-brand">
-              <ShiningText
-                text="onlymaneesh"
-                className="loader-logo-shining"
-                duration={2.2}
-              />
+    <div className={`il-overlay ${fadingOut ? 'il-fade-out' : ''}`}>
+      <div className="il-inner">
 
-              <div className="loader-status-shining-wrap">
-                <ShiningText
-                  key={statusIndex}
-                  text={STATUS_MESSAGES[statusIndex]}
-                  className="loader-status-shining"
-                  duration={2}
-                />
-              </div>
-            </div>
+        {/* Green availability status pill */}
+        <div className="il-status-badge">
+          <span className="il-status-dot" />
+          <span className="il-status-text">Available for Projects</span>
+        </div>
 
-            {/* Modern Progress Box */}
-            <div className="loader-progress-box">
-              <div className="loader-progress-bar-track">
-                <div
-                  className="loader-progress-bar-fill"
-                  style={{ width: `${progress}%` }}
-                />
-              </div>
-              <div className="loader-counter-row">
-                <span className="loader-counter-label">CREATIVE EXPERIENCE</span>
-                <span className="loader-counter-val">{progress}%</span>
-              </div>
-            </div>
-          </div>
-        </motion.div>
-      )}
-    </AnimatePresence>
+        {/* Main heading */}
+        <div className="il-heading-wrap">
+          <h1 className="il-h1">
+            <span className="il-line-bright">Let's work</span>
+            <span className="il-line-dim">together</span>
+          </h1>
+        </div>
+
+        {/* Arrow CTA button */}
+        <div className="il-arrow-btn" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <line x1="7" y1="17" x2="17" y2="7" />
+            <polyline points="7 7 17 7 17 17" />
+          </svg>
+        </div>
+
+        {/* Subtitle copy */}
+        <p className="il-body-copy">
+          Have a project in mind? I'd love to hear about it.<br />
+          Let's create something exceptional together.
+        </p>
+
+        {/* Email */}
+        <a href="mailto:onlymaneesh@gmail.com" className="il-email">
+          onlymaneesh@gmail.com
+        </a>
+
+      </div>
+    </div>
   );
 };
 
