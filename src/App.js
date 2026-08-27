@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import MusicPlayer from './MusicPlayer';
 import Lenis from 'lenis';
 import About from './About';
 import Skills from './Skills';
@@ -37,6 +38,17 @@ const IconInstagram = () => (
     <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
     <circle cx="12" cy="12" r="4" />
     <circle cx="17.5" cy="6.5" r="0.5" fill="currentColor" />
+  </svg>
+);
+const IconPhone = () => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ width: '1em', height: '1em' }}>
+    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
+  </svg>
+);
+const IconMail = () => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ width: '1em', height: '1em' }}>
+    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+    <polyline points="22,6 12,13 2,6" />
   </svg>
 );
 
@@ -302,6 +314,11 @@ function App() {
           </div>
         </div>
 
+        {/* Glassmorphism pill music player — floating right, above avatar waist */}
+        <div className="hero-music-player-wrap">
+          <MusicPlayer src="/assets/ice - slowed.mp3" />
+        </div>
+
         {/* Layer 3: Floating Left content (Intro & CV & Clients) */}
         <div className="hero-left-col hero-glass-card">
           <p className="hero-intro-text animated-intro">
@@ -425,35 +442,42 @@ function App() {
           className="footer-particles"
         />
         <div className="shell footer-inner">
-          <div className="footer-cta-row">
-            <div className="footer-cta-h2-reveal">
-              <h2 className="footer-cta-h2 footer-cta-h2-reveal-inner reveal">
-                Have a project in mind? Let's get to work.
+          {/* Top CTA Banner */}
+          <div className="footer-cta-card">
+            <div className="footer-cta-content">
+              <span className="footer-cta-eyebrow">LET'S COLLABORATE</span>
+              <h2 className="footer-cta-h2">
+                Have a project in mind? Let's build something extraordinary.
               </h2>
             </div>
-            <button className="pill-btn light with-arrow" onClick={() => setContactOpen(true)}>
-              <span className="pill-btn-inner">
-                <span>Start a project</span>
-                <span className="pill-btn-arrow-badge up-right">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ width: '1em', height: '1em' }}>
-                    <line x1="7" y1="17" x2="17" y2="7" />
-                    <polyline points="7 7 17 7 17 17" />
-                  </svg>
-                </span>
+            <button className="footer-cta-btn" onClick={() => setContactOpen(true)}>
+              <span>Start a project</span>
+              <span className="footer-cta-btn-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <line x1="7" y1="17" x2="17" y2="7" />
+                  <polyline points="7 7 17 7 17 17" />
+                </svg>
               </span>
             </button>
           </div>
 
-          {/* Columns */}
+          {/* Grid Columns */}
           <div className="footer-cols">
+            {/* Brand Col */}
             <div className="footer-brand-col">
-              <div className="footer-logo" style={{ width: '220px', mixBlendMode: 'normal' }}>
+              <div className="footer-logo">
                 <InlineLogo />
               </div>
               <p className="footer-tagline">
-                A creative developer, designer, and music producer building digital experiences with quiet precision.
+                A creative developer, designer, and music producer building high-impact digital experiences with quiet precision.
               </p>
-              <div style={{ display: 'flex', gap: '0.75rem', marginTop: '0.5rem' }}>
+
+              <div className="footer-location-chip">
+                <span className="green-pulse-dot" />
+                <span>Available worldwide · Based in Sri Lanka</span>
+              </div>
+
+              <div className="footer-social-row">
                 {[
                   { href: 'https://facebook.com', icon: <IconFacebook />, label: 'Facebook' },
                   { href: 'https://open.spotify.com/artist/3u0fN7vcIuh9sv0HjIpEvs', icon: <IconSpotify />, label: 'Spotify' },
@@ -466,17 +490,7 @@ function App() {
                     target="_blank"
                     rel="noreferrer"
                     title={s.label}
-                    style={{
-                      width: '2rem', height: '2rem',
-                      display: 'grid', placeItems: 'center',
-                      borderRadius: '9999px',
-                      background: 'rgba(255,255,255,0.08)',
-                      color: 'rgba(255,255,255,0.6)',
-                      fontSize: '0.875rem',
-                      transition: 'background 0.2s, color 0.2s',
-                    }}
-                    onMouseEnter={(e) => { e.currentTarget.style.background = '#fff'; e.currentTarget.style.color = '#000'; }}
-                    onMouseLeave={(e) => { e.currentTarget.style.background = 'rgba(255,255,255,0.08)'; e.currentTarget.style.color = 'rgba(255,255,255,0.6)'; }}
+                    className="footer-social-btn"
                   >
                     {s.icon}
                   </a>
@@ -484,42 +498,69 @@ function App() {
               </div>
             </div>
 
+            {/* Navigate Col */}
             <div className="footer-col">
-              <span className="footer-col-title">Navigate</span>
+              <span className="footer-col-title">NAVIGATE</span>
               <div className="footer-col-links">
-                {[['About', '#about'], ['Work', '#works'], ['Services', '#services'], ['Contact', 'contact']].map(([label, id]) => (
+                {[
+                  ['Home', '#home'],
+                  ['About', '#about'],
+                  ['Work', '#works'],
+                  ['Skills', '#tech-stack'],
+                  ['Contact', 'contact'],
+                ].map(([label, id]) => (
                   <a
                     key={label}
                     href={id.startsWith('#') ? id : '#'}
-                    className="animated-link"
+                    className="footer-link-item"
                     onClick={(e) => { e.preventDefault(); id === 'contact' ? setContactOpen(true) : scrollTo(id); }}
                   >
-                    <span className="animated-link-span">{label}</span>
+                    {label}
                   </a>
                 ))}
               </div>
             </div>
 
+            {/* Services Col */}
             <div className="footer-col">
-              <span className="footer-col-title">Services</span>
+              <span className="footer-col-title">SERVICES</span>
               <div className="footer-col-links">
                 {['Software Development', 'Product Design', 'Music Production', 'Graphic Design'].map((s) => (
-                  <a key={s} href="#services" className="animated-link" onClick={(e) => { e.preventDefault(); scrollTo('#services'); }}>
-                    <span className="animated-link-span">{s}</span>
+                  <a key={s} href="#services" className="footer-link-item" onClick={(e) => { e.preventDefault(); scrollTo('#services'); }}>
+                    {s}
                   </a>
                 ))}
+              </div>
+            </div>
+
+            {/* Contact Col */}
+            <div className="footer-col footer-contact-col">
+              <span className="footer-col-title">GET IN TOUCH</span>
+              <div className="footer-contact-chips">
+                <a href="tel:+94759051430" className="footer-contact-chip">
+                  <span className="footer-chip-icon"><IconPhone /></span>
+                  <span className="footer-chip-text">+94 75 905 1430</span>
+                </a>
+                <a href="mailto:ganegodmaneesh@gmail.com" className="footer-contact-chip">
+                  <span className="footer-chip-icon"><IconMail /></span>
+                  <span className="footer-chip-text">ganegodmaneesh@gmail.com</span>
+                </a>
               </div>
             </div>
           </div>
 
+          {/* Bottom Legal Bar */}
           <div className="footer-legal-bar">
-            <div>© {new Date().getFullYear()} onlymaneesh. All rights reserved.</div>
-            <div style={{ color: 'rgba(255,255,255,0.4)', fontSize: '0.75rem' }}>
-              Designed &amp; Developed by <span style={{ color: '#fff', fontWeight: 600 }}>Maneesh Amindu</span>
+            <div className="footer-copyright">
+              © {new Date().getFullYear()} onlymaneesh. All rights reserved.
+            </div>
+            <div className="footer-creator-tag">
+              Designed &amp; Developed by <span>Maneesh Amindu</span>
             </div>
             <div className="footer-legal-links">
-              <a href="#home" className="animated-link legal"><span className="animated-link-span">Privacy</span></a>
-              <a href="#home" className="animated-link legal"><span className="animated-link-span">Terms</span></a>
+              <a href="#home" className="footer-link-item" onClick={(e) => { e.preventDefault(); scrollTo('#home'); }}>Privacy</a>
+              <span className="footer-dot-sep">•</span>
+              <a href="#home" className="footer-link-item" onClick={(e) => { e.preventDefault(); scrollTo('#home'); }}>Terms</a>
             </div>
           </div>
         </div>

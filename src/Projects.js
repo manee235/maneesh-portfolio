@@ -15,6 +15,19 @@ const WORK_CATEGORIES = [
     underDevelopment: true,
     tools: ['React', 'Next.js', 'Tailwind', 'Framer Motion']
   },
+  {
+    id: 'nagomi-tours',
+    title: 'Nagomi Lanka Tours',
+    subtitle: 'A modern tourism and travel booking web platform with dynamic itineraries and seamless headless CMS integration.',
+    image: '/assets/projects/nagomi.png',
+    link: 'https://www.nagomilankatours.jp/',
+    bgHover: '#0d9488', // Vibrant Teal
+    glowColor: 'rgba(13, 148, 136, 0.45)',
+    btnHover: '#2dd4bf', // Mint / Aqua
+    btnText: '#042f2e',
+    underDevelopment: false,
+    tools: ['React', 'Sanity CMS', 'Tailwind', 'JavaScript']
+  },
 
   {
     id: 'mobile-dev',
