@@ -3,19 +3,6 @@ import './Projects.css';
 
 const WORK_CATEGORIES = [
   {
-    id: 'web-dev',
-    title: 'Dreamscape Designs',
-    subtitle: 'A responsive architecture and consulting web application with elegant UI & fluid animations.',
-    image: '/assets/projects/dreamscape.png',
-    link: 'https://dreamscape-gray.vercel.app/',
-    bgHover: '#3f25ebff', // Electric Blue
-    glowColor: 'rgba(37, 99, 235, 0.45)',
-    btnHover: '#38bdf8', // Sky Cyan
-    btnText: '#ffffffff',
-    underDevelopment: true,
-    tools: ['React', 'Next.js', 'Tailwind', 'Framer Motion']
-  },
-  {
     id: 'nagomi-tours',
     title: 'Nagomi Lanka Tours',
     subtitle: 'A modern tourism and travel booking web platform with dynamic itineraries and seamless headless CMS integration.',
@@ -27,6 +14,19 @@ const WORK_CATEGORIES = [
     btnText: '#042f2e',
     underDevelopment: false,
     tools: ['React', 'Sanity CMS', 'Tailwind', 'JavaScript']
+  },
+  {
+    id: 'web-dev',
+    title: 'Dreamscape Designs',
+    subtitle: 'A responsive architecture and consulting web application with elegant UI & fluid animations.',
+    image: '/assets/projects/dreamscape.png',
+    link: 'https://dreamscape-gray.vercel.app/',
+    bgHover: '#3f25ebff', // Electric Blue
+    glowColor: 'rgba(37, 99, 235, 0.45)',
+    btnHover: '#38bdf8', // Sky Cyan
+    btnText: '#ffffffff',
+    underDevelopment: true,
+    tools: ['React', 'Next.js', 'Tailwind', 'Framer Motion']
   },
 
   {
