@@ -21,7 +21,7 @@ const WORK_CATEGORIES = [
   },
   {
     id: 'web-dev',
-    badge: 'Commercial Project',
+    badge: 'Client Project',
     title: 'Dreamscape Designs',
     quote: '"Responsive architecture and consulting web application with fluid micro-animations."',
     image: '/assets/projects/dreamscape.png',
