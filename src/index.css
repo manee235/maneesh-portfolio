@@ -372,28 +372,42 @@
 .mv-download-cv-btn {
   display: inline-flex;
   align-items: center;
-  gap: 9px;
-  padding: 11px 24px;
+  gap: 10px;
+  padding: 12px 26px;
   border-radius: 9999px;
-  background: #09090b;
-  color: #ffffff;
-  font-family: 'Outfit', sans-serif;
-  font-size: 0.78rem;
+  background: rgba(255, 255, 255, 0.65);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  color: #09090b;
+  font-family: 'Outfit', 'Inter Tight', sans-serif;
+  font-size: 0.80rem;
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   text-decoration: none;
-  border: none;
+  border: 1.5px solid rgba(255, 255, 255, 0.95);
   cursor: pointer;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.14);
-  transition: transform 0.25s ease, background 0.2s ease, box-shadow 0.25s ease;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.05), inset 0 1px 1.5px rgba(255, 255, 255, 1);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   white-space: nowrap;
 }
 
+.mv-download-cv-btn svg {
+  color: #2563eb;
+  transition: transform 0.25s ease, color 0.25s ease;
+}
+
 .mv-download-cv-btn:hover {
-  background: #18181b;
-  transform: translateY(-2px) scale(1.02);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.22);
+  background: #09090b;
+  color: #ffffff;
+  border-color: #09090b;
+  transform: translateY(-3px) scale(1.03);
+  box-shadow: 0 16px 36px rgba(9, 9, 11, 0.22);
+}
+
+.mv-download-cv-btn:hover svg {
+  color: #60a5fa;
+  transform: translateY(2px);
 }
 
 /* ─── Hero Right Bento Stat Grid (Moved Down & Frosted Glassmorphism) ─── */
