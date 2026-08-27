@@ -36,8 +36,8 @@
   align-items: center;
   text-align: center;
   justify-content: space-between;
-  height: 82vh;
-  max-height: 720px;
+  height: 80vh;
+  max-height: 700px;
   margin: auto;
 }
 
@@ -121,8 +121,8 @@
 }
 
 .il-circle-btn {
-  width: 64px;
-  height: 64px;
+  width: 66px;
+  height: 66px;
   border-radius: 50%;
   background: rgba(255, 255, 255, 0.04);
   border: none;
@@ -132,9 +132,7 @@
   justify-content: center;
   cursor: pointer;
   outline: none;
-  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
-              background-color 0.3s ease,
-              box-shadow 0.3s ease;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .il-circle-btn:hover {
@@ -142,17 +140,26 @@
   background: rgba(255, 255, 255, 0.08);
 }
 
+/* Turns Solid Pure White When Loaded */
 .il-circle-btn.il-ready {
-  box-shadow: 0 0 24px rgba(37, 99, 235, 0.35);
-  animation: ilReadyPulse 2s infinite ease-in-out;
+  background: #ffffff;
+  box-shadow: 0 0 35px rgba(255, 255, 255, 0.45), 0 8px 24px rgba(0, 0, 0, 0.3);
+  animation: ilReadyPulse 2.4s infinite ease-in-out;
+}
+
+.il-circle-btn.il-ready:hover {
+  transform: scale(1.12);
+  box-shadow: 0 0 45px rgba(255, 255, 255, 0.7), 0 10px 28px rgba(0, 0, 0, 0.4);
 }
 
 @keyframes ilReadyPulse {
   0%, 100% {
     transform: scale(1);
+    box-shadow: 0 0 35px rgba(255, 255, 255, 0.45), 0 8px 24px rgba(0, 0, 0, 0.3);
   }
   50% {
-    transform: scale(1.05);
+    transform: scale(1.06);
+    box-shadow: 0 0 50px rgba(255, 255, 255, 0.7), 0 12px 30px rgba(0, 0, 0, 0.4);
   }
 }
 
@@ -180,19 +187,25 @@
 }
 
 .il-circle-btn.il-ready .il-progress-bar {
-  stroke: #2563eb;
+  stroke: #ffffff;
 }
 
 .il-arrow-icon {
   color: #ffffff;
-  transition: transform 0.3s ease;
+  transition: all 0.3s ease;
+  position: relative;
+  z-index: 2;
+}
+
+.il-circle-btn.il-ready .il-arrow-icon {
+  color: #09090b;
 }
 
 .il-circle-btn:hover .il-arrow-icon {
   transform: translate(2px, -2px);
 }
 
-/* Percentage / Enter Button */
+/* Percentage / Enter Button Prompt */
 .il-counter-wrap {
   display: flex;
   align-items: center;
@@ -203,22 +216,22 @@
   font-family: 'Outfit', monospace, sans-serif;
   font-size: 0.72rem;
   font-weight: 600;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.14em;
   color: #71717a;
   text-transform: uppercase;
   transition: color 0.3s ease;
 }
 
 .il-circle-btn.il-ready + .il-counter-wrap .il-counter-text {
-  color: #e2e8f0;
+  color: #ffffff;
+  letter-spacing: 0.18em;
 }
 
-/* ─── Bottom Text & Direct Contact ─── */
+/* ─── Bottom Text (Email Removed) ─── */
 .il-footer-wrap {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 10px;
   max-width: 480px;
 }
 
@@ -228,21 +241,6 @@
   line-height: 1.55;
   color: #71717a;
   margin: 0;
-}
-
-.il-email-link {
-  font-family: 'Outfit', sans-serif;
-  font-size: 0.72rem;
-  font-weight: 600;
-  letter-spacing: 0.16em;
-  color: #94a3b8;
-  text-decoration: none;
-  text-transform: uppercase;
-  transition: color 0.2s ease;
-}
-
-.il-email-link:hover {
-  color: #ffffff;
 }
 
 /* Responsive adjustments */

@@ -8,13 +8,13 @@ export default function InitialLoader({ onComplete }) {
   const [isDone, setIsDone] = useState(false);
 
   const handleEnter = useCallback(() => {
-    if (isExiting || isDone) return;
+    if (!isReady || isExiting || isDone) return;
     setIsExiting(true);
     setTimeout(() => {
       setIsDone(true);
       if (onComplete) onComplete();
     }, 950);
-  }, [isExiting, isDone, onComplete]);
+  }, [isReady, isExiting, isDone, onComplete]);
 
   useEffect(() => {
     // Smooth realistic asset & component loading simulation
@@ -26,18 +26,13 @@ export default function InitialLoader({ onComplete }) {
         setProgress(100);
         setIsReady(true);
         clearInterval(interval);
-
-        // Automatically trigger entrance transition after reaching 100%
-        setTimeout(() => {
-          handleEnter();
-        }, 900);
       } else {
         setProgress(current);
       }
-    }, 45);
+    }, 40);
 
     return () => clearInterval(interval);
-  }, [handleEnter]);
+  }, []);
 
   if (isDone) return null;
 
@@ -69,7 +64,7 @@ export default function InitialLoader({ onComplete }) {
               e.stopPropagation();
               handleEnter();
             }}
-            aria-label="Enter Portfolio"
+            aria-label="Enter Website"
           >
             <svg
               className="il-progress-svg"
@@ -107,7 +102,7 @@ export default function InitialLoader({ onComplete }) {
             </svg>
           </button>
 
-          {/* Minimalist percentage counter */}
+          {/* Minimalist percentage counter / prompt */}
           <div className="il-counter-wrap">
             <span className="il-counter-text">
               {isReady ? 'ENTER WEBSITE' : `${progress}%`}
@@ -115,18 +110,11 @@ export default function InitialLoader({ onComplete }) {
           </div>
         </div>
 
-        {/* ── Bottom Text & Direct Contact ── */}
+        {/* ── Bottom Text (Email Removed) ── */}
         <div className="il-footer-wrap">
           <p className="il-footer-desc">
             Have a project in mind? I'd love to hear about it. Let's create something exceptional together.
           </p>
-          <a
-            href="mailto:ganegodamaneesh@gmail.com"
-            className="il-email-link"
-            onClick={(e) => e.stopPropagation()}
-          >
-            GANEGODAMANEESH@GMAIL.COM
-          </a>
         </div>
       </div>
     </div>
