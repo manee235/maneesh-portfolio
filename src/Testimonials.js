@@ -9,8 +9,8 @@ const PARTNER_MARKERS = [
   {
     id: "nagomi-japan",
     name: "Nagomi Lanka Tours",
-    city: "Tokyo, Japan",
-    location: [35.6762, 139.6503],
+    city: "Kamiyamakawa, Yuki-shi, Ibaraki, Japan",
+    location: [36.2917, 139.8789],
     visitors: 1450,
     trend: 22,
     isPartner: true,
@@ -26,7 +26,7 @@ const PARTNER_MARKERS = [
   },
   {
     id: "partner-usa",
-    name: "Dreamscape Architecture",
+    name: "North America Network",
     city: "San Francisco, USA",
     location: [37.7749, -122.4194],
     visitors: 980,
@@ -34,7 +34,7 @@ const PARTNER_MARKERS = [
   },
   {
     id: "partner-uk",
-    name: "Vercel / Next.js Network",
+    name: "Europe Creative Studio",
     city: "London, UK",
     location: [51.5074, -0.1278],
     visitors: 850,
@@ -42,7 +42,7 @@ const PARTNER_MARKERS = [
   },
   {
     id: "partner-aus",
-    name: "Routie Mobility",
+    name: "Oceania Clients",
     city: "Sydney, Australia",
     location: [-33.8688, 151.2093],
     visitors: 620,

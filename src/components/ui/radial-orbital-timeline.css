@@ -1,11 +1,11 @@
-/* Radial Orbital Timeline Styles */
+/* Radial Orbital Timeline Styles (White Theme) */
 
 @keyframes orbital-pulse {
   0%, 100% {
     opacity: 1;
   }
   50% {
-    opacity: 0.4;
+    opacity: 0.45;
   }
 }
 
@@ -26,11 +26,11 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background: radial-gradient(circle at center, rgba(15, 23, 42, 0.7) 0%, rgba(2, 6, 23, 0.95) 70%, #030712 100%);
+  background: radial-gradient(circle at center, #ffffff 0%, #f8fafc 65%, #f1f5f9 100%);
   overflow: hidden;
-  border-radius: 28px;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: inset 0 0 80px rgba(0, 0, 0, 0.8), 0 20px 50px rgba(0, 0, 0, 0.5);
+  border-radius: 32px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: inset 0 0 60px rgba(0, 0, 0, 0.02), 0 20px 50px rgba(0, 0, 0, 0.04);
   user-select: none;
 }
 
@@ -59,12 +59,12 @@
   width: 70px;
   height: 70px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #a855f7, #3b82f6, #14b8a6);
+  background: linear-gradient(135deg, #0284c7, #6366f1, #3b82f6);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 10;
-  box-shadow: 0 0 35px rgba(59, 130, 246, 0.6), 0 0 70px rgba(168, 85, 247, 0.4);
+  box-shadow: 0 0 35px rgba(2, 132, 199, 0.4), 0 0 70px rgba(99, 102, 241, 0.25);
   animation: orbital-pulse 2.5s ease-in-out infinite;
 }
 
@@ -73,7 +73,7 @@
   width: 85px;
   height: 85px;
   border-radius: 50%;
-  border: 1px solid rgba(255, 255, 255, 0.4);
+  border: 1px solid rgba(2, 132, 199, 0.4);
   animation: orbital-ping 2s cubic-bezier(0, 0, 0.2, 1) infinite;
 }
 
@@ -82,7 +82,7 @@
   width: 110px;
   height: 110px;
   border-radius: 50%;
-  border: 1px solid rgba(255, 255, 255, 0.25);
+  border: 1px solid rgba(99, 102, 241, 0.25);
   animation: orbital-ping 2s cubic-bezier(0, 0, 0.2, 1) infinite 0.6s;
 }
 
@@ -90,7 +90,7 @@
   width: 32px;
   height: 32px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.9);
+  background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(8px);
   box-shadow: 0 0 15px rgba(255, 255, 255, 0.9);
 }
@@ -100,7 +100,7 @@
   width: 420px;
   height: 420px;
   border-radius: 50%;
-  border: 1px dashed rgba(255, 255, 255, 0.15);
+  border: 1px dashed rgba(0, 0, 0, 0.12);
   pointer-events: none;
 }
 
@@ -109,7 +109,7 @@
   width: 480px;
   height: 480px;
   border-radius: 50%;
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(0, 0, 0, 0.05);
   pointer-events: none;
 }
 
@@ -140,28 +140,29 @@
   align-items: center;
   justify-content: center;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  border: 2px solid rgba(255, 255, 255, 0.4);
+  border: 2px solid rgba(0, 0, 0, 0.1);
 }
 
 .rot-node-icon-box.expanded {
-  background: #ffffff;
-  color: #000000;
-  border-color: #ffffff;
-  box-shadow: 0 0 25px rgba(255, 255, 255, 0.7);
+  background: #0f172a;
+  color: #ffffff;
+  border-color: #0f172a;
+  box-shadow: 0 0 25px rgba(15, 23, 42, 0.3);
   transform: scale(1.45);
 }
 
 .rot-node-icon-box.related {
-  background: rgba(255, 255, 255, 0.85);
-  color: #000000;
-  border-color: #ffffff;
+  background: rgba(2, 132, 199, 0.15);
+  color: #0284c7;
+  border-color: #0284c7;
   animation: orbital-pulse 1.2s infinite;
 }
 
 .rot-node-icon-box.idle {
-  background: rgba(15, 23, 42, 0.9);
-  color: #ffffff;
-  border-color: rgba(255, 255, 255, 0.35);
+  background: #ffffff;
+  color: #0f172a;
+  border-color: rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
   backdrop-filter: blur(8px);
 }
 
@@ -170,20 +171,20 @@
   top: 50px;
   white-space: nowrap;
   font-size: 0.78rem;
-  font-weight: 600;
-  letter-spacing: 0.05em;
+  font-weight: 700;
+  letter-spacing: 0.04em;
   transition: all 0.3s ease;
-  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
+  color: #334155;
 }
 
 .rot-node-label.expanded {
-  color: #ffffff;
+  color: #0f172a;
   transform: scale(1.15);
-  font-weight: 700;
+  font-weight: 800;
 }
 
 .rot-node-label.idle {
-  color: rgba(255, 255, 255, 0.75);
+  color: #475569;
 }
 
 /* Expanded Card popover */
@@ -193,14 +194,14 @@
   left: 50%;
   transform: translateX(-50%);
   width: 290px;
-  background: rgba(10, 15, 30, 0.95);
+  background: rgba(255, 255, 255, 0.98);
   backdrop-filter: blur(18px);
-  border: 1px solid rgba(255, 255, 255, 0.25);
-  border-radius: 16px;
-  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.75), 0 0 25px rgba(56, 189, 248, 0.2);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 20px;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.08), 0 0 25px rgba(2, 132, 199, 0.1);
   z-index: 300;
   padding: 16px;
-  color: #ffffff;
+  color: #0f172a;
   animation: rotPopIn 0.3s ease-out;
 }
 
@@ -222,7 +223,7 @@
   transform: translateX(-50%);
   width: 2px;
   height: 12px;
-  background: rgba(255, 255, 255, 0.6);
+  background: rgba(0, 0, 0, 0.15);
 }
 
 .rot-card-header {
@@ -234,21 +235,21 @@
 
 .rot-card-title {
   font-size: 0.95rem;
-  font-weight: 700;
-  color: #ffffff;
+  font-weight: 800;
+  color: #0f172a;
   margin: 4px 0 8px 0;
 }
 
 .rot-card-body {
   font-size: 0.8rem;
   line-height: 1.45;
-  color: rgba(255, 255, 255, 0.8);
+  color: #475569;
 }
 
 .rot-energy-box {
   margin-top: 14px;
   padding-top: 10px;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
 }
 
 .rot-energy-header {
@@ -257,20 +258,20 @@
   align-items: center;
   font-size: 0.75rem;
   margin-bottom: 5px;
-  color: rgba(255, 255, 255, 0.7);
+  color: #64748b;
 }
 
 .rot-energy-bar-track {
   width: 100%;
   height: 5px;
-  background: rgba(255, 255, 255, 0.12);
+  background: rgba(0, 0, 0, 0.08);
   border-radius: 9999px;
   overflow: hidden;
 }
 
 .rot-energy-bar-fill {
   height: 100%;
-  background: linear-gradient(90deg, #3b82f6, #a855f7, #ec4899);
+  background: linear-gradient(90deg, #0284c7, #6366f1, #3b82f6);
   border-radius: 9999px;
   transition: width 0.5s ease;
 }
@@ -278,7 +279,7 @@
 .rot-related-box {
   margin-top: 12px;
   padding-top: 10px;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
 }
 
 .rot-related-header {
@@ -287,7 +288,7 @@
   font-size: 0.7rem;
   text-transform: uppercase;
   letter-spacing: 0.06em;
-  color: rgba(255, 255, 255, 0.6);
+  color: #64748b;
   margin-bottom: 6px;
 }
 
@@ -301,20 +302,20 @@
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: #f1f5f9;
+  border: 1px solid rgba(0, 0, 0, 0.08);
   border-radius: 6px;
   padding: 3px 8px;
   font-size: 0.72rem;
-  color: rgba(255, 255, 255, 0.85);
+  color: #334155;
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
 .rot-related-btn:hover {
-  background: rgba(255, 255, 255, 0.2);
-  color: #ffffff;
-  border-color: rgba(255, 255, 255, 0.45);
+  background: #e2e8f0;
+  color: #0f172a;
+  border-color: rgba(0, 0, 0, 0.2);
 }
 
 @media (max-width: 768px) {

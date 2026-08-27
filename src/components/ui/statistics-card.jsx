@@ -6,10 +6,11 @@ const statsStyles = `
 .stats-section-flat {
   width: 100%;
   padding: 100px 5% 80px;
-  background-color: #0a0a0a;
+  background-color: #ffffff;
   position: relative;
   z-index: 10;
-  color: #ffffff;
+  color: #0f172a;
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
 }
 
 .stats-container-flat {
@@ -31,14 +32,14 @@ const statsStyles = `
   font-weight: 800;
   letter-spacing: -0.03em;
   margin: 0 0 16px 0;
-  color: #ffffff;
+  color: #0f172a;
   line-height: 1.1;
 }
 
 .stats-desc-flat {
   font-family: 'Inter', sans-serif;
   font-size: clamp(0.95rem, 1.2vw, 1.1rem);
-  color: rgba(255, 255, 255, 0.6);
+  color: #64748b;
   line-height: 1.6;
   margin: 0;
 }
@@ -62,7 +63,7 @@ const statsStyles = `
 }
 
 .stats-item-flat:not(:first-child) {
-  border-left: 1px solid rgba(255, 255, 255, 0.12);
+  border-left: 1px solid rgba(0, 0, 0, 0.08);
 }
 
 @media (max-width: 768px) {
@@ -72,13 +73,12 @@ const statsStyles = `
     padding: 20px 10px;
   }
   
-  /* Create simple grid separation on mobile */
   .stats-item-flat:nth-child(even) {
-    border-left: 1px solid rgba(255, 255, 255, 0.1) !important;
+    border-left: 1px solid rgba(0, 0, 0, 0.08) !important;
   }
   .stats-item-flat:nth-child(3),
   .stats-item-flat:nth-child(4) {
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    border-top: 1px solid rgba(0, 0, 0, 0.08);
   }
 }
 
@@ -86,7 +86,7 @@ const statsStyles = `
   font-family: 'Inter Tight', 'Inter', sans-serif;
   font-size: clamp(2.8rem, 5vw, 4rem);
   font-weight: 900;
-  color: #ffffff;
+  color: #0f172a;
   letter-spacing: -0.04em;
   line-height: 1;
   margin-bottom: 12px;
@@ -97,9 +97,9 @@ const statsStyles = `
 
 .stats-label-flat {
   font-family: 'Inter', sans-serif;
-  font-size: 0.72rem;
-  font-weight: 600;
-  color: rgba(255, 255, 255, 0.75);
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #64748b;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   margin: 0;
@@ -115,7 +115,7 @@ const Stats = () => {
         <div className="stats-header-flat">
           <h2 className="stats-title-flat">Maneesh in Numbers</h2>
           <p className="stats-desc-flat">
-            A quick glance at the milestones and active impact of the digital products, custom web apps, and interfaces designed & developed so far.
+            A quick glance at the milestones and active impact of the digital products, custom web apps, and interfaces designed &amp; developed so far.
           </p>
         </div>
 
@@ -160,7 +160,7 @@ const StatItem = ({ value, prefix = "", suffix = "", label, isSeparated = false,
       </motion.div>
       <motion.p
         initial={{ opacity: 0 }}
-        whileInView={{ opacity: 0.75 }}
+        whileInView={{ opacity: 0.9 }}
         viewport={{ once: true }}
         transition={{ duration: 0.5, delay: index * 0.15 }}
         className="stats-label-flat"

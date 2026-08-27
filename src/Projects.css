@@ -5,7 +5,7 @@
 .our-works-section {
   width: 100%;
   padding: 120px 5% 100px;
-  background: var(--background, #0a0a0a);
+  background: var(--background, #ffffff);
   position: relative;
   z-index: 10;
   overflow: hidden;
@@ -24,9 +24,9 @@
   gap: 8px;
   padding: 6px 14px;
   border-radius: 9999px;
-  background: rgba(56, 189, 248, 0.08);
-  border: 1px solid rgba(56, 189, 248, 0.2);
-  color: #38bdf8;
+  background: rgba(2, 132, 199, 0.08);
+  border: 1px solid rgba(2, 132, 199, 0.25);
+  color: #0284c7;
   font-size: 0.75rem;
   font-weight: 700;
   text-transform: uppercase;
@@ -39,8 +39,8 @@
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background: #38bdf8;
-  box-shadow: 0 0 8px #38bdf8;
+  background: #0284c7;
+  box-shadow: 0 0 8px #0284c7;
 }
 
 .our-works-header {
@@ -62,7 +62,7 @@
   font-family: 'Inter Tight', sans-serif;
   font-size: clamp(2.5rem, 5vw, 4rem);
   font-weight: 800;
-  color: var(--foreground, #ffffff);
+  color: var(--foreground, #09090b);
   letter-spacing: -0.04em;
   margin: 0;
   line-height: 1.1;
@@ -71,15 +71,10 @@
 .our-works-subtitle {
   font-family: 'Inter', sans-serif;
   font-size: clamp(0.95rem, 1.2vw, 1.1rem);
-  color: rgba(255, 255, 255, 0.65);
+  color: #64748b;
   max-width: 480px;
   line-height: 1.5;
   margin: 0;
-}
-
-.light-mode .our-works-subtitle,
-body:not(.dark-mode) .our-works-subtitle {
-  color: rgba(0, 0, 0, 0.65);
 }
 
 /* ─── Slider Controls ─── */
@@ -99,9 +94,9 @@ body:not(.dark-mode) .our-works-subtitle {
   width: 48px;
   height: 48px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  color: #ffffff;
+  background: rgba(0, 0, 0, 0.04);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  color: #0f172a;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -115,9 +110,9 @@ body:not(.dark-mode) .our-works-subtitle {
 }
 
 .slider-arrow-btn:hover {
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(0, 0, 0, 0.09);
   transform: scale(1.08);
-  border-color: rgba(255, 255, 255, 0.35);
+  border-color: rgba(0, 0, 0, 0.2);
 }
 
 /* ─── Horizontal Slider Track ─── */

@@ -161,10 +161,12 @@ function App() {
     fetchClientAvatars();
   }, []);
 
-  // ── 0. Dark Mode Class ───────────────────────────────────────────────────────
+  // ── 0. Light Mode Class ───────────────────────────────────────────────────────
   useEffect(() => {
-    document.body.classList.add('dark-mode');
-    document.documentElement.classList.add('dark-mode');
+    document.body.classList.remove('dark-mode');
+    document.documentElement.classList.remove('dark-mode');
+    document.body.classList.add('light-mode');
+    document.documentElement.classList.add('light-mode');
   }, []);
 
   // ── 1. Lenis smooth scroll ──────────────────────────────────────────────────
@@ -279,8 +281,8 @@ function App() {
       <section id="home" className="hero-typography-section">
         <MetaBalls
           className="hero-particles"
-          color="#000000"
-          cursorBallColor="#000000"
+          color="#f1f5f9"
+          cursorBallColor="#e2e8f0"
           cursorBallSize={2}
           ballCount={15}
           animationSize={28}
@@ -400,8 +402,8 @@ function App() {
         <Skills />
 
         {/* 3. ROTATING TEXT BAND (Replaces Flowing Menu) */}
-        <section style={{ padding: '120px 20px', display: 'flex', justifyContent: 'center', alignItems: 'center', margin: '60px 0' }}>
-          <div style={{ fontSize: 'clamp(2rem, 5vw, 4rem)', fontWeight: '900', color: '#fff', display: 'flex', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'center', gap: '15px' }}>
+        <section style={{ padding: '100px 20px', display: 'flex', justifyContent: 'center', alignItems: 'center', margin: '40px 0' }}>
+          <div style={{ fontSize: 'clamp(2rem, 5vw, 4rem)', fontWeight: '900', color: 'var(--foreground, #0a0a0a)', display: 'flex', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'center', gap: '15px' }}>
             <span>We</span>
             <RotatingText 
               texts={['Code', 'Design', 'Deploy']} 
@@ -433,11 +435,11 @@ function App() {
       {/* ── FOOTER SECTION ── */}
       <footer className="footer">
         <Particles
-          particleColors={['#ffffff', '#4f6bff']}
-          particleCount={40}
+          particleColors={['#0f172a', '#3b82f6']}
+          particleCount={35}
           particleSpread={12}
           speed={0.08}
-          particleBaseSize={80}
+          particleBaseSize={60}
           className="footer-particles"
         />
         <div className="shell footer-inner">

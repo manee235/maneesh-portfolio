@@ -5,8 +5,8 @@ import './Projects.css';
 const WORK_CATEGORIES = [
   {
     id: 'nagomi-tours',
-    location: 'Tokyo, Japan',
-    badge: 'Inbound Tourism',
+    location: 'Kamiyamakawa, Yuki-shi, Ibaraki, Japan',
+    badge: 'Client Partner',
     title: 'Nagomi Lanka Tours',
     quote: '"Dynamic tour booking portal bridging Japan & Sri Lanka with high-speed headless CMS."',
     image: '/assets/projects/nagomi.png',
@@ -18,7 +18,7 @@ const WORK_CATEGORIES = [
   },
   {
     id: 'web-dev',
-    location: 'San Francisco, USA',
+    location: 'Kurunegala, Sri Lanka',
     badge: 'Architecture & UI',
     title: 'Dreamscape Designs',
     quote: '"Responsive architecture and consulting web application with fluid micro-animations."',
@@ -31,8 +31,8 @@ const WORK_CATEGORIES = [
   },
   {
     id: 'mobile-dev',
-    location: 'Colombo, Sri Lanka',
-    badge: 'Transit Mobility',
+    location: 'SLIATE Kurunegala',
+    badge: 'Academic Project',
     title: 'Routie Bus Tracker',
     quote: '"Cross-platform mobile transit tracking with real-time GPS and smart admin portal."',
     image: '/assets/projects/routie.png',
@@ -44,8 +44,8 @@ const WORK_CATEGORIES = [
   },
   {
     id: 'full-stack',
-    location: 'Enterprise EdTech',
-    badge: 'Cloud LMS',
+    location: 'NIBM Computing',
+    badge: 'Academic Project',
     title: 'Nuvia - LMS Platform',
     quote: '"Full-scale automated student management, lecture streaming, and automated grading."',
     image: '/assets/projects/nuvia.png',
@@ -57,8 +57,8 @@ const WORK_CATEGORIES = [
   },
   {
     id: 'ui-ux',
-    location: 'Food & Beverage',
-    badge: 'Product Design',
+    location: 'UI/UX Design Lab',
+    badge: 'Academic Project',
     title: 'Lily - Food Portal',
     quote: '"Clean & modern interface design for a frictionless culinary ordering experience."',
     image: '/assets/projects/lily.png',
@@ -70,8 +70,8 @@ const WORK_CATEGORIES = [
   },
   {
     id: 'interactive-apps',
-    location: 'Cultural Heritage',
-    badge: '3D WebGL',
+    location: 'Creative Tech Lab',
+    badge: 'Academic Project',
     title: 'Digital Thorana 3D',
     quote: '"Cultural lighting visualizer featuring high-performance WebGL shaders and audio sync."',
     image: '/assets/projects/thorana.png',

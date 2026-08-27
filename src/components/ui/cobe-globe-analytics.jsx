@@ -6,51 +6,51 @@ const DEFAULT_MARKERS = [
   {
     id: "nagomi-japan",
     name: "Nagomi Lanka Tours",
-    city: "Tokyo / Japan",
-    location: [35.68, 139.65],
-    visitors: 1240,
-    trend: 18,
+    city: "Kamiyamakawa, Yuki-shi, Ibaraki, Japan",
+    location: [36.2917, 139.8789],
+    visitors: 1450,
+    trend: 22,
     isPartner: true,
   },
   {
     id: "hq-srilanka",
     name: "Maneesh Amindu HQ",
-    city: "Colombo / Sri Lanka",
-    location: [7.87, 80.77],
-    visitors: 2890,
-    trend: 24,
+    city: "Kurunegala / Colombo, Sri Lanka",
+    location: [7.8731, 80.7718],
+    visitors: 3200,
+    trend: 28,
     isPartner: true,
   },
   {
     id: "partner-usa",
     name: "North America Partners",
-    city: "New York / USA",
-    location: [40.71, -74.01],
-    visitors: 847,
-    trend: 12,
+    city: "San Francisco / New York, USA",
+    location: [37.7749, -122.4194],
+    visitors: 980,
+    trend: 15,
   },
   {
     id: "partner-uk",
-    name: "Europe Creative Studio",
-    city: "London / UK",
-    location: [51.51, -0.13],
-    visitors: 623,
-    trend: 8,
+    name: "Europe Creative Network",
+    city: "London, UK",
+    location: [51.5074, -0.1278],
+    visitors: 850,
+    trend: 12,
   },
   {
     id: "partner-aus",
     name: "Oceania Clients",
-    city: "Sydney / Australia",
-    location: [-33.87, 151.21],
-    visitors: 412,
-    trend: 15,
+    city: "Sydney, Australia",
+    location: [-33.8688, 151.2093],
+    visitors: 620,
+    trend: 9,
   },
 ];
 
 export function GlobeAnalytics({
   markers: initialMarkers = DEFAULT_MARKERS,
   className = "",
-  speed = 0.004,
+  speed = 0.0035,
   onSelectMarker,
 }) {
   const canvasRef = useRef(null);
@@ -126,13 +126,13 @@ export function GlobeAnalytics({
         height: width * 2,
         phi: 0,
         theta: 0.25,
-        dark: 1,
-        diffuse: 1.6,
+        dark: 0, // Clean light mode globe
+        diffuse: 1.5,
         mapSamples: 16000,
-        mapBrightness: 6,
-        baseColor: [0.15, 0.18, 0.28],
-        markerColor: [0.22, 0.85, 0.98], // Cyan neon glow
-        glowColor: [0.38, 0.45, 0.95],
+        mapBrightness: 8,
+        baseColor: [0.95, 0.96, 0.98],
+        markerColor: [0.01, 0.52, 0.78], // Cyan/Blue
+        glowColor: [0.9, 0.93, 0.98],
         markerElevation: 0.05,
         markers: initialMarkers.map((m) => ({
           location: m.location,
@@ -140,12 +140,12 @@ export function GlobeAnalytics({
           id: m.id,
         })),
         arcs: [
-          { from: [7.87, 80.77], to: [35.68, 139.65] }, // Sri Lanka -> Japan (Nagomi Lanka)
-          { from: [7.87, 80.77], to: [51.51, -0.13] },  // Sri Lanka -> London
-          { from: [7.87, 80.77], to: [40.71, -74.01] }, // Sri Lanka -> USA
-          { from: [7.87, 80.77], to: [-33.87, 151.21] },// Sri Lanka -> Australia
+          { from: [7.8731, 80.7718], to: [36.2917, 139.8789] }, // Sri Lanka -> Yuki-shi, Ibaraki (Nagomi Lanka)
+          { from: [7.8731, 80.7718], to: [51.5074, -0.1278] },
+          { from: [7.8731, 80.7718], to: [37.7749, -122.4194] },
+          { from: [7.8731, 80.7718], to: [-33.8688, 151.2093] },
         ],
-        arcColor: [0.3, 0.8, 1.0],
+        arcColor: [0.02, 0.55, 0.85],
         arcWidth: 0.6,
         arcHeight: 0.3,
         opacity: 0.85,
@@ -191,7 +191,6 @@ export function GlobeAnalytics({
 
   return (
     <div className={`cobe-globe-container ${className}`} style={{ position: "relative", width: "100%", display: "flex", flexDirection: "column", alignItems: "center" }}>
-      {/* 3D Canvas */}
       <div style={{ position: "relative", width: "100%", maxWidth: "420px", aspectRatio: "1/1", margin: "0 auto" }}>
         <canvas
           ref={canvasRef}
@@ -204,11 +203,10 @@ export function GlobeAnalytics({
             transition: "opacity 1.2s ease",
             borderRadius: "50%",
             touchAction: "none",
-            filter: "drop-shadow(0 0 35px rgba(56, 189, 248, 0.25))",
+            filter: "drop-shadow(0 10px 30px rgba(2, 132, 199, 0.15))",
           }}
         />
 
-        {/* Floating Highlight Banner for active Partner */}
         {activeMarker && (
           <div
             style={{
@@ -216,15 +214,15 @@ export function GlobeAnalytics({
               bottom: "10px",
               left: "50%",
               transform: "translateX(-50%)",
-              background: "rgba(10, 15, 30, 0.85)",
-              border: "1px solid rgba(56, 189, 248, 0.4)",
+              background: "rgba(255, 255, 255, 0.92)",
+              border: "1px solid rgba(0, 0, 0, 0.08)",
               backdropFilter: "blur(12px)",
-              borderRadius: "12px",
+              borderRadius: "14px",
               padding: "8px 16px",
               display: "flex",
               alignItems: "center",
               gap: "10px",
-              boxShadow: "0 8px 25px rgba(0,0,0,0.6), 0 0 15px rgba(56,189,248,0.2)",
+              boxShadow: "0 8px 30px rgba(0,0,0,0.08)",
               pointerEvents: "none",
               whiteSpace: "nowrap",
               zIndex: 10,
@@ -235,24 +233,23 @@ export function GlobeAnalytics({
                 width: "8px",
                 height: "8px",
                 borderRadius: "50%",
-                background: "#38bdf8",
-                boxShadow: "0 0 8px #38bdf8",
+                background: "#0284c7",
+                boxShadow: "0 0 8px #0284c7",
                 display: "inline-block",
               }}
             />
             <div>
-              <div style={{ fontSize: "0.82rem", fontWeight: 700, color: "#fff" }}>
+              <div style={{ fontSize: "0.82rem", fontWeight: 700, color: "#0f172a" }}>
                 {activeMarker.name}
               </div>
-              <div style={{ fontSize: "0.68rem", color: "rgba(255,255,255,0.6)" }}>
-                {activeMarker.city} • Active Engagement
+              <div style={{ fontSize: "0.68rem", color: "#64748b" }}>
+                {activeMarker.city} • Active Partner
               </div>
             </div>
           </div>
         )}
       </div>
 
-      {/* Partner Location Chips Below Globe */}
       <div
         style={{
           display: "flex",
@@ -261,7 +258,7 @@ export function GlobeAnalytics({
           gap: "8px",
           marginTop: "16px",
           width: "100%",
-          maxWidth: "500px",
+          maxWidth: "520px",
         }}
       >
         {data.map((m) => {
@@ -271,11 +268,11 @@ export function GlobeAnalytics({
               key={m.id}
               onClick={() => handleSelectPartner(m)}
               style={{
-                background: isSelected ? "rgba(56, 189, 248, 0.18)" : "rgba(255,255,255,0.04)",
-                border: isSelected ? "1px solid #38bdf8" : "1px solid rgba(255,255,255,0.1)",
+                background: isSelected ? "#0284c7" : "rgba(0, 0, 0, 0.04)",
+                border: isSelected ? "1px solid #0284c7" : "1px solid rgba(0, 0, 0, 0.08)",
                 borderRadius: "9999px",
                 padding: "6px 14px",
-                color: isSelected ? "#ffffff" : "rgba(255,255,255,0.7)",
+                color: isSelected ? "#ffffff" : "#334155",
                 fontSize: "0.75rem",
                 fontWeight: 600,
                 cursor: "pointer",
@@ -290,7 +287,7 @@ export function GlobeAnalytics({
                   width: "6px",
                   height: "6px",
                   borderRadius: "50%",
-                  background: m.isPartner ? "#38bdf8" : "#a855f7",
+                  background: isSelected ? "#ffffff" : m.isPartner ? "#0284c7" : "#8b5cf6",
                 }}
               />
               <span>{m.name}</span>
@@ -298,7 +295,7 @@ export function GlobeAnalytics({
                 style={{
                   fontFamily: "monospace",
                   fontSize: "0.65rem",
-                  color: m.trend >= 0 ? "#34d399" : "#f87171",
+                  color: isSelected ? "#e0f2fe" : m.trend >= 0 ? "#16a34a" : "#dc2626",
                 }}
               >
                 {m.trend >= 0 ? "↑" : "↓"}{Math.abs(m.trend)}%
