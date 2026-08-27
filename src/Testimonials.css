@@ -1,16 +1,18 @@
 /* ═══════════════════════════════════════════════════
-   UNIQUE TESTIMONIALS SECTION
+   TESTIMONIALS & GLOBAL PARTNERS SECTION
 ═══════════════════════════════════════════════════ */
 
 .unique-tst-section {
   padding: 120px 0;
-  background: #000000;
+  background: radial-gradient(circle at 50% 30%, rgba(15, 23, 42, 0.6) 0%, #030712 80%);
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 50vh;
+  min-height: 80vh;
   position: relative;
   overflow: hidden;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .tst-particles {
@@ -19,44 +21,95 @@
   z-index: 1;
 }
 
+/* ── Section Header ── */
+.tst-header-wrap {
+  text-align: center;
+  max-width: 750px;
+  margin: 0 auto 50px auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.tst-main-title {
+  font-size: clamp(2rem, 4vw, 3.2rem);
+  font-weight: 800;
+  color: #ffffff;
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+  margin: 0;
+}
+
+.tst-main-subtitle {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.65);
+  margin: 0;
+}
+
+/* ── Dual Grid Layout ── */
+.tst-dual-grid {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  align-items: center;
+  gap: 48px;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+@media (max-width: 1024px) {
+  .tst-dual-grid {
+    grid-template-columns: 1fr;
+    gap: 60px;
+  }
+}
+
+/* ── Left Column: Carousel ── */
 .unique-tst-container {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 40px;
+  gap: 32px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 24px;
+  padding: 40px 30px;
+  backdrop-filter: blur(12px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
 }
 
-/* ── Quote ── */
 .unique-tst-quote-wrap {
   position: relative;
-  padding: 0 32px;
-  max-width: 600px;
+  padding: 0 28px;
+  max-width: 540px;
   text-align: center;
 }
 
 .unique-tst-quote-mark {
   position: absolute;
-  font-size: 5rem;
+  font-size: 4.5rem;
   font-family: serif;
-  color: rgba(255, 255, 255, 0.8);
+  color: rgba(56, 189, 248, 0.4);
   user-select: none;
   pointer-events: none;
 }
 
 .unique-tst-quote-mark.left {
-  left: -20px;
-  top: -40px;
+  left: -15px;
+  top: -35px;
 }
 
 .unique-tst-quote-mark.right {
-  right: -20px;
-  bottom: -60px;
+  right: -15px;
+  bottom: -50px;
 }
 
 .unique-tst-quote {
   font-family: 'Inter Tight', sans-serif;
-  font-size: clamp(1.5rem, 3vw, 2rem);
-  font-weight: 300;
+  font-size: clamp(1.2rem, 2vw, 1.45rem);
+  font-weight: 350;
   color: #ffffff;
   line-height: 1.6;
   margin: 0;
@@ -77,16 +130,16 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 24px;
-  margin-top: 8px;
+  gap: 20px;
+  margin-top: 4px;
 }
 
 .unique-tst-role {
   font-family: 'Inter Tight', sans-serif;
   font-size: 0.75rem;
   font-weight: 600;
-  color: rgba(255, 255, 255, 0.45);
-  letter-spacing: 0.2em;
+  color: rgba(255, 255, 255, 0.5);
+  letter-spacing: 0.15em;
   text-transform: uppercase;
   margin: 0;
   transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
@@ -105,6 +158,7 @@
   align-items: center;
   justify-content: center;
   gap: 8px;
+  flex-wrap: wrap;
 }
 
 .unique-tst-btn {
@@ -117,7 +171,7 @@
   background: transparent;
   border: none;
   padding: 4px;
-  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .unique-tst-btn:hover {
@@ -130,7 +184,7 @@
 }
 
 .unique-tst-btn.expanded {
-  padding: 8px 16px 8px 8px;
+  padding: 6px 14px 6px 6px;
 }
 
 .unique-tst-avatar-wrap {
@@ -143,16 +197,17 @@
   height: 36px;
   border-radius: 50%;
   object-fit: cover;
-  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 0 0 0 rgba(0,0,0,0);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .unique-tst-avatar.active {
+  border-color: transparent;
   box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.3);
 }
 
 .unique-tst-avatar.hoverable:hover {
-  transform: scale(1.05);
+  transform: scale(1.06);
 }
 
 .unique-tst-name-grid {
@@ -160,7 +215,7 @@
   grid-template-columns: 0fr;
   opacity: 0;
   margin-left: 0;
-  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .unique-tst-name-grid.show {
@@ -176,8 +231,8 @@
 .unique-tst-name {
   display: block;
   font-family: 'Inter Tight', sans-serif;
-  font-size: 0.875rem;
-  font-weight: 600;
+  font-size: 0.8rem;
+  font-weight: 700;
   white-space: nowrap;
   transition: color 0.3s;
   color: rgba(255, 255, 255, 0.7);
@@ -185,4 +240,65 @@
 
 .unique-tst-name.active {
   color: #000000;
+}
+
+.tst-review-btn {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+  padding: 10px 22px;
+  border-radius: 99px;
+  font-family: 'Inter Tight', sans-serif;
+  font-weight: 600;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.tst-review-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+/* ── Right Column: 3D Globe Card ── */
+.tst-globe-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.tst-globe-card {
+  width: 100%;
+  background: rgba(15, 23, 42, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 24px;
+  padding: 24px 20px;
+  backdrop-filter: blur(16px);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.tst-globe-card-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+  padding: 4px 12px;
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.tst-globe-live-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #22c55e;
+  box-shadow: 0 0 8px #22c55e;
+  animation: ping 2s cubic-bezier(0, 0, 0.2, 1) infinite;
 }
