@@ -48,6 +48,7 @@ function App() {
 
     lenis.on('scroll', ({ scroll }) => {
       document.documentElement.style.setProperty('--scroll-y', `${scroll}px`);
+      setScrolled(scroll > 25);
     });
 
     // Drive data-parallax elements with high-performance 3D transforms
@@ -134,10 +135,15 @@ function App() {
 
   useEffect(() => {
     const handleScroll = () => {
-      setScrolled(window.scrollY > 40);
+      const currentScroll = window.scrollY || document.documentElement.scrollTop || document.body.scrollTop || 0;
+      setScrolled(currentScroll > 25);
     };
     window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
+    window.addEventListener('touchmove', handleScroll, { passive: true });
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('touchmove', handleScroll);
+    };
   }, []);
 
   return (

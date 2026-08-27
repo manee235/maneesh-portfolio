@@ -65,6 +65,40 @@
   height: 32px;
 }
 
+@media (max-width: 768px) {
+  .mv-top-header {
+    padding: 18px 5%;
+  }
+
+  .mv-center-nav-links {
+    display: none;
+  }
+
+  .mv-top-header.is-pill-scrolled {
+    top: 12px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: calc(100% - 32px);
+    max-width: 420px;
+    padding: 6px 8px 6px 14px;
+    gap: 12px;
+  }
+
+  .mv-top-header.is-pill-scrolled .mv-brand-name {
+    font-size: 1.05rem;
+  }
+
+  .mv-top-header.is-pill-scrolled .mv-brand-avatar {
+    width: 26px;
+    height: 26px;
+  }
+
+  .mv-top-header.is-pill-scrolled .mv-hire-now-btn {
+    padding: 6px 12px;
+    font-size: 0.7rem;
+  }
+}
+
 @keyframes mvHeaderReveal {
   0% {
     opacity: 0;
