@@ -128,14 +128,11 @@ function App() {
     return () => window.removeEventListener('mousemove', handleMouseMove);
   }, [width]);
 
-  const [heroAnimated, setHeroAnimated] = useState(true);
+  const [heroAnimated, setHeroAnimated] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [footerSubmitted, setFooterSubmitted] = useState(false);
 
   useEffect(() => {
-    // Safety fallback to ensure all components are visible immediately
-    setHeroAnimated(true);
-
     const handleScroll = () => {
       setScrolled(window.scrollY > 40);
     };
