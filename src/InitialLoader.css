@@ -1,0 +1,257 @@
+/* ═══════════════════════════════════════════════════
+   INITIAL PRELOADER SCREEN
+   Exact Match to Uploaded Reference Design
+═══════════════════════════════════════════════════ */
+
+.il-screen {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: #07080a;
+  z-index: 999999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 24px;
+  user-select: none;
+  overflow: hidden;
+  transition: transform 0.95s cubic-bezier(0.85, 0, 0.15, 1),
+              opacity 0.95s cubic-bezier(0.85, 0, 0.15, 1),
+              filter 0.95s cubic-bezier(0.85, 0, 0.15, 1);
+  will-change: transform, opacity;
+}
+
+.il-screen.il-exit {
+  transform: translateY(-100%);
+  opacity: 0.98;
+  filter: blur(8px);
+}
+
+.il-content {
+  max-width: 680px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  justify-content: space-between;
+  height: 82vh;
+  max-height: 720px;
+  margin: auto;
+}
+
+/* ─── Top Status Badge ─── */
+.il-status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.il-status-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background-color: #10b981;
+  box-shadow: 0 0 10px #10b981, 0 0 4px #10b981;
+  animation: ilDotPulse 2s infinite ease-in-out;
+}
+
+@keyframes ilDotPulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.4;
+    transform: scale(0.85);
+  }
+}
+
+.il-status-text {
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  color: #94a3b8;
+  text-transform: uppercase;
+}
+
+/* ─── Main Elegant Headline ─── */
+.il-headline-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: auto 0;
+  line-height: 0.98;
+}
+
+.il-headline-line1 {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-size: clamp(3.4rem, 8vw, 6.2rem);
+  font-weight: 300;
+  letter-spacing: -0.035em;
+  color: #ffffff;
+  margin: 0;
+  line-height: 1;
+}
+
+.il-headline-line2 {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-size: clamp(3.4rem, 8vw, 6.2rem);
+  font-weight: 300;
+  letter-spacing: -0.035em;
+  color: #52525b;
+  margin: 0;
+  line-height: 1;
+}
+
+/* ─── Center Arrow & Circular Progress Button ─── */
+.il-action-area {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  margin: auto 0;
+}
+
+.il-circle-btn {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.04);
+  border: none;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  outline: none;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+              background-color 0.3s ease,
+              box-shadow 0.3s ease;
+}
+
+.il-circle-btn:hover {
+  transform: scale(1.08);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.il-circle-btn.il-ready {
+  box-shadow: 0 0 24px rgba(37, 99, 235, 0.35);
+  animation: ilReadyPulse 2s infinite ease-in-out;
+}
+
+@keyframes ilReadyPulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+.il-progress-svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);
+}
+
+.il-progress-bg {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.08);
+  stroke-width: 2.5;
+}
+
+.il-progress-bar {
+  fill: none;
+  stroke: #ffffff;
+  stroke-width: 2.5;
+  stroke-dasharray: 207.3;
+  stroke-linecap: round;
+  transition: stroke-dashoffset 0.1s ease;
+}
+
+.il-circle-btn.il-ready .il-progress-bar {
+  stroke: #2563eb;
+}
+
+.il-arrow-icon {
+  color: #ffffff;
+  transition: transform 0.3s ease;
+}
+
+.il-circle-btn:hover .il-arrow-icon {
+  transform: translate(2px, -2px);
+}
+
+/* Percentage / Enter Button */
+.il-counter-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.il-counter-text {
+  font-family: 'Outfit', monospace, sans-serif;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  color: #71717a;
+  text-transform: uppercase;
+  transition: color 0.3s ease;
+}
+
+.il-circle-btn.il-ready + .il-counter-wrap .il-counter-text {
+  color: #e2e8f0;
+}
+
+/* ─── Bottom Text & Direct Contact ─── */
+.il-footer-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  max-width: 480px;
+}
+
+.il-footer-desc {
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.84rem;
+  line-height: 1.55;
+  color: #71717a;
+  margin: 0;
+}
+
+.il-email-link {
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  color: #94a3b8;
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: color 0.2s ease;
+}
+
+.il-email-link:hover {
+  color: #ffffff;
+}
+
+/* Responsive adjustments */
+@media (max-width: 640px) {
+  .il-content {
+    height: 86vh;
+  }
+
+  .il-footer-desc {
+    font-size: 0.78rem;
+  }
+}

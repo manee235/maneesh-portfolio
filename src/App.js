@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Lenis from 'lenis';
+import InitialLoader from './InitialLoader';
 import HeroStatement from './HeroStatement';
 import About from './About';
 import TechStack from './TechStack';
@@ -144,6 +145,9 @@ function App() {
 
   return (
     <>
+      {/* ── PRELOADER / INTRO SCREEN (Matching Reference Design) ── */}
+      <InitialLoader onComplete={() => setHeroAnimated(true)} />
+
       <a href="#main-content" className="skip-link">Skip to content</a>
 
       {/* ── TOP HEADER (MORPHS TO FLOATING PILL ON SCROLL) ── */}
