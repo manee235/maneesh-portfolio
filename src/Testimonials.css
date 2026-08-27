@@ -1,12 +1,12 @@
 /* ═══════════════════════════════════════════════════
-   TESTIMONIALS SECTION (What our users say)
-   Exact Match to Uploaded Reference Design
+   TESTIMONIALS SECTION (What our clients say)
+   Responsive Single / Multi Column Marquee
 ═══════════════════════════════════════════════════ */
 
 .tm-section {
   width: 100%;
   background: #ffffff;
-  padding: 110px 5% 120px;
+  padding: 100px 5% 110px;
   position: relative;
   z-index: 18;
   overflow: hidden;
@@ -22,7 +22,7 @@
 /* ─── Header ─── */
 .tm-header {
   max-width: 650px;
-  margin: 0 auto 3.5rem;
+  margin: 0 auto 3.25rem;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -31,7 +31,7 @@
 
 .tm-title {
   font-family: 'Inter Tight', 'Outfit', sans-serif;
-  font-size: clamp(2.3rem, 4.5vw, 3.4rem);
+  font-size: clamp(2.2rem, 4.5vw, 3.4rem);
   font-weight: 800;
   letter-spacing: -0.035em;
   color: #09090b;
@@ -41,30 +41,39 @@
 
 .tm-subtitle {
   font-family: 'Outfit', sans-serif;
-  font-size: clamp(0.98rem, 1.3vw, 1.12rem);
+  font-size: clamp(0.95rem, 1.3vw, 1.12rem);
   line-height: 1.5;
   color: #64748b;
   margin: 0;
 }
 
-/* ─── 3-Column Masonry Wrapper ─── */
+/* ─── Responsive Columns Wrapper ─── */
 .tm-columns-wrapper {
   display: grid;
-  grid-template-columns: repeat(1, 1fr);
+  grid-template-columns: 1fr;
   gap: 1.5rem;
   width: 100%;
-  height: 640px;
+  height: 500px;
   overflow: hidden;
   position: relative;
-  -webkit-mask-image: linear-gradient(to bottom, transparent, black 10%, black 90%, transparent);
-  mask-image: linear-gradient(to bottom, transparent, black 10%, black 90%, transparent);
+  -webkit-mask-image: linear-gradient(to bottom, transparent, black 8%, black 92%, transparent);
+  mask-image: linear-gradient(to bottom, transparent, black 8%, black 92%, transparent);
   padding: 10px 0;
+}
+
+/* Hide 2nd and 3rd column on mobile so they never stack or overlap */
+.tm-col-2,
+.tm-col-3 {
+  display: none;
 }
 
 @media (min-width: 640px) {
   .tm-columns-wrapper {
     grid-template-columns: repeat(2, 1fr);
-    gap: 1.5rem;
+    height: 600px;
+  }
+  .tm-col-2 {
+    display: flex;
   }
 }
 
@@ -72,7 +81,10 @@
   .tm-columns-wrapper {
     grid-template-columns: repeat(3, 1fr);
     gap: 1.75rem;
-    height: 700px;
+    height: 680px;
+  }
+  .tm-col-3 {
+    display: flex;
   }
 }
 
@@ -82,10 +94,10 @@
 
 /* Column */
 .tm-column {
-  display: flex;
   flex-direction: column;
   overflow: hidden;
   height: 100%;
+  width: 100%;
 }
 
 /* Vertical Scrolling Tracks */
@@ -98,11 +110,11 @@
 }
 
 .tm-track-up {
-  animation: tmScrollUp 32s linear infinite;
+  animation: tmScrollUp 42s linear infinite;
 }
 
 .tm-track-down {
-  animation: tmScrollDown 36s linear infinite;
+  animation: tmScrollDown 46s linear infinite;
 }
 
 @keyframes tmScrollUp {
@@ -128,14 +140,16 @@
   background: #ffffff;
   border: 1px solid #e2e8f0;
   border-radius: 24px;
-  padding: 2rem 1.75rem;
+  padding: 1.85rem 1.65rem;
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.035), 0 1px 3px rgba(0, 0, 0, 0.02);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  gap: 1.75rem;
+  gap: 1.5rem;
   text-align: left;
   user-select: none;
+  width: 100%;
+  box-sizing: border-box;
   transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
               box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1),
               border-color 0.3s ease;
@@ -162,6 +176,7 @@
   display: flex;
   align-items: center;
   gap: 14px;
+  margin-top: auto;
 }
 
 .tm-avatar-wrap {
@@ -190,6 +205,7 @@
   display: flex;
   flex-direction: column;
   gap: 2px;
+  overflow: hidden;
 }
 
 .tm-name {
@@ -198,6 +214,9 @@
   font-weight: 700;
   color: #09090b;
   letter-spacing: -0.02em;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
 }
 
 .tm-role {
@@ -211,19 +230,42 @@
 /* ─── Responsive Adjustments ─── */
 @media (max-width: 768px) {
   .tm-section {
-    padding: 85px 4% 90px;
+    padding: 75px 4% 80px;
+  }
+
+  .tm-header {
+    margin-bottom: 2.25rem;
   }
 
   .tm-columns-wrapper {
-    height: 520px;
+    height: 460px;
   }
 
   .tm-card {
-    padding: 1.5rem 1.35rem;
+    padding: 1.4rem 1.25rem;
     border-radius: 20px;
+    gap: 1.25rem;
   }
 
   .tm-quote {
+    font-size: 0.88rem;
+    line-height: 1.55;
+  }
+
+  .tm-author {
+    gap: 10px;
+  }
+
+  .tm-avatar-wrap {
+    width: 38px;
+    height: 38px;
+  }
+
+  .tm-name {
     font-size: 0.9rem;
+  }
+
+  .tm-role {
+    font-size: 0.76rem;
   }
 }

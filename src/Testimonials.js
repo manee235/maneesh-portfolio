@@ -2,9 +2,9 @@ import React from 'react';
 import './Testimonials.css';
 
 // ─── Real Verified Client Testimonials ─────────────────────────────────────────
-// Tharanga Romen (Singer / Artist · France): Music Production & Graphic Design
-// Dreamscape Designs (Sri Lanka): Full Website Development & Frontend
-// Nagomi Lanka (Japan): Cross-Border Website & Digital Platform
+// Tharanga Romen (Singer & Music / Graphic Design · France)
+// Dreamscape Designs (Website Development & Full-Stack · Sri Lanka)
+// Nagomi Lanka (Cross-Border Website & Digital Platform · Japan)
 
 const REAL_TESTIMONIALS_COL_1 = [
   {
@@ -125,30 +125,30 @@ export default function Testimonials() {
           <p className="tm-subtitle">Verified feedback from real client projects &amp; collaborations.</p>
         </div>
 
-        {/* ── 3-Column Masonry Marquee ── */}
+        {/* ── Responsive Column Marquee ── */}
         <div className="tm-columns-wrapper">
-          {/* Column 1 (Scrolls Up) */}
-          <div className="tm-column">
+          {/* Column 1 (Active on Mobile, Tablet & Desktop) */}
+          <div className="tm-column tm-col-1">
             <div className="tm-track tm-track-up">
-              {[...REAL_TESTIMONIALS_COL_1, ...REAL_TESTIMONIALS_COL_1].map((item, idx) => (
+              {[...REAL_TESTIMONIALS_COL_1, ...REAL_TESTIMONIALS_COL_2, ...REAL_TESTIMONIALS_COL_1, ...REAL_TESTIMONIALS_COL_2].map((item, idx) => (
                 <TestimonialCard key={`col1-${idx}`} item={item} />
               ))}
             </div>
           </div>
 
-          {/* Column 2 (Scrolls Down) */}
-          <div className="tm-column">
+          {/* Column 2 (Active on Tablet & Desktop) */}
+          <div className="tm-column tm-col-2">
             <div className="tm-track tm-track-down">
-              {[...REAL_TESTIMONIALS_COL_2, ...REAL_TESTIMONIALS_COL_2].map((item, idx) => (
+              {[...REAL_TESTIMONIALS_COL_2, ...REAL_TESTIMONIALS_COL_3, ...REAL_TESTIMONIALS_COL_2, ...REAL_TESTIMONIALS_COL_3].map((item, idx) => (
                 <TestimonialCard key={`col2-${idx}`} item={item} />
               ))}
             </div>
           </div>
 
-          {/* Column 3 (Scrolls Up) */}
-          <div className="tm-column">
+          {/* Column 3 (Active on Desktop) */}
+          <div className="tm-column tm-col-3">
             <div className="tm-track tm-track-up">
-              {[...REAL_TESTIMONIALS_COL_3, ...REAL_TESTIMONIALS_COL_3].map((item, idx) => (
+              {[...REAL_TESTIMONIALS_COL_3, ...REAL_TESTIMONIALS_COL_1, ...REAL_TESTIMONIALS_COL_3, ...REAL_TESTIMONIALS_COL_1].map((item, idx) => (
                 <TestimonialCard key={`col3-${idx}`} item={item} />
               ))}
             </div>
