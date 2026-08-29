@@ -214,17 +214,6 @@ export default function InitialLoader({ onComplete }) {
             transition={{ duration: 0.3 }}
             style={{ willChange: 'opacity' }}
           >
-            {/* Light sweep — opacity only, no filter blur */}
-            {phase === 3 && (
-              <motion.div
-                className="il-light-sweep"
-                initial={{ opacity: 0, scaleX: 0 }}
-                animate={{ opacity: [0, 0.9, 0.9, 0], scaleX: [0, 1, 1, 0] }}
-                transition={{ duration: 0.85, times: [0, 0.2, 0.8, 1], ease: 'easeInOut' }}
-                style={{ willChange: 'transform, opacity' }}
-              />
-            )}
-
             <motion.div
               className="il-profile-wrap"
               initial={{ scale: 0.55, opacity: 0 }}
