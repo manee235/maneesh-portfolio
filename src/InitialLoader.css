@@ -108,73 +108,69 @@
 }
 
 /* ═══════════════════════════════════════════════════
-   PHASE 2: DARK RING + ORBIT SQUARES
+   PHASE 2 & 3: PROFILE IN CIRCLE & BRAND TEXT PUSH
 ═══════════════════════════════════════════════════ */
-.il-ring-stage {
+.il-brand-stage-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   position: relative;
-  width: 90px;
-  height: 90px;
+  will-change: transform, opacity;
+}
+
+.il-profile-wrapper {
+  position: relative;
+  width: 66px;
+  height: 66px;
+  flex-shrink: 0;
   display: flex;
   align-items: center;
   justify-content: center;
   will-change: transform, opacity;
 }
 
-.il-dark-ring {
-  width: 90px;
-  height: 90px;
-  border-radius: 50%;
-  border: 6px solid #09090b;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-  will-change: transform, opacity;
-}
-
-.il-corner-square {
-  width: 9px;
-  height: 9px;
-  background: #09090b;
-  border-radius: 2px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
-  will-change: transform, opacity;
-}
-
-/* ═══════════════════════════════════════════════════
-   PHASE 3: PROFILE IMAGE & BRAND NAME
-═══════════════════════════════════════════════════ */
-.il-profile-wrap {
+.il-profile-inner {
   position: relative;
-  width: 60px;
-  height: 60px;
-  flex-shrink: 0;
-  will-change: transform, opacity;
+  width: 66px;
+  height: 66px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 2.5px solid #09090b;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  background: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
 }
 
 .il-profile-img {
-  width: 60px;
-  height: 60px;
+  width: 100%;
+  height: 100%;
   border-radius: 50%;
   object-fit: cover;
   object-position: top center;
   display: block;
-  border: 2px solid #09090b;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
 }
 
-.il-profile-ring {
-  position: absolute;
-  inset: -6px;
-  border-radius: 50%;
-  border: 1.5px solid rgba(0, 0, 0, 0.12);
+.il-corner-square {
+  width: 8px;
+  height: 8px;
+  background: #09090b;
+  border-radius: 2px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.14);
   will-change: transform, opacity;
-  animation: ilProfileRingPulse 2.2s ease-in-out infinite;
 }
 
-@keyframes ilProfileRingPulse {
-  0%, 100% { transform: scale(1);    opacity: 0.6; }
-  50%       { transform: scale(1.08); opacity: 1;   }
+/* ── Brand text clip & letter animation ── */
+.il-brand-text-clip {
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+  will-change: width, opacity;
 }
 
-/* ── Brand text ── */
 .il-brand-text {
   font-family: 'Poppins', sans-serif;
   font-size: clamp(1.4rem, 3.5vw, 2.1rem);
@@ -183,6 +179,8 @@
   letter-spacing: -0.02em;
   display: flex;
   align-items: center;
+  margin-left: 18px;
+  padding-right: 4px;
 }
 
 .il-brand-text span {

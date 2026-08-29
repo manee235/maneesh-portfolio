@@ -71,7 +71,7 @@ function SpinnerArcs() {
 }
 
 // ─────────────────────────────────────────────────
-// PHASE 2: Dark Ring + Orbit Nodes (Light Theme)
+// PHASE 2 & 3: Profile in Circle -> Slide Left & Push Text Right
 // ─────────────────────────────────────────────────
 const SQUARE_POSITIONS = [
   { top: '-14px', left: '-14px' },
@@ -80,33 +80,83 @@ const SQUARE_POSITIONS = [
   { bottom: '-14px', right: '-14px' },
 ];
 
-function RingAndParticles() {
+function ProfileBrandStage({ isExpanded }) {
   return (
-    <div className="il-ring-stage">
+    <motion.div
+      className="il-brand-stage-wrap"
+      layout
+      transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
+    >
+      {/* Profile Image & Ring with corner accents */}
       <motion.div
-        className="il-dark-ring"
+        className="il-profile-wrapper"
         initial={{ scale: 0, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
-        transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+        transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
         style={{ willChange: 'transform, opacity' }}
-      />
-      {SQUARE_POSITIONS.map((pos, i) => (
-        <motion.div
-          key={i}
-          className="il-corner-square"
-          style={{ position: 'absolute', ...pos, willChange: 'transform, opacity' }}
-          initial={{ scale: 0, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          transition={{ duration: 0.28, delay: 0.12 + i * 0.055, ease: [0.16, 1, 0.3, 1] }}
-        />
-      ))}
-    </div>
+      >
+        <div className="il-profile-inner">
+          <img
+            src="/assets/Profile.png"
+            alt="Maneesh"
+            className="il-profile-img"
+          />
+        </div>
+
+        {/* Corner square accents that gently dissolve as text pushes out */}
+        <AnimatePresence>
+          {!isExpanded &&
+            SQUARE_POSITIONS.map((pos, i) => (
+              <motion.div
+                key={i}
+                className="il-corner-square"
+                style={{ position: 'absolute', ...pos, willChange: 'transform, opacity' }}
+                initial={{ scale: 0, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 0, opacity: 0 }}
+                transition={{ duration: 0.28, delay: 0.08 + i * 0.04, ease: [0.16, 1, 0.3, 1] }}
+              />
+            ))}
+        </AnimatePresence>
+      </motion.div>
+
+      {/* Brand Text that smoothly expands and pushes out to the right */}
+      <motion.div
+        className="il-brand-text-clip"
+        initial={{ width: 0, opacity: 0 }}
+        animate={{
+          width: isExpanded ? 'auto' : 0,
+          opacity: isExpanded ? 1 : 0,
+        }}
+        transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
+      >
+        <div className="il-brand-text" aria-label="onlymaneesh.">
+          {'onlymaneesh.'.split('').map((char, i) => (
+            <motion.span
+              key={i}
+              initial={{ x: -22, opacity: 0 }}
+              animate={{
+                x: isExpanded ? 0 : -22,
+                opacity: isExpanded ? 1 : 0,
+              }}
+              transition={{
+                duration: 0.42,
+                delay: isExpanded ? 0.12 + i * 0.035 : 0,
+                ease: [0.16, 1, 0.3, 1],
+              }}
+              style={{ display: 'inline-block', willChange: 'transform, opacity' }}
+            >
+              {char}
+            </motion.span>
+          ))}
+        </div>
+      </motion.div>
+    </motion.div>
   );
 }
 
 // ─────────────────────────────────────────────────
 // Shared Framer variants — defined outside render
-// so they're not recreated every frame
 // ─────────────────────────────────────────────────
 const phaseVariants = {
   hidden:  { opacity: 0 },
@@ -145,12 +195,11 @@ export default function InitialLoader({ onComplete }) {
   const [isReady, setIsReady] = useState(false);
 
   useEffect(() => {
-    const t1 = setTimeout(() => setPhase(1), 1500);
+    const t1 = setTimeout(() => setPhase(1), 1400);
     const t2 = setTimeout(() => setPhase(2), 2400);
-    const t3 = setTimeout(() => setPhase(3), 3900);
-    const t4 = setTimeout(() => { setPhase(4); setShowFinal(true); }, 4600);
-    const t5 = setTimeout(() => setIsReady(true), 5200);
-    return () => [t1, t2, t3, t4, t5].forEach(clearTimeout);
+    const t3 = setTimeout(() => { setPhase(3); setShowFinal(true); }, 4400);
+    const t4 = setTimeout(() => setIsReady(true), 5000);
+    return () => [t1, t2, t3, t4].forEach(clearTimeout);
   }, []);
 
   const handleEnter = useCallback(() => {
@@ -170,7 +219,7 @@ export default function InitialLoader({ onComplete }) {
       onClick={isReady ? handleEnter : undefined}
       style={{ cursor: isReady ? 'pointer' : 'default' }}
     >
-      {/* ── PHASE 1: SVG Spinner ── */}
+      {/* ── PHASE 0: Modern SVG Spinner ── */}
       <AnimatePresence>
         {phase === 0 && (
           <motion.div
@@ -188,70 +237,20 @@ export default function InitialLoader({ onComplete }) {
         )}
       </AnimatePresence>
 
-      {/* ── PHASE 2: Ring + Squares ── */}
+      {/* ── PHASE 1 & 2: Center Profile in Circle -> Move Left & Push Text Right ── */}
       <AnimatePresence>
-        {phase === 1 && (
+        {phase >= 1 && !showFinal && (
           <motion.div
-            key="p1"
+            key="profile-brand"
             className="il-phase-wrap"
             variants={phaseVariants}
             initial="hidden"
             animate="visible"
             exit="exit"
-            transition={{ duration: 0.28 }}
+            transition={{ duration: 0.35 }}
             style={{ willChange: 'opacity' }}
           >
-            <RingAndParticles />
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      {/* ── PHASE 3: Profile + Name (exits cleanly before final) ── */}
-      <AnimatePresence>
-        {phase >= 2 && !showFinal && (
-          <motion.div
-            key="p2"
-            className="il-phase-wrap il-logo-row"
-            variants={phaseVariants}
-            initial="hidden"
-            animate="visible"
-            exit="exit"
-            transition={{ duration: 0.3 }}
-            style={{ willChange: 'opacity' }}
-          >
-            <motion.div
-              className="il-profile-wrap"
-              initial={{ scale: 0.55, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
-              style={{ willChange: 'transform, opacity' }}
-            >
-              <img
-                src="/assets/Profile.png"
-                alt="Maneesh"
-                className="il-profile-img"
-              />
-              <div className="il-profile-ring" />
-            </motion.div>
-
-            {/* Staggered letter reveal — opacity + translateY only (no blur) */}
-            <div className="il-brand-text" aria-label="onlymaneesh.">
-              {'onlymaneesh.'.split('').map((char, i) => (
-                <motion.span
-                  key={i}
-                  initial={{ y: 28, opacity: 0 }}
-                  animate={{ y: 0, opacity: 1 }}
-                  transition={{
-                    duration: 0.38,
-                    delay: 0.1 + i * 0.045,
-                    ease: [0.16, 1, 0.3, 1],
-                  }}
-                  style={{ display: 'inline-block', willChange: 'transform, opacity' }}
-                >
-                  {char}
-                </motion.span>
-              ))}
-            </div>
+            <ProfileBrandStage isExpanded={phase >= 2} />
           </motion.div>
         )}
       </AnimatePresence>
