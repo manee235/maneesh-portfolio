@@ -111,17 +111,19 @@ const actionVariants = {
 };
 
 // ─────────────────────────────────────────────────
-// MAIN COMPONENT
+// COLOR PALETTES FOR RANDOMIZATION ON LOAD
 // ─────────────────────────────────────────────────
-const TOGETHER_LETTERS = [
-  { char: 't', color: '#10b981' },
-  { char: 'o', color: '#06b6d4' },
-  { char: 'g', color: '#3b82f6' },
-  { char: 'e', color: '#6366f1' },
-  { char: 't', color: '#8b5cf6' },
-  { char: 'h', color: '#d946ef' },
-  { char: 'e', color: '#ec4899' },
-  { char: 'r', color: '#f43f5e' },
+const COLOR_PALETTES = [
+  // 1. Emerald to Sunset Rose
+  ['#10b981', '#06b6d4', '#3b82f6', '#6366f1', '#8b5cf6', '#d946ef', '#ec4899', '#f43f5e'],
+  // 2. Cyan, Royal Blue to Hot Pink
+  ['#06b6d4', '#3b82f6', '#2563eb', '#6366f1', '#8b5cf6', '#c026d3', '#ec4899', '#f43f5e'],
+  // 3. Cyber Teal to Neon Coral
+  ['#14b8a6', '#06b6d4', '#3b82f6', '#6366f1', '#a855f7', '#ec4899', '#f97316', '#ef4444'],
+  // 4. Ultra Violet to Amber Gold
+  ['#7c3aed', '#8b5cf6', '#a855f7', '#d946ef', '#ec4899', '#f43f5e', '#f97316', '#f59e0b'],
+  // 5. Emerald Lime to Electric Purple
+  ['#10b981', '#059669', '#06b6d4', '#2563eb', '#4f46e5', '#7c3aed', '#9333ea', '#db2777'],
 ];
 
 export default function InitialLoader({ onComplete }) {
@@ -130,6 +132,15 @@ export default function InitialLoader({ onComplete }) {
   const [isDone, setIsDone] = useState(false);
   const [showFinal, setShowFinal] = useState(false);
   const [isReady, setIsReady] = useState(false);
+
+  // Randomize letters colors on each component mount / page load
+  const [togetherLetters] = useState(() => {
+    const palette = COLOR_PALETTES[Math.floor(Math.random() * COLOR_PALETTES.length)];
+    return 'together'.split('').map((char, i) => ({
+      char,
+      color: palette[i % palette.length],
+    }));
+  });
 
   useEffect(() => {
     // Step 1: Slide profile to left & push onlymaneesh text to right
@@ -225,7 +236,7 @@ export default function InitialLoader({ onComplete }) {
                   style={{ willChange: 'transform, opacity' }}
                 >
                   <span className="il-together-glow-wrap">
-                    {TOGETHER_LETTERS.map((l, i) => (
+                    {togetherLetters.map((l, i) => (
                       <span
                         key={i}
                         className="il-together-letter"
