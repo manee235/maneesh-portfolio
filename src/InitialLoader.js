@@ -187,6 +187,17 @@ const actionVariants = {
 // ─────────────────────────────────────────────────
 // MAIN COMPONENT
 // ─────────────────────────────────────────────────
+const TOGETHER_LETTERS = [
+  { char: 't', color: '#10b981' },
+  { char: 'o', color: '#06b6d4' },
+  { char: 'g', color: '#3b82f6' },
+  { char: 'e', color: '#6366f1' },
+  { char: 't', color: '#8b5cf6' },
+  { char: 'h', color: '#d946ef' },
+  { char: 'e', color: '#ec4899' },
+  { char: 'r', color: '#f43f5e' },
+];
+
 export default function InitialLoader({ onComplete }) {
   const [phase, setPhase] = useState(0);
   const [isExiting, setIsExiting] = useState(false);
@@ -303,7 +314,20 @@ export default function InitialLoader({ onComplete }) {
                   transition={{ delay: 0.36, duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
                   style={{ willChange: 'transform, opacity' }}
                 >
-                  together
+                  <span className="il-together-glow-wrap">
+                    {TOGETHER_LETTERS.map((l, i) => (
+                      <span
+                        key={i}
+                        className="il-together-letter"
+                        style={{
+                          color: l.color,
+                          animationDelay: `${i * 0.12}s`,
+                        }}
+                      >
+                        {l.char}
+                      </span>
+                    ))}
+                  </span>
                 </motion.h1>
               </div>
             </div>

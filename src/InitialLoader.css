@@ -282,14 +282,59 @@
 .il-headline-line2 {
   font-family: 'Poppins', sans-serif;
   font-size: clamp(3rem, 8.5vw, 6rem);
-  font-weight: 300;
+  font-weight: 600;
   letter-spacing: -0.03em;
-  color: #71717a;
   margin: 0;
   line-height: 1.18;
   padding-bottom: 0.08em;
   text-align: center;
   will-change: transform, opacity;
+}
+
+/* ── Glowing Dynamic Spectrum Wrapper ── */
+.il-together-glow-wrap {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.il-together-glow-wrap::before {
+  content: '';
+  position: absolute;
+  inset: -6px -18px;
+  background: linear-gradient(
+    90deg,
+    rgba(16, 185, 129, 0.22) 0%,
+    rgba(6, 182, 212, 0.24) 18%,
+    rgba(59, 130, 246, 0.25) 36%,
+    rgba(99, 102, 241, 0.25) 52%,
+    rgba(139, 92, 246, 0.25) 68%,
+    rgba(217, 70, 239, 0.24) 82%,
+    rgba(236, 72, 153, 0.24) 92%,
+    rgba(244, 63, 94, 0.22) 100%
+  );
+  filter: blur(24px);
+  border-radius: 9999px;
+  z-index: -1;
+  pointer-events: none;
+}
+
+.il-together-letter {
+  display: inline-block;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+  transition: transform 0.25s ease, filter 0.25s ease;
+  animation: ilLetterWave 3.5s ease-in-out infinite;
+}
+
+@keyframes ilLetterWave {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-4px);
+  }
 }
 
 /* ── Action Area ── */
