@@ -4,8 +4,6 @@ import './PortfolioFooter.css';
 export default function PortfolioFooter({ onNavigate, onOpenContact }) {
   const [formData, setFormData] = useState({ name: '', email: '', message: '' });
   const [submitted, setSubmitted] = useState(false);
-  const [newsletterEmail, setNewsletterEmail] = useState('');
-  const [nlSubmitted, setNlSubmitted] = useState(false);
 
   const handleContactSubmit = (e) => {
     e.preventDefault();
@@ -14,12 +12,6 @@ export default function PortfolioFooter({ onNavigate, onOpenContact }) {
     setTimeout(() => setSubmitted(false), 5000);
   };
 
-  const handleNlSubmit = (e) => {
-    e.preventDefault();
-    setNlSubmitted(true);
-    setNewsletterEmail('');
-    setTimeout(() => setNlSubmitted(false), 4000);
-  };
 
   const nav = (id) => (e) => {
     e.preventDefault();
@@ -126,27 +118,6 @@ export default function PortfolioFooter({ onNavigate, onOpenContact }) {
             <a href="https://github.com/manee235" target="_blank" rel="noreferrer">GitHub</a>
             <a href="https://www.behance.net/maneesh_amindu" target="_blank" rel="noreferrer">Behance</a>
           </nav>
-
-          {/* Newsletter */}
-          {nlSubmitted ? (
-            <p className="pf-nl-thanks">✓ Subscribed</p>
-          ) : (
-            <form onSubmit={handleNlSubmit} className="pf-nl">
-              <input
-                type="email"
-                placeholder="your@email.com"
-                value={newsletterEmail}
-                onChange={e => setNewsletterEmail(e.target.value)}
-                required
-              />
-              <button type="submit" aria-label="Subscribe">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="14" height="14">
-                  <line x1="5" y1="12" x2="19" y2="12" />
-                  <polyline points="12 5 19 12 12 19" />
-                </svg>
-              </button>
-            </form>
-          )}
 
         </div>
 
