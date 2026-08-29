@@ -73,13 +73,6 @@ function SpinnerArcs() {
 // ─────────────────────────────────────────────────
 // PHASE 2 & 3: Profile in Circle -> Slide Left & Push Text Right
 // ─────────────────────────────────────────────────
-const SQUARE_POSITIONS = [
-  { top: '-14px', left: '-14px' },
-  { top: '-14px', right: '-14px' },
-  { bottom: '-14px', left: '-14px' },
-  { bottom: '-14px', right: '-14px' },
-];
-
 function ProfileBrandStage({ isExpanded }) {
   return (
     <motion.div
@@ -87,7 +80,7 @@ function ProfileBrandStage({ isExpanded }) {
       layout
       transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
     >
-      {/* Profile Image & Ring with corner accents */}
+      {/* Profile Image & Animated Circular Rings */}
       <motion.div
         className="il-profile-wrapper"
         initial={{ scale: 0, opacity: 0 }}
@@ -103,20 +96,21 @@ function ProfileBrandStage({ isExpanded }) {
           />
         </div>
 
-        {/* Corner square accents that gently dissolve as text pushes out */}
+        {/* Animated concentric circular rings */}
         <AnimatePresence>
-          {!isExpanded &&
-            SQUARE_POSITIONS.map((pos, i) => (
-              <motion.div
-                key={i}
-                className="il-corner-square"
-                style={{ position: 'absolute', ...pos, willChange: 'transform, opacity' }}
-                initial={{ scale: 0, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                exit={{ scale: 0, opacity: 0 }}
-                transition={{ duration: 0.28, delay: 0.08 + i * 0.04, ease: [0.16, 1, 0.3, 1] }}
-              />
-            ))}
+          {!isExpanded && (
+            <motion.div
+              className="il-rings-container"
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.9 }}
+              transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+            >
+              <div className="il-pulse-ring il-ring-1" />
+              <div className="il-pulse-ring il-ring-2" />
+              <div className="il-pulse-ring il-ring-3" />
+            </motion.div>
+          )}
         </AnimatePresence>
       </motion.div>
 
