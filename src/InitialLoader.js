@@ -3,83 +3,88 @@ import { motion, AnimatePresence } from 'framer-motion';
 import './InitialLoader.css';
 
 // ─────────────────────────────────────────────────
-// PHASE 1: SVG-based spinner (GPU composited rotate)
-// Conic-gradient border trick triggers layout/paint.
-// SVG stroke-dash + transform:rotate runs on the compositor.
+// PHASE 1: Modern Precision SVG Loader (Light Theme)
+// Concentric orbital rings with sleek gradients & GPU compositor rotation
 // ─────────────────────────────────────────────────
 function SpinnerArcs() {
   return (
-    <svg
-      className="il-spinner-svg"
-      width="120"
-      height="120"
-      viewBox="0 0 120 120"
-      fill="none"
-      aria-hidden="true"
-    >
-      <defs>
-        <linearGradient id="il-grad1" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stopColor="#00ff88" />
-          <stop offset="100%" stopColor="#0055ff" stopOpacity="0" />
-        </linearGradient>
-        <linearGradient id="il-grad2" x1="100%" y1="100%" x2="0%" y2="0%">
-          <stop offset="0%" stopColor="#0055ff" />
-          <stop offset="100%" stopColor="#00ff88" stopOpacity="0" />
-        </linearGradient>
-      </defs>
+    <div className="il-loader-container">
+      <svg
+        className="il-spinner-svg"
+        width="120"
+        height="120"
+        viewBox="0 0 120 120"
+        fill="none"
+        aria-hidden="true"
+      >
+        <defs>
+          <linearGradient id="il-grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#09090b" />
+            <stop offset="50%" stopColor="#2563eb" />
+            <stop offset="100%" stopColor="#06b6d4" />
+          </linearGradient>
+          <linearGradient id="il-grad2" x1="100%" y1="100%" x2="0%" y2="0%">
+            <stop offset="0%" stopColor="#3b82f6" />
+            <stop offset="60%" stopColor="#6366f1" />
+            <stop offset="100%" stopColor="#09090b" stopOpacity="0.15" />
+          </linearGradient>
+        </defs>
 
-      {/* Arc 1 — clockwise */}
-      <g className="il-arc-g1">
+        {/* Track */}
         <circle
           cx="60" cy="60" r="48"
-          stroke="url(#il-grad1)"
-          strokeWidth="12"
-          strokeLinecap="round"
-          strokeDasharray="160 142"
+          stroke="rgba(0, 0, 0, 0.06)"
+          strokeWidth="5"
         />
-      </g>
 
-      {/* Arc 2 — counter-clockwise */}
-      <g className="il-arc-g2">
-        <circle
-          cx="60" cy="60" r="48"
-          stroke="url(#il-grad2)"
-          strokeWidth="12"
-          strokeLinecap="round"
-          strokeDasharray="100 202"
-        />
-      </g>
+        {/* Outer Arc — clockwise */}
+        <g className="il-arc-g1">
+          <circle
+            cx="60" cy="60" r="48"
+            stroke="url(#il-grad1)"
+            strokeWidth="5.5"
+            strokeLinecap="round"
+            strokeDasharray="140 160"
+          />
+        </g>
 
-      {/* Glow halo — opacity only, no blur repaint */}
-      <g className="il-arc-g1 il-arc-glow">
+        {/* Inner Arc — counter-clockwise */}
+        <g className="il-arc-g2">
+          <circle
+            cx="60" cy="60" r="35"
+            stroke="url(#il-grad2)"
+            strokeWidth="4.5"
+            strokeLinecap="round"
+            strokeDasharray="85 135"
+          />
+        </g>
+
+        {/* Center Pulsing Core */}
         <circle
-          cx="60" cy="60" r="48"
-          stroke="#00ff88"
-          strokeWidth="3"
-          strokeLinecap="round"
-          strokeDasharray="160 142"
-          opacity="0.18"
+          cx="60" cy="60" r="5"
+          fill="#09090b"
+          className="il-center-dot"
         />
-      </g>
-    </svg>
+      </svg>
+    </div>
   );
 }
 
 // ─────────────────────────────────────────────────
-// PHASE 2: White ring + corner squares
+// PHASE 2: Dark Ring + Orbit Nodes (Light Theme)
 // ─────────────────────────────────────────────────
 const SQUARE_POSITIONS = [
-  { top: '-18px', left: '-18px' },
-  { top: '-18px', right: '-18px' },
-  { bottom: '-18px', left: '-18px' },
-  { bottom: '-18px', right: '-18px' },
+  { top: '-14px', left: '-14px' },
+  { top: '-14px', right: '-14px' },
+  { bottom: '-14px', left: '-14px' },
+  { bottom: '-14px', right: '-14px' },
 ];
 
 function RingAndParticles() {
   return (
     <div className="il-ring-stage">
       <motion.div
-        className="il-white-ring"
+        className="il-dark-ring"
         initial={{ scale: 0, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
         transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
