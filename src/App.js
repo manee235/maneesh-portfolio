@@ -132,7 +132,7 @@ function App() {
 
   const [heroAnimated, setHeroAnimated] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const [footerSubmitted, setFooterSubmitted] = useState(false);
+
 
   useEffect(() => {
     const handleScroll = () => {
