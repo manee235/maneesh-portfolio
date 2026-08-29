@@ -252,7 +252,7 @@ export default function PortfolioFooter({ onNavigate, onOpenContact }) {
             SRI LANKA · REMOTE
           </span>
           <span className="pf-legal-right">
-            Built with <span className="pf-legal-heart">♥</span> by Maneesh Ganegoda
+            Built by Maneesh Ganegoda
           </span>
         </div>
       </div>
