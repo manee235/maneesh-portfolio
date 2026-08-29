@@ -120,7 +120,7 @@ export default function Testimonials() {
     <section className="tm-section" id="testimonials">
       <div className="tm-container">
         {/* ── Section Header ── */}
-        <div className="tm-header">
+        <div className="tm-header" data-parallax="0.05">
           <h2 className="tm-title">What our clients say</h2>
           <p className="tm-subtitle">Verified feedback from real client projects &amp; collaborations.</p>
         </div>
@@ -128,7 +128,7 @@ export default function Testimonials() {
         {/* ── Responsive Column Marquee ── */}
         <div className="tm-columns-wrapper">
           {/* Column 1 (Active on Mobile, Tablet & Desktop) */}
-          <div className="tm-column tm-col-1">
+          <div className="tm-column tm-col-1" data-parallax="0.08">
             <div className="tm-track tm-track-up">
               {[...REAL_TESTIMONIALS_COL_1, ...REAL_TESTIMONIALS_COL_2, ...REAL_TESTIMONIALS_COL_1, ...REAL_TESTIMONIALS_COL_2].map((item, idx) => (
                 <TestimonialCard key={`col1-${idx}`} item={item} />
@@ -137,7 +137,7 @@ export default function Testimonials() {
           </div>
 
           {/* Column 2 (Active on Tablet & Desktop) */}
-          <div className="tm-column tm-col-2">
+          <div className="tm-column tm-col-2" data-parallax="-0.09">
             <div className="tm-track tm-track-down">
               {[...REAL_TESTIMONIALS_COL_2, ...REAL_TESTIMONIALS_COL_3, ...REAL_TESTIMONIALS_COL_2, ...REAL_TESTIMONIALS_COL_3].map((item, idx) => (
                 <TestimonialCard key={`col2-${idx}`} item={item} />
@@ -146,7 +146,7 @@ export default function Testimonials() {
           </div>
 
           {/* Column 3 (Active on Desktop) */}
-          <div className="tm-column tm-col-3">
+          <div className="tm-column tm-col-3" data-parallax="0.07">
             <div className="tm-track tm-track-up">
               {[...REAL_TESTIMONIALS_COL_3, ...REAL_TESTIMONIALS_COL_1, ...REAL_TESTIMONIALS_COL_3, ...REAL_TESTIMONIALS_COL_1].map((item, idx) => (
                 <TestimonialCard key={`col3-${idx}`} item={item} />

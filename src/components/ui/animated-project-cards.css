@@ -1,0 +1,423 @@
+/* ═══════════════════════════════════════════════════
+   ANIMATED PROJECT / SERVICE CARDS (Ultra-Compact Edition)
+   Sleek, minimal height expansion, vibrant brand color fills
+═══════════════════════════════════════════════════ */
+
+.apc-wrapper {
+  width: 100%;
+  max-width: 1060px;
+  margin: 0 auto;
+}
+
+/* ─── Filter Tabs ─── */
+.apc-tabs-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 22px;
+}
+
+.apc-tab-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 16px;
+  border-radius: 9999px;
+  font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #64748b;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  user-select: none;
+}
+
+.apc-tab-btn:hover {
+  color: #0f172a;
+  border-color: #cbd5e1;
+  background: #ffffff;
+}
+
+.apc-tab-btn.active {
+  background: #0f172a;
+  color: #ffffff;
+  border-color: #0f172a;
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.2);
+}
+
+.apc-tab-count {
+  font-size: 0.72rem;
+  opacity: 0.7;
+  font-weight: 500;
+}
+
+/* ─── 2-Column Responsive Grid ─── */
+.apc-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  align-items: start; /* Never stretches adjacent cards */
+  gap: 14px;
+  width: 100%;
+}
+
+/* ─── Individual Card Capsule ─── */
+.apc-card {
+  position: relative;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 18px;
+  padding: 14px 18px;
+  cursor: pointer;
+  transition: background-color 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.2s ease;
+  user-select: none;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  text-align: left;
+}
+
+.apc-card:hover {
+  border-color: #cbd5e1;
+  box-shadow: 0 8px 24px -6px rgba(0, 0, 0, 0.08);
+  transform: translateY(-2px);
+}
+
+/* ─── ACTIVE / EXPANDED STATE (Color Fill + White Text) ─── */
+.apc-card.is-expanded {
+  border-color: rgba(255, 255, 255, 0.25);
+  box-shadow: 0 12px 32px -8px rgba(0, 0, 0, 0.2), 0 2px 6px rgba(0, 0, 0, 0.06);
+  color: #ffffff;
+}
+
+.apc-card.is-expanded .apc-title {
+  color: #ffffff;
+}
+
+.apc-card.is-expanded .apc-price {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.apc-card.is-expanded .apc-logo {
+  background: rgba(255, 255, 255, 0.22) !important;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  color: #ffffff;
+}
+
+.apc-card.is-expanded .apc-status-badge {
+  background: rgba(255, 255, 255, 0.22) !important;
+  color: #ffffff !important;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+}
+
+.apc-card.is-expanded .apc-chevron-btn {
+  background: rgba(255, 255, 255, 0.22);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+}
+
+.apc-card.is-expanded .apc-expanded-area {
+  border-top: 1px dashed rgba(255, 255, 255, 0.28);
+}
+
+.apc-card.is-expanded .apc-pill {
+  background: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.32);
+  color: #ffffff;
+}
+
+.apc-card.is-expanded .apc-description {
+  color: rgba(255, 255, 255, 0.95);
+}
+
+.apc-card.is-expanded .apc-meta-row,
+.apc-card.is-expanded .apc-meta-icon {
+  color: rgba(255, 255, 255, 0.88);
+}
+
+.apc-card.is-expanded .apc-meta-divider {
+  background-color: rgba(255, 255, 255, 0.35);
+}
+
+/* ─── Card Header Layout ─── */
+.apc-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+}
+
+.apc-card-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+  min-width: 0;
+}
+
+/* ─── Logo Icon Box ─── */
+.apc-logo {
+  width: 40px;
+  height: 40px;
+  min-width: 40px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  flex-shrink: 0;
+  transition: all 0.2s ease;
+}
+
+.apc-logo svg {
+  width: 20px;
+  height: 20px;
+  stroke-width: 2.2;
+}
+
+/* ─── Content Area ─── */
+.apc-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.apc-title-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 2px;
+}
+
+.apc-title {
+  font-family: 'Inter Tight', 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 0.94rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0;
+  line-height: 1.25;
+  transition: color 0.2s ease;
+}
+
+.apc-divider {
+  display: none;
+}
+
+.apc-status-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 1px 7px;
+  border-radius: 9999px;
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  line-height: 1;
+  background-color: #1e293b;
+  color: #f8fafc;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  transition: all 0.2s ease;
+}
+
+.apc-status-badge.inactive {
+  background-color: #e2e8f0;
+  color: #475569;
+}
+
+.apc-price {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: #64748b;
+  margin: 1px 0 0 0;
+  transition: color 0.2s ease;
+}
+
+/* ─── Compact Expandable Area ─── */
+.apc-expanded-area {
+  overflow: hidden;
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px dashed #e2e8f0;
+}
+
+.apc-pills-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-bottom: 8px;
+}
+
+.apc-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 8px;
+  border-radius: 9999px;
+  font-size: 0.7rem;
+  font-weight: 500;
+  background-color: #f1f5f9;
+  border: 1px solid #e2e8f0;
+  color: #334155;
+  cursor: pointer;
+  user-select: none;
+  transition: all 0.2s ease;
+}
+
+.apc-description {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 0.8rem;
+  line-height: 1.4;
+  color: #475569;
+  margin: 0 0 8px 0;
+  transition: color 0.2s ease;
+}
+
+.apc-meta-row {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.72rem;
+  color: #64748b;
+  font-weight: 500;
+  transition: color 0.2s ease;
+}
+
+.apc-meta-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: inherit;
+}
+
+.apc-meta-icon svg {
+  width: 12px;
+  height: 12px;
+}
+
+.apc-meta-divider {
+  width: 1px;
+  height: 8px;
+  background-color: #cbd5e1;
+  margin: 0 2px;
+}
+
+/* ─── Chevron Toggle Button ─── */
+.apc-chevron-btn {
+  width: 28px;
+  height: 28px;
+  min-width: 28px;
+  border-radius: 50%;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f1f5f9;
+  color: #1e293b;
+  cursor: pointer;
+  margin-left: 4px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  flex-shrink: 0;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.apc-chevron-btn svg {
+  width: 13px;
+  height: 13px;
+  stroke-width: 2.2;
+}
+
+/* ─── Mobile View ─── */
+@media (max-width: 640px) {
+  .apc-tabs-row {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    justify-content: flex-start;
+    padding: 2px 4px 10px;
+    gap: 6px;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+
+  .apc-tabs-row::-webkit-scrollbar {
+    display: none;
+  }
+
+  .apc-tab-btn {
+    white-space: nowrap;
+    padding: 5px 11px;
+    font-size: 0.74rem;
+    flex-shrink: 0;
+  }
+
+  .apc-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+  }
+
+  .apc-card {
+    padding: 12px 10px;
+    border-radius: 14px;
+  }
+
+  .apc-card-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+  }
+
+  .apc-card-left {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+    width: 100%;
+  }
+
+  .apc-card-top-mobile {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  .apc-logo {
+    width: 32px;
+    height: 32px;
+    min-width: 32px;
+    border-radius: 8px;
+  }
+
+  .apc-logo svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  .apc-title {
+    font-size: 0.82rem;
+    line-height: 1.2;
+  }
+
+  .apc-price {
+    font-size: 0.7rem;
+  }
+
+  .apc-chevron-btn {
+    width: 22px;
+    height: 22px;
+    min-width: 22px;
+    margin: 0;
+  }
+
+  .apc-chevron-btn svg {
+    width: 11px;
+    height: 11px;
+  }
+}

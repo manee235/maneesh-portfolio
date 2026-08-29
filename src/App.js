@@ -56,9 +56,16 @@ function App() {
     function updateParallax() {
       const scrollY = window.scrollY || document.documentElement.scrollTop;
       const vh = window.innerHeight;
+      const isMobile = window.innerWidth <= 768;
 
       const els = document.querySelectorAll('[data-parallax]');
       els.forEach(el => {
+        // Skip hero left panel on small mobile to avoid navbar overlap
+        if (isMobile && el.classList.contains('mv-hero-left-panel')) {
+          el.style.transform = 'none';
+          return;
+        }
+
         const speed = parseFloat(el.dataset.parallax) || 0.15;
         const rect = el.getBoundingClientRect();
         if (rect.bottom >= -50 && rect.top <= vh + 50) {
@@ -130,6 +137,60 @@ function App() {
     return () => window.removeEventListener('mousemove', handleMouseMove);
   }, [width]);
 
+  // ── 6. Mobile Gyroscope 3D Tilt Engine (Mobile Only) ────────────────────────
+  useEffect(() => {
+    let targetX = 0;
+    let targetY = 0;
+    let currentX = 0;
+    let currentY = 0;
+    let animFrameId = null;
+    let isSubscribed = true;
+
+    // Mobile Device Gyroscope Orientation Handler (Only on handheld devices)
+    const handleOrientation = (e) => {
+      if (window.scrollY > window.innerHeight || window.innerWidth > 768) return;
+      const gamma = e.gamma || 0; // tilt left/right [-90, 90]
+      const beta = e.beta || 45;  // tilt front/back [-180, 180]
+
+      targetX = Math.max(-1, Math.min(1, gamma / 25));
+      targetY = Math.max(-1, Math.min(1, (beta - 45) / 25));
+    };
+
+    if (window.DeviceOrientationEvent) {
+      window.addEventListener('deviceorientation', handleOrientation, { passive: true });
+    }
+
+    // High performance RAF loop with smooth lerping for mobile gyro
+    const updateMotion = () => {
+      if (!isSubscribed) return;
+
+      if (window.innerWidth <= 768) {
+        currentX += (targetX - currentX) * 0.07;
+        currentY += (targetY - currentY) * 0.07;
+
+        const hero = document.getElementById('home');
+        if (hero) {
+          hero.style.setProperty('--hero-bg-x', `${(-currentX * 18).toFixed(2)}px`);
+          hero.style.setProperty('--hero-bg-y', `${(-currentY * 10).toFixed(2)}px`);
+          hero.style.setProperty('--hero-portrait-x', `${(currentX * 10).toFixed(2)}px`);
+          hero.style.setProperty('--hero-portrait-y', `${(currentY * 6).toFixed(2)}px`);
+        }
+      }
+
+      animFrameId = requestAnimationFrame(updateMotion);
+    };
+
+    animFrameId = requestAnimationFrame(updateMotion);
+
+    return () => {
+      isSubscribed = false;
+      cancelAnimationFrame(animFrameId);
+      if (window.DeviceOrientationEvent) {
+        window.removeEventListener('deviceorientation', handleOrientation);
+      }
+    };
+  }, []);
+
   const [heroAnimated, setHeroAnimated] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
@@ -199,24 +260,24 @@ function App() {
       {/* ── HERO SECTION ── */}
       <section id="home" className={`mv-hero-section ${heroAnimated ? 'mv-hero-animated' : ''}`}>
 
-        {/* Giant Midnight Behind-Text — lowest layer */}
-        <div className="mv-behind-name-layer" aria-hidden="true">
-          <div className="mv-behind-word">MANEESH</div>
-          <div className="mv-behind-word">AMINDU</div>
+        {/* Giant Midnight Behind-Text — lowest layer with deep reverse parallax */}
+        <div className="mv-behind-name-layer" data-parallax="-0.22" aria-hidden="true">
+          <div className="mv-behind-word mv-behind-maneesh">MANEESH</div>
+          <div className="mv-behind-word mv-behind-amindu">AMINDU</div>
         </div>
 
-        {/* Centerpiece Portrait — mid layer */}
+        {/* Centerpiece Portrait — firmly anchored to bottom */}
         <div className="mv-portrait-stage">
           <img
             src="/assets/avatar.png"
             alt="Maneesh Amindu"
             className="mv-portrait-img"
           />
-          <div className="mv-portrait-gradient-fade" />
         </div>
+        <div className="mv-portrait-gradient-fade" />
 
         {/* ── LEFT INFO PANEL ── */}
-        <div className="mv-hero-left-panel">
+        <div className="mv-hero-left-panel" data-parallax="0.14">
           {/* Role Tags */}
           <div className="mv-roles-stack">
             <span>DEVELOPER</span>
@@ -242,8 +303,8 @@ function App() {
           </div>
         </div>
 
-        {/* ── RIGHT BENTO STAT GRID (Reference Match) ── */}
-        <div className="mv-hero-right-bento">
+        {/* ── RIGHT BENTO STAT GRID ── */}
+        <div className="mv-hero-right-bento" data-parallax="-0.08">
           {/* Card 1: Large Card (Left) */}
           <div className="mv-bento-card mv-bento-large">
             <div className="mv-bento-badge">SATISFACTION</div>

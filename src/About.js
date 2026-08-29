@@ -80,17 +80,28 @@ export default function About() {
   const [revealedMap, setRevealedMap] = useState({});
   const [headerInView, setHeaderInView] = useState(false);
 
+  // IntersectionObserver for reliable, instant header entrance animation
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setHeaderInView(true);
+        }
+      },
+      { threshold: 0.1, rootMargin: '0px 0px -50px 0px' }
+    );
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
+
   useEffect(() => {
     const handleScroll = () => {
       if (!timelineRef.current || !sectionRef.current) return;
-      const secRect = sectionRef.current.getBoundingClientRect();
       const windowHeight = window.innerHeight;
-
-      // Header entrance trigger
-      if (secRect.top < windowHeight * 0.85) {
-        setHeaderInView(true);
-      }
-
       const rect = timelineRef.current.getBoundingClientRect();
 
       // Calculate progress of scroll through the vertical timeline
@@ -136,7 +147,7 @@ export default function About() {
         {/* ── Section Header ── */}
         <div className={`abt-header ${headerInView ? 'in-view' : ''}`}>
           <div className="abt-header-row">
-            <div className="abt-header-left">
+            <div className="abt-header-left" data-parallax="0.06">
               <div className="abt-eyebrow">
                 <span className="abt-eyebrow-dot" />
                 <span>02 / ABOUT ME</span>
@@ -146,7 +157,7 @@ export default function About() {
               </h2>
             </div>
 
-            <div className="abt-header-right">
+            <div className="abt-header-right" data-parallax="-0.04">
               <p className={`abt-bio-lead ${headerInView ? 'abt-blur-animated' : ''}`}>
                 I'm <span className="abt-highlight">Maneesh Amindu</span>, a tech enthusiast focused on <span className="abt-highlight">software engineering</span> and <span className="abt-highlight">UI/UX design</span>. I enjoy building <span className="abt-highlight">clean, scalable digital products</span> and crafting <span className="abt-highlight">modern user experiences</span>.
               </p>
@@ -200,24 +211,40 @@ export default function About() {
                 fill="none"
                 preserveAspectRatio="none"
               >
+                <defs>
+                  {/* Blue to Green Gradient Only */}
+                  <linearGradient id="abt-multi-gradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                    <stop offset="0%" stopColor="#2563eb" />
+                    <stop offset="45%" stopColor="#06b6d4" />
+                    <stop offset="100%" stopColor="#10b981" />
+                  </linearGradient>
+
+                  {/* Background Track Subtle Gradient */}
+                  <linearGradient id="abt-bg-gradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                    <stop offset="0%" stopColor="rgba(37, 99, 235, 0.22)" />
+                    <stop offset="45%" stopColor="rgba(6, 182, 212, 0.22)" />
+                    <stop offset="100%" stopColor="rgba(16, 185, 129, 0.22)" />
+                  </linearGradient>
+                </defs>
+
                 {/* Background Guide Line */}
                 <path
                   d="M 250 0 C 40 200, 460 400, 250 600 C 40 800, 460 1000, 250 1200 C 40 1400, 460 1600, 250 1800 C 40 2000, 380 2160, 250 2350 L 250 2380"
-                  stroke="rgba(37, 99, 235, 0.14)"
+                  stroke="url(#abt-bg-gradient)"
                   strokeWidth="6"
                   strokeLinecap="round"
                   strokeDasharray="10 10"
                 />
-                {/* Animated Live Drawing Doodle Path */}
+                {/* Animated Live Drawing Doodle Path with Blue-to-Green Gradient */}
                 <path
                   ref={pathRef}
                   d="M 250 0 C 40 200, 460 400, 250 600 C 40 800, 460 1000, 250 1200 C 40 1400, 460 1600, 250 1800 C 40 2000, 380 2160, 250 2350 L 250 2380"
-                  stroke="#2563eb"
+                  stroke="url(#abt-multi-gradient)"
                   strokeWidth="7"
                   strokeLinecap="round"
                   style={{
                     transition: 'stroke-dashoffset 0.12s ease-out',
-                    filter: 'drop-shadow(0 0 14px rgba(37, 99, 235, 0.85))',
+                    filter: 'drop-shadow(0 0 12px rgba(37, 99, 235, 0.7)) drop-shadow(0 0 20px rgba(6, 182, 212, 0.45))',
                   }}
                 />
               </svg>
@@ -228,18 +255,21 @@ export default function About() {
               {MILESTONES.map((item, idx) => {
                 const isEven = idx % 2 === 0;
                 const isRevealed = !!revealedMap[idx] || (idx === 0 && scrollProgress > 0.02);
+                const stepColors = ['#2563eb', '#1d7bf2', '#0ea5e9', '#06b6d4', '#14b8a6', '#10b981'];
+                const nodeColor = stepColors[idx % stepColors.length];
 
                 return (
                   <div
                     key={item.id}
                     className={`abt-vert-slot ${isEven ? 'slot-left' : 'slot-right'} ${isRevealed ? 'revealed' : ''}`}
+                    style={{ '--node-accent': nodeColor }}
                   >
                     {/* Timeline Center Node */}
                     <div className={`abt-vert-node ${isRevealed ? 'active' : ''}`}>
-                      <div className="abt-node-outer">
-                        <div className="abt-node-inner" />
+                      <div className="abt-node-outer" style={{ borderColor: isRevealed ? nodeColor : undefined, boxShadow: isRevealed ? `0 0 18px ${nodeColor}88` : undefined }}>
+                        <div className="abt-node-inner" style={{ backgroundColor: isRevealed ? nodeColor : undefined }} />
                       </div>
-                      <span className="abt-node-step">0{idx + 1}</span>
+                      <span className="abt-node-step" style={{ color: isRevealed ? nodeColor : undefined }}>0{idx + 1}</span>
                     </div>
 
                     {/* Modern Timeline Milestone Card */}

@@ -233,7 +233,7 @@ export default function Projects() {
 
         {/* ── Section Header ── */}
         <div className="prj-header-row">
-          <div className="prj-header-left">
+          <div className="prj-header-left" data-parallax="0.06">
             <div className="prj-eyebrow">
               <span className="prj-eyebrow-dot" />
               <span>SELECTED PORTFOLIO</span>
