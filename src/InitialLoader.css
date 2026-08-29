@@ -1,130 +1,304 @@
 /* ═══════════════════════════════════════════════════
-   INITIAL PRELOADER SCREEN
-   Exact Match to Uploaded Reference Design
+   INITIAL PRELOADER — 60fps GPU-composited animations
+   Rules:
+     • Only animate: transform, opacity  (compositor thread)
+     • No: width/height/top/left/background/filter changes
+     • will-change on every animated element
+     • contain: strict on the root
+     • backface-visibility: hidden on spinners
 ═══════════════════════════════════════════════════ */
 
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap');
+
+/* ── Base Screen ── */
 .il-screen {
   position: fixed;
   inset: 0;
   width: 100vw;
-  height: 100vh;
-  background-color: #07080a;
+  height: 100dvh;
+  background: #0e0e0e;
   z-index: 999999;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 40px 24px;
-  user-select: none;
   overflow: hidden;
-  transition: transform 0.95s cubic-bezier(0.85, 0, 0.15, 1),
-              opacity 0.95s cubic-bezier(0.85, 0, 0.15, 1),
-              filter 0.95s cubic-bezier(0.85, 0, 0.15, 1);
+  user-select: none;
+  font-family: 'Poppins', 'Inter', -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  contain: layout paint;                      /* prevent layout spill */
+  /* Exit transition: only transform + opacity (compositor) */
+  transition: transform 0.9s cubic-bezier(0.85, 0, 0.15, 1),
+              opacity   0.9s cubic-bezier(0.85, 0, 0.15, 1);
   will-change: transform, opacity;
 }
 
 .il-screen.il-exit {
   transform: translateY(-100%);
-  opacity: 0.98;
-  filter: blur(8px);
+  opacity: 0;
 }
 
-.il-content {
-  max-width: 680px;
-  width: 100%;
+/* ── Centered Phase Wrapper ── */
+.il-phase-wrap {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  will-change: opacity;
+}
+
+.il-logo-row {
+  flex-direction: row;
+  gap: 18px;
+}
+
+/* ═══════════════════════════════════════════════════
+   PHASE 1: SVG SPINNER
+   Uses transform:rotate on <g> — runs on GPU compositor
+   No conic-gradient border trick (that causes repaint)
+═══════════════════════════════════════════════════ */
+.il-spinner-svg {
+  display: block;
+  overflow: visible;
+}
+
+.il-arc-g1 {
+  transform-origin: 60px 60px;
+  animation: ilSpin1 0.8s linear infinite;
+  will-change: transform;
+  backface-visibility: hidden;
+}
+
+.il-arc-g2 {
+  transform-origin: 60px 60px;
+  animation: ilSpin2 0.8s linear infinite;
+  will-change: transform;
+  backface-visibility: hidden;
+}
+
+@keyframes ilSpin1 {
+  to { transform: rotate(360deg); }
+}
+@keyframes ilSpin2 {
+  to { transform: rotate(-360deg); }
+}
+
+/* ═══════════════════════════════════════════════════
+   PHASE 2: WHITE RING + CORNER SQUARES
+═══════════════════════════════════════════════════ */
+.il-ring-stage {
+  position: relative;
+  width: 90px;
+  height: 90px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  will-change: transform, opacity;
+}
+
+.il-white-ring {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  border: 12px solid #fff;
+  box-shadow: 0 0 28px rgba(255,255,255,0.28);
+  will-change: transform, opacity;
+}
+
+.il-corner-square {
+  width: 10px;
+  height: 10px;
+  background: #fff;
+  border-radius: 2px;
+  will-change: transform, opacity;
+}
+
+/* ═══════════════════════════════════════════════════
+   PHASE 3: PROFILE IMAGE
+═══════════════════════════════════════════════════ */
+.il-profile-wrap {
+  position: relative;
+  width: 58px;
+  height: 58px;
+  flex-shrink: 0;
+  will-change: transform, opacity;
+}
+
+.il-profile-img {
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: top center;
+  display: block;
+  border: 2.5px solid rgba(255,255,255,0.88);
+  box-shadow: 0 0 20px rgba(255,255,255,0.22);
+}
+
+/* Ring: scale + opacity only — compositor safe */
+.il-profile-ring {
+  position: absolute;
+  inset: -5px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(255,255,255,0.2);
+  will-change: transform, opacity;
+  animation: ilProfileRingPulse 2.2s ease-in-out infinite;
+}
+
+@keyframes ilProfileRingPulse {
+  0%, 100% { transform: scale(1);    opacity: 0.5; }
+  50%       { transform: scale(1.07); opacity: 1;   }
+}
+
+/* ── Brand text ── */
+.il-brand-text {
+  font-family: 'Poppins', sans-serif;
+  font-size: clamp(1.4rem, 3.5vw, 2.1rem);
+  font-weight: 600;
+  color: #fff;
+  letter-spacing: -0.02em;
+  display: flex;
+  align-items: center;
+}
+
+.il-brand-text span {
+  will-change: transform, opacity;
+}
+
+/* ═══════════════════════════════════════════════════
+   LIGHT SWEEP — transform + opacity only, no filter
+═══════════════════════════════════════════════════ */
+.il-light-sweep {
+  position: absolute;
+  left: -40%;
+  right: -40%;
+  top: 50%;
+  height: 170px;
+  transform-origin: center center;
+  /* Static gradient — no paint changes, only transform/opacity changes */
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(80, 160, 255, 0.18) 50%,
+    transparent 100%
+  );
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: -1;
+  will-change: transform, opacity;
+  /* Center vertically via margin instead of translateY to keep transforms free */
+  margin-top: -85px;
+}
+
+/* ═══════════════════════════════════════════════════
+   PHASE 4 / FINAL CONTENT
+═══════════════════════════════════════════════════ */
+.il-final-content {
+  position: absolute;
+  inset: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
-  text-align: center;
   justify-content: space-between;
-  height: 80vh;
-  max-height: 700px;
-  margin: auto;
+  padding: 44px 24px 40px;
+  max-width: 680px;
+  width: 100%;
+  margin: 0 auto;
+  left: 50%;
+  /* Static translateX, no will-change needed */
+  transform: translateX(-50%);
+  text-align: center;
+  pointer-events: all;
+  will-change: opacity;
 }
 
-/* ─── Top Status Badge ─── */
+/* ── Status Badge ── */
 .il-status-badge {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  padding: 6px 14px;
+  padding: 6px 16px;
   border-radius: 9999px;
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.09);
+  will-change: transform, opacity;
 }
 
 .il-status-dot {
   width: 7px;
   height: 7px;
   border-radius: 50%;
-  background-color: #10b981;
-  box-shadow: 0 0 10px #10b981, 0 0 4px #10b981;
-  animation: ilDotPulse 2s infinite ease-in-out;
+  background: #10b981;
+  box-shadow: 0 0 10px #10b981;
+  flex-shrink: 0;
+  /* scale + opacity only */
+  animation: ilDotPulse 2s ease-in-out infinite;
+  will-change: transform, opacity;
 }
 
 @keyframes ilDotPulse {
-  0%, 100% {
-    opacity: 1;
-    transform: scale(1);
-  }
-  50% {
-    opacity: 0.4;
-    transform: scale(0.85);
-  }
+  0%, 100% { transform: scale(1);    opacity: 1; }
+  50%       { transform: scale(0.78); opacity: 0.3; }
 }
 
 .il-status-text {
-  font-family: 'Outfit', sans-serif;
-  font-size: 0.72rem;
-  font-weight: 600;
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.67rem;
+  font-weight: 500;
   letter-spacing: 0.14em;
   color: #94a3b8;
   text-transform: uppercase;
 }
 
-/* ─── Main Elegant Headline ─── */
+/* ── Headline — clip container prevents layout shift ── */
 .il-headline-wrap {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  margin: auto 0;
-  line-height: 0.98;
+}
+
+.il-headline-clip {
+  overflow: hidden;  /* clip so translateY slide-up looks clean */
 }
 
 .il-headline-line1 {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  font-size: clamp(3.4rem, 8vw, 6.2rem);
+  font-family: 'Poppins', sans-serif;
+  font-size: clamp(3rem, 8.5vw, 6rem);
   font-weight: 300;
-  letter-spacing: -0.035em;
-  color: #ffffff;
+  letter-spacing: -0.03em;
+  color: #fff;
   margin: 0;
-  line-height: 1;
+  line-height: 1.07;
+  will-change: transform, opacity;
 }
 
 .il-headline-line2 {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  font-size: clamp(3.4rem, 8vw, 6.2rem);
+  font-family: 'Poppins', sans-serif;
+  font-size: clamp(3rem, 8.5vw, 6rem);
   font-weight: 300;
-  letter-spacing: -0.035em;
-  color: #52525b;
+  letter-spacing: -0.03em;
+  color: #3f3f46;
   margin: 0;
-  line-height: 1;
+  line-height: 1.07;
+  will-change: transform, opacity;
 }
 
-/* ─── Center Arrow & Circular Progress Button ─── */
+/* ── Action Area ── */
 .il-action-area {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 14px;
-  margin: auto 0;
+  will-change: transform, opacity;
 }
 
+/* Circle button — scale + opacity, no filter */
 .il-circle-btn {
-  width: 66px;
-  height: 66px;
+  width: 68px;
+  height: 68px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.04);
+  background: rgba(255,255,255,0.05);
   border: none;
   position: relative;
   display: flex;
@@ -132,37 +306,37 @@
   justify-content: center;
   cursor: pointer;
   outline: none;
-  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform;
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+              background 0.35s ease,
+              box-shadow  0.35s ease;
 }
 
 .il-circle-btn:hover {
-  transform: scale(1.08);
-  background: rgba(255, 255, 255, 0.08);
+  transform: scale(1.09);
+  background: rgba(255,255,255,0.09);
 }
 
-/* Turns Solid Pure White When Loaded */
 .il-circle-btn.il-ready {
-  background: #ffffff;
-  box-shadow: 0 0 35px rgba(255, 255, 255, 0.45), 0 8px 24px rgba(0, 0, 0, 0.3);
-  animation: ilReadyPulse 2.4s infinite ease-in-out;
+  background: #fff;
+  box-shadow: 0 0 36px rgba(255,255,255,0.4), 0 8px 22px rgba(0,0,0,0.35);
+  animation: ilReadyPulse 2.4s ease-in-out infinite;
+  will-change: transform, box-shadow;
 }
 
-.il-circle-btn.il-ready:hover {
-  transform: scale(1.12);
-  box-shadow: 0 0 45px rgba(255, 255, 255, 0.7), 0 10px 28px rgba(0, 0, 0, 0.4);
-}
-
+/* Pulse: scale + box-shadow only */
 @keyframes ilReadyPulse {
   0%, 100% {
     transform: scale(1);
-    box-shadow: 0 0 35px rgba(255, 255, 255, 0.45), 0 8px 24px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 0 36px rgba(255,255,255,0.4), 0 8px 22px rgba(0,0,0,0.35);
   }
   50% {
     transform: scale(1.06);
-    box-shadow: 0 0 50px rgba(255, 255, 255, 0.7), 0 12px 30px rgba(0, 0, 0, 0.4);
+    box-shadow: 0 0 55px rgba(255,255,255,0.65), 0 12px 28px rgba(0,0,0,0.4);
   }
 }
 
+/* Progress ring SVG */
 .il-progress-svg {
   position: absolute;
   inset: 0;
@@ -173,83 +347,64 @@
 
 .il-progress-bg {
   fill: none;
-  stroke: rgba(255, 255, 255, 0.08);
+  stroke: rgba(255,255,255,0.08);
   stroke-width: 2.5;
 }
 
 .il-progress-bar {
   fill: none;
-  stroke: #ffffff;
+  stroke: #fff;
   stroke-width: 2.5;
   stroke-dasharray: 207.3;
   stroke-linecap: round;
-  transition: stroke-dashoffset 0.1s ease;
-}
-
-.il-circle-btn.il-ready .il-progress-bar {
-  stroke: #ffffff;
 }
 
 .il-arrow-icon {
-  color: #ffffff;
-  transition: all 0.3s ease;
+  color: #fff;
   position: relative;
   z-index: 2;
+  will-change: transform;
+  transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.il-circle-btn.il-ready .il-arrow-icon {
-  color: #09090b;
-}
+.il-circle-btn.il-ready .il-arrow-icon { color: #09090b; }
+.il-circle-btn:hover .il-arrow-icon { transform: translate(2px, -2px); }
 
-.il-circle-btn:hover .il-arrow-icon {
-  transform: translate(2px, -2px);
-}
-
-/* Percentage / Enter Button Prompt */
-.il-counter-wrap {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
+.il-counter-wrap { display: flex; align-items: center; justify-content: center; }
 
 .il-counter-text {
-  font-family: 'Outfit', monospace, sans-serif;
-  font-size: 0.72rem;
-  font-weight: 600;
-  letter-spacing: 0.14em;
-  color: #71717a;
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.66rem;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  color: #52525b;
   text-transform: uppercase;
   transition: color 0.3s ease;
 }
 
-.il-circle-btn.il-ready + .il-counter-wrap .il-counter-text {
-  color: #ffffff;
-  letter-spacing: 0.18em;
-}
-
-/* ─── Bottom Text (Email Removed) ─── */
+/* ── Footer ── */
 .il-footer-wrap {
   display: flex;
   flex-direction: column;
   align-items: center;
-  max-width: 480px;
+  max-width: 440px;
+  will-change: opacity;
 }
 
 .il-footer-desc {
-  font-family: 'Outfit', sans-serif;
-  font-size: 0.84rem;
-  line-height: 1.55;
-  color: #71717a;
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 300;
+  line-height: 1.7;
+  color: #52525b;
   margin: 0;
 }
 
-/* Responsive adjustments */
+/* ── Responsive ── */
 @media (max-width: 640px) {
-  .il-content {
-    height: 86vh;
-  }
-
-  .il-footer-desc {
-    font-size: 0.78rem;
-  }
+  .il-final-content { padding: 36px 20px 30px; }
+  .il-profile-img { width: 46px; height: 46px; }
+  .il-profile-wrap { width: 46px; height: 46px; }
+  .il-brand-text { font-size: 1.2rem; }
+  .il-footer-desc { font-size: 0.73rem; }
 }

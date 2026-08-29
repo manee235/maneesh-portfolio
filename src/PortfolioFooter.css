@@ -1,0 +1,565 @@
+/* ═══════════════════════════════════════════════════
+   PORTFOLIO FOOTER — Reference Design
+   Light card top + brand/links/newsletter bottom bar
+═══════════════════════════════════════════════════ */
+
+/* ── Outer footer wrapper ── */
+.pf-footer {
+  background: #f7f7f7;
+  padding: 40px 0 0;
+  font-family: 'Outfit', 'Plus Jakarta Sans', sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ═══════════════════════════════════════════════════
+   TOP CONTACT CARD
+═══════════════════════════════════════════════════ */
+.pf-top-card-wrap {
+  padding: 0 32px 40px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.pf-contact-card {
+  background: #ffffff;
+  border-radius: 20px;
+  border: 1px solid #e4e4e7;
+  padding: 48px 52px;
+  display: grid;
+  grid-template-columns: 1fr 1.15fr;
+  gap: 56px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.05), 0 1px 4px rgba(0, 0, 0, 0.04);
+}
+
+/* ── Left text column ── */
+.pf-contact-card-left {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  position: relative;
+  z-index: 2;
+}
+
+.pf-contact-card-eyebrow {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: #a1a1aa;
+}
+
+.pf-contact-card-title {
+  font-family: 'Inter', 'Outfit', sans-serif;
+  font-size: clamp(1.7rem, 3.5vw, 2.5rem);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: #09090b;
+  line-height: 1.15;
+  margin: 0;
+}
+
+.pf-contact-highlight {
+  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.pf-contact-card-desc {
+  font-size: 0.9rem;
+  line-height: 1.65;
+  color: #71717a;
+  margin: 0;
+  max-width: 340px;
+}
+
+.pf-contact-card-desc strong {
+  color: #3f3f46;
+  font-weight: 600;
+}
+
+/* Social links row below desc */
+.pf-contact-socials {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 4px;
+}
+
+.pf-contact-social-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #52525b;
+  text-decoration: none;
+  padding: 6px 12px;
+  border-radius: 999px;
+  border: 1px solid #e4e4e7;
+  background: #fafafa;
+  transition: all 0.2s ease;
+  letter-spacing: 0.02em;
+}
+
+.pf-contact-social-link:hover {
+  background: #09090b;
+  color: #fff;
+  border-color: #09090b;
+  transform: translateY(-1px);
+}
+
+/* ── Right form column ── */
+.pf-contact-card-right {
+  position: relative;
+  z-index: 2;
+}
+
+.pf-contact-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.pf-form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.pf-form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.pf-form-label {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  color: #52525b;
+  text-transform: uppercase;
+}
+
+.pf-form-input {
+  background: #f4f4f5;
+  border: 1.5px solid transparent;
+  border-radius: 10px;
+  padding: 11px 14px;
+  font-size: 0.88rem;
+  color: #18181b;
+  font-family: inherit;
+  outline: none;
+  transition: border-color 0.2s ease, background 0.2s ease;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.pf-form-input::placeholder {
+  color: #a1a1aa;
+}
+
+.pf-form-input:focus {
+  background: #ffffff;
+  border-color: #6366f1;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+}
+
+.pf-form-textarea {
+  resize: none;
+  min-height: 90px;
+}
+
+.pf-form-submit {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  align-self: flex-start;
+  background: #09090b;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  padding: 12px 24px;
+  font-size: 0.84rem;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  letter-spacing: 0.01em;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.pf-form-submit:hover {
+  background: #27272a;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.18);
+}
+
+/* Success state */
+.pf-form-success {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  height: 100%;
+  min-height: 160px;
+  text-align: center;
+}
+
+.pf-form-success-icon {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: #ecfdf5;
+  border: 2px solid #6ee7b7;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #059669;
+}
+
+.pf-form-success-text {
+  font-size: 0.9rem;
+  color: #3f3f46;
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* ── Background decorative nodes (reference visual) ── */
+.pf-card-deco {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.pf-deco-node {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #f4f4f5;
+  border: 1px solid #e4e4e7;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pf-deco-node::after {
+  content: '';
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #e4e4e7;
+}
+
+/* Positioned decorative nodes mimicking the reference network nodes */
+.pf-deco-n1 { right: 22%; top: 18%; }
+.pf-deco-n2 { right: 10%; top: 38%; width: 30px; height: 30px; }
+.pf-deco-n3 { right: 28%; top: 54%; width: 28px; height: 28px; }
+.pf-deco-n4 { right: 14%; top: 70%; width: 34px; height: 34px; }
+
+.pf-deco-ring {
+  position: absolute;
+  right: 18%;
+  top: 36%;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  border: 2px solid #d4d4d8;
+  background: transparent;
+}
+
+.pf-deco-dot {
+  position: absolute;
+  border-radius: 50%;
+  background: #d4d4d8;
+}
+
+.pf-deco-d1 { width: 6px; height: 6px; right: 30%; top: 28%; }
+.pf-deco-d2 { width: 8px; height: 8px; right: 8%;  top: 55%; }
+
+/* ═══════════════════════════════════════════════════
+   BOTTOM FOOTER BAR
+═══════════════════════════════════════════════════ */
+.pf-bottom-wrap {
+  background: #ffffff;
+  border-top: 1px solid #e4e4e7;
+}
+
+.pf-bottom-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 44px 32px 36px;
+  display: grid;
+  grid-template-columns: 1.8fr 1fr 1fr 1.4fr;
+  gap: 40px;
+  align-items: flex-start;
+}
+
+/* ── Brand col ── */
+.pf-brand-col {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.pf-brand-logo-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.pf-brand-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: top center;
+  border: 1.5px solid #e4e4e7;
+  flex-shrink: 0;
+}
+
+.pf-brand-name {
+  font-family: 'Outfit', sans-serif;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #09090b;
+  letter-spacing: -0.02em;
+}
+
+.pf-brand-dot {
+  color: #6366f1;
+}
+
+.pf-brand-tagline {
+  font-size: 0.82rem;
+  line-height: 1.6;
+  color: #71717a;
+  margin: 0;
+  max-width: 260px;
+}
+
+/* ── Link columns ── */
+.pf-links-col {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.pf-col-heading {
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: #09090b;
+  text-transform: capitalize;
+}
+
+.pf-link-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+
+.pf-link-list a,
+.pf-link-btn {
+  font-size: 0.84rem;
+  color: #71717a;
+  text-decoration: none;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  font-family: inherit;
+  transition: color 0.18s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.pf-link-list a:hover,
+.pf-link-btn:hover {
+  color: #09090b;
+}
+
+.pf-ext-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* ── Newsletter col ── */
+.pf-newsletter-col {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.pf-nl-desc {
+  font-size: 0.82rem;
+  line-height: 1.6;
+  color: #71717a;
+  margin: 0;
+}
+
+.pf-nl-form {
+  display: flex;
+  gap: 0;
+  border: 1.5px solid #e4e4e7;
+  border-radius: 10px;
+  overflow: hidden;
+  background: #f9f9f9;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.pf-nl-form:focus-within {
+  border-color: #6366f1;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+  background: #fff;
+}
+
+.pf-nl-input {
+  flex: 1;
+  border: none;
+  background: transparent;
+  padding: 10px 14px;
+  font-size: 0.84rem;
+  color: #18181b;
+  font-family: inherit;
+  outline: none;
+}
+
+.pf-nl-input::placeholder {
+  color: #a1a1aa;
+}
+
+.pf-nl-btn {
+  background: #09090b;
+  border: none;
+  color: #fff;
+  padding: 10px 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s ease;
+  flex-shrink: 0;
+}
+
+.pf-nl-btn:hover {
+  background: #27272a;
+}
+
+.pf-nl-thanks {
+  font-size: 0.84rem;
+  color: #059669;
+  font-weight: 600;
+  margin: 0;
+}
+
+/* ── Legal / copyright bar ── */
+.pf-legal-bar {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 16px 32px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1px solid #f0f0f0;
+  gap: 16px;
+}
+
+.pf-legal-copy,
+.pf-legal-mid,
+.pf-legal-right {
+  font-size: 0.75rem;
+  color: #a1a1aa;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.pf-legal-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #10b981;
+  box-shadow: 0 0 6px #10b981;
+  animation: pfDotPulse 2s infinite ease-in-out;
+}
+
+@keyframes pfDotPulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+.pf-legal-heart {
+  color: #ef4444;
+  font-size: 0.85rem;
+}
+
+/* ═══════════════════════════════════════════════════
+   RESPONSIVE
+═══════════════════════════════════════════════════ */
+@media (max-width: 900px) {
+  .pf-contact-card {
+    grid-template-columns: 1fr;
+    gap: 32px;
+    padding: 36px 32px;
+  }
+
+  .pf-bottom-inner {
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+  }
+
+  .pf-brand-col {
+    grid-column: 1 / -1;
+  }
+
+  .pf-newsletter-col {
+    grid-column: 1 / -1;
+  }
+
+  .pf-deco-node,
+  .pf-deco-ring,
+  .pf-deco-dot {
+    display: none;
+  }
+}
+
+@media (max-width: 600px) {
+  .pf-top-card-wrap {
+    padding: 0 16px 28px;
+  }
+
+  .pf-contact-card {
+    padding: 28px 22px;
+  }
+
+  .pf-bottom-inner {
+    grid-template-columns: 1fr;
+    padding: 32px 20px 24px;
+  }
+
+  .pf-brand-col,
+  .pf-newsletter-col {
+    grid-column: auto;
+  }
+
+  .pf-legal-bar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+    padding: 14px 20px 18px;
+  }
+
+  .pf-form-row {
+    grid-template-columns: 1fr;
+  }
+}

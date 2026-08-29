@@ -8,6 +8,7 @@ import Projects from './Projects';
 import Testimonials from './Testimonials';
 import NavMenu from './NavMenu';
 import RequestModal from './RequestModal';
+import PortfolioFooter from './PortfolioFooter';
 
 // ─── Main App Component ────────────────────────────────────────────────────────
 function App() {
@@ -319,142 +320,11 @@ function App() {
 
       </main>
 
-      {/* ── FOOTER SECTION (Reference Design in White BG) ── */}
-      <footer className="footer" id="contact">
-        <div className="shell footer-inner">
-          <div className="footer-cols">
-            {/* Left Brand & Newsletter Column */}
-            <div className="footer-brand-col">
-              <div className="footer-brand-header">
-                <span className="footer-brand-logo">
-                  onlymaneesh<span className="footer-brand-dot">.</span>
-                  <span className="footer-brand-reg">®</span>
-                </span>
-              </div>
-              <p className="footer-tagline">
-                Creative developer, UI/UX engineer &amp; sound producer. Built for modern browsers, scalable by default.
-              </p>
-
-              {/* Contact Us / Leave a Message Form */}
-              <form
-                className="footer-contact-form"
-                onSubmit={(e) => {
-                  e.preventDefault();
-                  setFooterSubmitted(true);
-                  setTimeout(() => setFooterSubmitted(false), 6000);
-                }}
-              >
-                {footerSubmitted ? (
-                  <div className="footer-form-success">
-                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#2563eb" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                      <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
-                      <polyline points="22 4 12 14.01 9 11.01" />
-                    </svg>
-                    <span>Thank you! Your message has been sent successfully.</span>
-                  </div>
-                ) : (
-                  <>
-                    <div className="footer-form-row">
-                      <input
-                        type="text"
-                        placeholder="Your name"
-                        className="footer-form-input"
-                        required
-                      />
-                      <input
-                        type="email"
-                        placeholder="you@company.com"
-                        className="footer-form-input"
-                        required
-                      />
-                    </div>
-                    <textarea
-                      placeholder="Leave your message or project ideas..."
-                      className="footer-form-textarea"
-                      rows="3"
-                      required
-                    />
-                    <button type="submit" className="footer-form-submit-btn">
-                      <span>Send Message</span>
-                      <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                        <line x1="22" y1="2" x2="11" y2="13" />
-                        <polygon points="22 2 15 22 11 13 2 9 22 2" />
-                      </svg>
-                    </button>
-                  </>
-                )}
-              </form>
-            </div>
-
-            {/* Col 1: PRODUCT */}
-            <div className="footer-col">
-              <span className="footer-col-title">PRODUCT</span>
-              <div className="footer-col-links">
-                <a href="#home" className="footer-link-item" onClick={(e) => { e.preventDefault(); scrollTo('#home'); }}>OVERVIEW</a>
-                <a href="#projects" className="footer-link-item" onClick={(e) => { e.preventDefault(); scrollTo('#projects'); }}>SELECTED WORK</a>
-                <a href="#tech-stack" className="footer-link-item" onClick={(e) => { e.preventDefault(); scrollTo('#tech-stack'); }}>TECH STACK</a>
-                <a href="#about" className="footer-link-item" onClick={(e) => { e.preventDefault(); scrollTo('#about'); }}>EXPERTISE</a>
-                <a href="#projects" className="footer-link-item" onClick={(e) => { e.preventDefault(); scrollTo('#projects'); }}>CHANGELOG</a>
-              </div>
-            </div>
-
-            {/* Col 2: RESOURCES */}
-            <div className="footer-col">
-              <span className="footer-col-title">RESOURCES</span>
-              <div className="footer-col-links">
-                <a href="/assets/maneesh_amindu_cv.pdf" download="maneesh_amindu_cv.pdf" className="footer-link-item">DOWNLOAD CV</a>
-                <a href="https://github.com/manee235" target="_blank" rel="noreferrer" className="footer-link-item">GITHUB REPOS</a>
-                <a href="https://www.behance.net/maneesh_amindu" target="_blank" rel="noreferrer" className="footer-link-item">BEHANCE SHOTS</a>
-                <a href="https://open.spotify.com/artist/3u0fN7vcIuh9sv0HjIpEvs?si=0_LB1zsgT8yvzV20EmquhA" target="_blank" rel="noreferrer" className="footer-link-item">SPOTIFY TRACKS</a>
-                <a href="mailto:ganegodamaneesh@gmail.com" className="footer-link-item">DIRECT EMAIL</a>
-              </div>
-            </div>
-
-            {/* Col 3: COMPANY */}
-            <div className="footer-col">
-              <span className="footer-col-title">COMPANY</span>
-              <div className="footer-col-links">
-                <a href="#about" className="footer-link-item" onClick={(e) => { e.preventDefault(); scrollTo('#about'); }}>ABOUT</a>
-                <a href="https://instagram.com/only.maneesh" target="_blank" rel="noreferrer" className="footer-link-item">INSTAGRAM</a>
-                <a href="tel:+94759051430" className="footer-link-item">PHONE</a>
-                <a href="#home" className="footer-link-item" onClick={(e) => { e.preventDefault(); scrollTo('#home'); }}>CAREERS</a>
-                <button
-                  type="button"
-                  className="footer-link-btn"
-                  onClick={() => setContactOpen(true)}
-                >
-                  CONTACT
-                </button>
-              </div>
-            </div>
-
-            {/* Col 4: LEGAL */}
-            <div className="footer-col">
-              <span className="footer-col-title">LEGAL</span>
-              <div className="footer-col-links">
-                <a href="#home" className="footer-link-item" onClick={(e) => { e.preventDefault(); scrollTo('#home'); }}>PRIVACY</a>
-                <a href="#home" className="footer-link-item" onClick={(e) => { e.preventDefault(); scrollTo('#home'); }}>TERMS</a>
-                <a href="#home" className="footer-link-item" onClick={(e) => { e.preventDefault(); scrollTo('#home'); }}>SECURITY</a>
-                <a href="#home" className="footer-link-item" onClick={(e) => { e.preventDefault(); scrollTo('#home'); }}>COOKIES</a>
-              </div>
-            </div>
-          </div>
-
-          {/* Bottom Sub-footer */}
-          <div className="footer-legal-bar">
-            <div className="footer-copyright">
-              © {new Date().getFullYear()} onlymaneesh.®
-            </div>
-            <div className="footer-systems-status">
-              <span className="footer-status-dot" />
-              <span>ALL SYSTEMS NORMAL</span>
-            </div>
-            <div className="footer-location-tag">
-              SRI LANKA &nbsp;·&nbsp; REMOTE
-            </div>
-          </div>
-        </div>
-      </footer>
+      {/* ── FOOTER (Reference Design) ── */}
+      <PortfolioFooter
+        onNavigate={scrollTo}
+        onOpenContact={() => setContactOpen(true)}
+      />
 
       {/* ── OVERLAYS ── */}
       <NavMenu
