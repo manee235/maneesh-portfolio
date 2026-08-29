@@ -242,37 +242,46 @@ export default function About() {
                       <span className="abt-node-step">0{idx + 1}</span>
                     </div>
 
-                    {/* Widescreen Horizontal Card */}
+                    {/* Modern Timeline Milestone Card */}
                     <article className="abt-wide-card">
-                      {/* Top Row: Title Group on Left, Bold Year on Right */}
-                      <div className="abt-wide-top-row">
-                        <div className="abt-wide-title-group">
-                          <div className="abt-wide-icon-pill">
+                      {/* Top Meta Row: Category Badge & Date Badge */}
+                      <div className="abt-card-meta-row">
+                        <div className="abt-card-badge-group">
+                          <div className="abt-card-icon-pill">
                             <i className={item.iconClass}></i>
                           </div>
-                          <h3 className="abt-wide-title">{item.title}</h3>
+                          <span className="abt-card-cat-badge">{item.category}</span>
                         </div>
-                        <span className="abt-wide-year">{item.year}</span>
+
+                        <div className="abt-card-date-badge">
+                          {item.year.toLowerCase().includes('ongoing') || item.year.toLowerCase().includes('present') ? (
+                            <span className="abt-card-status-dot" aria-hidden="true" />
+                          ) : (
+                            <i className="bx bx-calendar" aria-hidden="true" />
+                          )}
+                          <span>{item.year}</span>
+                        </div>
                       </div>
 
-                      {/* Middle Row: Institution & Desc on Left, Category on Right */}
-                      <div className="abt-wide-mid-row">
-                        <div className="abt-wide-desc-wrap">
-                          <span className="abt-wide-institution">{item.institution}</span>
-                          <p className="abt-wide-desc">{item.desc}</p>
+                      {/* Card Main Header: Prominent Title & Institution */}
+                      <div className="abt-card-main-header">
+                        <h3 className="abt-card-title">{item.title}</h3>
+                        <div className="abt-card-institution">
+                          <i className="bx bx-buildings"></i>
+                          <span>{item.institution}</span>
                         </div>
-                        <span className="abt-wide-category">{item.category}</span>
                       </div>
 
-                      {/* Bottom Row: Tags Pills */}
-                      <div className="abt-wide-bottom-row">
-                        <div className="abt-wide-tags">
-                          {item.tags.map((tag) => (
-                            <span key={tag} className="abt-wide-tag">
-                              {tag}
-                            </span>
-                          ))}
-                        </div>
+                      {/* Card Body: Description */}
+                      <p className="abt-card-desc">{item.desc}</p>
+
+                      {/* Card Footer: Tags */}
+                      <div className="abt-card-tags">
+                        {item.tags.map((tag) => (
+                          <span key={tag} className="abt-card-tag">
+                            {tag}
+                          </span>
+                        ))}
                       </div>
 
                       {/* Glass shine animation */}

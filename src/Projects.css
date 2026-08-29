@@ -100,6 +100,14 @@
   background: #f1f5f9;
   border-radius: 9999px;
   border: 1px solid rgba(0, 0, 0, 0.06);
+  max-width: 100%;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+.prj-filter-tabs::-webkit-scrollbar {
+  display: none;
 }
 
 .prj-tab-btn {
@@ -114,6 +122,7 @@
   cursor: pointer;
   transition: all 0.25s ease;
   white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .prj-tab-btn:hover {
@@ -130,6 +139,7 @@
   display: flex;
   align-items: center;
   gap: 8px;
+  flex-shrink: 0;
 }
 
 .prj-nav-btn {
@@ -421,13 +431,40 @@
 }
 
 /* ─── Responsive ─── */
+@media (max-width: 992px) {
+  .prj-header-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 24px;
+  }
+
+  .prj-header-right {
+    width: 100%;
+    justify-content: space-between;
+  }
+}
+
 @media (max-width: 768px) {
   .prj-section {
-    padding: 90px 5% 80px;
+    padding: 85px 5% 75px;
   }
 
   .prj-header-row {
-    margin-bottom: 30px;
+    margin-bottom: 28px;
+    gap: 20px;
+  }
+
+  .prj-header-right {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+
+  .prj-filter-tabs {
+    flex: 1;
+    min-width: 0;
   }
 
   .prj-card-wrapper {
@@ -446,5 +483,38 @@
 
   .lux-reserve-btn {
     height: 46px;
+  }
+}
+
+@media (max-width: 640px) {
+  .prj-section {
+    padding: 75px 4% 65px;
+  }
+
+  .prj-header-right {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 14px;
+  }
+
+  .prj-filter-tabs {
+    width: 100%;
+    padding: 4px 5px;
+    gap: 4px;
+  }
+
+  .prj-tab-btn {
+    padding: 7px 14px;
+    font-size: 0.75rem;
+  }
+
+  .prj-nav-controls {
+    align-self: flex-end;
+  }
+
+  .prj-nav-btn {
+    width: 38px;
+    height: 38px;
+    font-size: 1.15rem;
   }
 }
