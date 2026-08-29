@@ -264,6 +264,8 @@
   display: flex;
   justify-content: center;
   width: 100%;
+  padding-bottom: 0.18em;
+  margin-bottom: -0.1em;
 }
 
 .il-headline-line1 {
@@ -273,7 +275,8 @@
   letter-spacing: -0.03em;
   color: #09090b;
   margin: 0;
-  line-height: 1.07;
+  line-height: 1.18;
+  padding-bottom: 0.08em;
   text-align: center;
   will-change: transform, opacity;
 }
@@ -285,7 +288,8 @@
   letter-spacing: -0.03em;
   color: #71717a;
   margin: 0;
-  line-height: 1.07;
+  line-height: 1.18;
+  padding-bottom: 0.08em;
   text-align: center;
   will-change: transform, opacity;
 }
