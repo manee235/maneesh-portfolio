@@ -2,4 +2,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://maneeshamindu.dev/sitemap.xml
+Sitemap: https://onlymaneesh.vercel.app/sitemap.xml
